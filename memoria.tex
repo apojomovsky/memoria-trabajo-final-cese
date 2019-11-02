@@ -67,6 +67,9 @@ headsepline, % Uncomment to get a line under the header
 
 \usepackage{color}
 
+% TODO notes in-code
+\usepackage{todonotes}
+
 %
 %----------------------------------------------------------------------------------------
 %	MARGIN SETTINGS
@@ -86,15 +89,15 @@ headsepline, % Uncomment to get a line under the header
 %	INFORMACIÓN DE LA MEMORIA
 %----------------------------------------------------------------------------------------
 
-\thesistitle{Título del trabajo} % El títulos de la memoria, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \ttitle
+\thesistitle{Firmware para robot autónomo utilizando FreeRTOS} % El títulos de la memoria, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \ttitle
 \degree{Especialista en Sistemas Embebidos } % Nombre del grado, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \degreename
-\author{Nombre del Autor} % Tu nombre, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \authorname
-\supervisor{Nombre del Director (pertenencia)} % El nombre del director, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \supname
-\juradoUNO{Nombre del jurado 1 (pertenencia)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur1name
-\juradoDOS{Nombre del jurado 2 (pertenencia)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur2name
-\juradoTRES{Nombre del jurado 3 (pertenencia)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur3name
-\fechaINICIO{enero de 2016}
-\fechaFINAL{diciembre de 2016}
+\author{Alexis Martin Pojomovsky} % Tu nombre, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \authorname
+\supervisor{Dr. Pablo De Cristóforis (FCEyN-UBA)} % El nombre del director, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \supname
+\juradoUNO{Esp. Ing. Diego Fernández (FI-UBA)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur1name
+\juradoDOS{Esp. Ing. Edgardo Comas (CITEDEF/UTN-FRBA)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur2name
+\juradoTRES{Esp. Ing. Gerardo Puga (UNLP)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur3name
+\fechaINICIO{enero de 2018}
+\fechaFINAL{diciembre de 2019}
 
 \subject{Memoria del Trabajo Final de la Carrera de Especialización en Sistemas Embebidos de la UBA} % Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
 \keywords{Sistemas Embebidos, CESE, FIUBA} % Keywords for your thesis, this is not currently used anywhere in the template, print it elsewhere with \keywordnames
@@ -133,39 +136,39 @@ headsepline, % Uncomment to get a line under the header
 %----------------------------------------------------------------------------------------
 
 \begin{titlepage}
-\begin{center}
+	\begin{center}
 
-{\scshape\LARGE UNIVERSIDAD DE BUENOS AIRES\par}\vspace{0.1cm} % University name
-{\scshape\LARGE FACULTAD DE INGENIERÍA\par}\vspace{0.1cm} % Faculty name
-{\scshape\LARGE Carrera de Especialización en Sistemas Embebidos\par}\vspace{1cm} % Thesis type
+		{\scshape\LARGE UNIVERSIDAD DE BUENOS AIRES\par}\vspace{0.1cm} % University name
+		{\scshape\LARGE FACULTAD DE INGENIERÍA\par}\vspace{0.1cm} % Faculty name
+		{\scshape\LARGE Carrera de Especialización en Sistemas Embebidos\par}\vspace{1cm} % Thesis type
 
-\includegraphics[width=.3\textwidth]{./Figures/logoFIUBA.png}
-\vspace{1cm}
+		\includegraphics[width=.3\textwidth]{./Figures/logoFIUBA.png}
+		\vspace{1cm}
 
-\textsc{\Large Memoria del Trabajo Final}\\[0.5cm] % Thesis type
+		\textsc{\Large Memoria del Trabajo Final}\\[0.5cm] % Thesis type
 
-{\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
+		{\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
 
-\vspace{1cm}
-\LARGE\textbf{Autor:\\
-\authorname}\\ % Author name
+		\vspace{1cm}
+		\LARGE\textbf{Autor:\\
+			\authorname}\\ % Author name
 
-\vspace{1cm}
+		\vspace{1cm}
 
-\large
-\vspace{10px}
-{Director:} \\
-{\supname} % Supervisor name
- 
-\vspace{1cm}
-Jurados:\\
-\jurunoname\\
-\jurdosname\\
-\jurtresname
- 
-\vfill
-\textit{Este trabajo fue realizado en las Ciudad Autónoma de Buenos Aires, entre \fechaINICIOname \hspace{1px} y \fechaFINALname.}
-\end{center}
+		\large
+		\vspace{10px}
+		{Director:} \\
+		{\supname} % Supervisor name
+
+		\vspace{1cm}
+		Jurados:\\
+		\jurunoname\\
+		\jurdosname\\
+		\jurtresname
+
+		\vfill
+		\textit{Este trabajo fue realizado en las Ciudad Autónoma de Buenos Aires, entre \fechaINICIOname \hspace{1px} y \fechaFINALname.}
+	\end{center}
 \end{titlepage}
 
 
@@ -174,24 +177,30 @@ Jurados:\\
 %----------------------------------------------------------------------------------------
 
 \begin{abstract}
-\addchaptertocentry{\abstractname} % Add the abstract to the table of contents
-%
-%The Thesis Abstract is written here (and usually kept to just this page). The page is kept centered vertically so can expand into the blank space above the title too\ldots
-\centering
+	\addchaptertocentry{\abstractname} % Add the abstract to the table of contents
+	%
+	%The Thesis Abstract is written here (and usually kept to just this page). The page is kept centered vertically so can expand into the blank space above the title too\ldots
+	\centering
 
-El resumen debe escribirse en uno o dos párrafo.  Debe ser breve y conciso sin ningún elemento de formato en el texto como cursiva o negrita. Palabras que no sean del castellano deben ir en itálicas o cursiva. Tampoco se deben usar siglas ni acrónimos que no resulten obvios para un lector promedio de la memoria, ni referencias bibliográficas o notas al pie de página.  No debe faltar qué es lo que se hizo/logró, qué importancia/valor tiene el proyecto/resultado, qué va a encontrar el lector en la memoria y qué contenidos de la Especialización/Maestría se aplicaron en el proyecto.
+	En el presente trabajo se describe el desarrollo de un robot móvil de bajo costo, destinado a ser utilizado por estudiantes universitarios en el aprendizaje de tópicos de robótica, tales como odometría, localización y navegación.
+
+	Esta propuesta se ajusta a dos importantes restricciones: disponibilidad de componentes en el mercado local y bajo precio, siendo esta última relativa a productos comerciales de similares características.
+
+	Se incluye además, un repositorio público en Github desde el que se puede acceder al software de ejemplo y documentación necesaria para comenzar a utilizar la plataforma.
 
 \end{abstract}
 
-%----------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
 %	CONTENIDO DE LA MEMORIA  - AGRADECIMIENTOS
-%----------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
 
 \begin{acknowledgements}
-%\addchaptertocentry{\acknowledgementname} % Descomentando esta línea se puede agregar los agradecimientos al índice
-\vspace{1.5cm}
+	%\addchaptertocentry{\acknowledgementname} % Descomentando esta línea se puede agregar los agradecimientos al índice
+	\vspace{1.5cm}
 
-Esta sección es para agradecimientos personales y es totalmente \textbf{OPCIONAL}.  
+	\todo {
+		Redactar agradecimientos.
+	}
 
 \end{acknowledgements}
 
@@ -221,16 +230,16 @@ Esta sección es para agradecimientos personales y es totalmente \textbf{OPCIONA
 
 \pagestyle{thesis} % Return the page headers back to the "thesis" style
 
-\renewcommand{\tablename}{Tabla} 
+\renewcommand{\tablename}{Tabla}
 
 % Incluir los capítulos como archivos separados desde la carpeta Chapters
 % Descomentar las líneas a medida que se escriben los capítulos
 
 \include{Chapters/Chapter1}
-\include{Chapters/Chapter2} 
-\include{Chapters/Chapter3}
-\include{Chapters/Chapter4} 
-\include{Chapters/Chapter5} 
+% \include{Chapters/Chapter2}
+% \include{Chapters/Chapter3}
+% \include{Chapters/Chapter4}
+% \include{Chapters/Chapter5}
 
 %----------------------------------------------------------------------------------------
 %	CONTENIDO DE LA MEMORIA  - APÉNDICES
@@ -255,4 +264,4 @@ Esta sección es para agradecimientos personales y es totalmente \textbf{OPCIONA
 
 %----------------------------------------------------------------------------------------
 
-\end{document}  
+\end{document}
