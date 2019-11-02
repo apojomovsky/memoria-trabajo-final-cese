@@ -1,3 +1,3 @@
-# Plantilla-CESE
+# Memoria de trabajo final CESE
 
-Plantilla para la elaboración de la Memoria del Trabajo Final de la Carrera de Especialización en Sistemas Embebidos que se dicta en la Facultad de Ingeniería de la UBA.
+Memoria del trabajo final de la CESE que lleva por titulo: "Firmware para robot autónomo utilizando FreeRTOS"
