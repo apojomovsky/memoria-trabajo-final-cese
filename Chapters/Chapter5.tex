@@ -1,19 +1,14 @@
 % !TEX root = ../memoria.tex
 
-% Chapter Template
-
-\chapter{Conclusiones} % Main chapter title
+\chapter{Conclusiones}
 
 En este capítulo se describen los aportes generados con el trabajo realizado, detallando los logros obtenidos. Así también, se especifican las técnicas mediante las cuales se hizo posible la ejecución del proyecto. Por último, se deja constancia de las metas originales que no pudieron ser abordadas dentro del alcance final, identificando las propuestas de acción a futuro.
 
-\label{Chapter5} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
-
-%----------------------------------------------------------------------------------------
+\label{Chapter5}
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
-
 \section{Conclusiones generales}
 
 En este trabajo se completó la primer iteración en el ciclo de diseño e implementación de una planta de pruebas destinada a utilizarse en el aprendizaje de técnicas de robótica móvil a nivel personal o universitario.
@@ -42,5 +37,17 @@ Por lo tanto, se concluye que los objetivos planteados al comienzo del trabajo h
 %----------------------------------------------------------------------------------------
 %	SECTION 2
 %----------------------------------------------------------------------------------------
-\section{Próximos pasos}
+\section{Trabajo a futuro}
 
+Se plantea a continuación una lista de mejoras que podrían implementarse a fin de aumentar las capacidades del robot, las cuales se espera puedan ser abordadas por los usuarios que hayan decidido adoptar la plataforma, a quienes se exhorta a hacer aportes públicos al repositorio de modo a que todos puedan verse beneficiados con los mismos:
+
+\begin{itemize}
+
+    \item Agregar soporte para sensores y actuadores disponibles en el robot Roomba que aún no han sido implementados en el sistema.
+    \item Agregar un magnetómetro a la IMU via SPI o bien, reemplazarla por una IMU que ofrezca 9 grados de libertad, como la MPU9250, de modo a que la estimación de la pose del robot sea mas precisa.
+    \item Utilizar la salida de potencia del controlador del motor de la aspiradora para alimentar el sensor Kinect, eliminando la necesidad de una batería externa.
+    \item Reemplazar el actual computador OrangePI PC con un Nvidia Jetson Nano o similar, de modo a poder procesar la información proveniente desde una mayor cantidad de sensores.
+    \item Implementar un segundo sensor Kinect apuntando en dirección contraria al actual para duplicar el campo de visión.
+    \item Agregar soporte para ROS 2.
+
+\end{itemize}
