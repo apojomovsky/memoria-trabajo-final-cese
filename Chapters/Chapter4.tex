@@ -1,16 +1,114 @@
 % !TEX root = ../memoria.tex
 
-% Chapter Template
+\chapter{Ensayos y Resultados}
 
-\chapter{Ensayos y Resultados} % Main chapter title
+En este capítulo se detallan los ensayos realizados para comprobar el correcto funcionamiento del sistema y su integración con el framework ROS.
 
-\label{Chapter4} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+\label{Chapter4}
+
+% %----------------------------------------------------------------------------------------
+% %	SECTION 1
+% %----------------------------------------------------------------------------------------
+
+% \section{Pruebas funcionales del hardware}
+% \label{sec:pruebasHW}
+
+% Aquí se describen las pruebas que se realizaron individualmente a cada uno de los componentes del sistema de modo a reducir los posibles causantes de un mal funcionamiento al momento de implementar el software.
+
+% \subsection{Base móvil iRobot Roomba}
+
+% Al tratarse esta de una base móvil comercial, y gracias a la existencia de un documento oficial publicado por el fabricante con información detallada sobre el protocolo de comunicación del robot, se dispone de la gama completa de comandos para manipular los actuadores, así como para leer los sensores disponibles.
+
+% Mediante las pruebas descriptas a continuación, se procedió a verificar el subconjunto de periféricos que fueron implementados en el microcontrolador, interfaz entre el robot y el sistema ROS, corroborando que los mismos funcionen tal y como se describen en el documento mencionado anteriormente.
+
+% Utilizando
+
+% \subsection{Sensor Microsoft Kinect 360}
+
+% % TODO: Capaz mover este parrafito a otro lado
+
+% El Kinect es un dispositivo complejo que posee varios componentes internos separados, con diferente usb-id, que se conectan por un cable único. Este cable posee un conector propietario especial que implementa, además de los hilos del estándar USB 2.0, uno de alimentación a 12 VCC y 2 A y su respectiva tierra.
+% Por cuestiones de disponibilidad y precio, se procedió a remover manualmente este conector y añadir manualmente un conector estándar USB macho y un plug de alimentación a 12 VCC.
+
+% Para testear adecuadamente el funcionamiento del sensor con la adaptación casera, se procedió a conectar el cable USB a un PC con Linux y la alimentación a una fuente externa de 12 VCC. Aquí, se utilizó el comando lsusb, disponible como parte del paquete usb-utils en Ubuntu, y se procedió a listar los dispositivos USB advertidos por el sistema operativo:
+
+% % TODO: Agregar captura de pantalla
+
+% Una vez corroborado esto, se procedió a verificar que la nube de puntos se esté generando correctamente. Para esto se utilizaron las siguientes herramientas y paquetes de software:
+
+% \begin{itemize}
+
+%     \item libfreenect: librería de código abierto para el sensor Kinect.
+%     \item rqt\_image\_viewer: herramienta integrada de ROS para visualizar imágenes RGB y nube de puntos.
+
+% \end{itemize}
+
+% % TODO: Agregar captura de rqt_image_viewer
+
+% \subsection{Unidad de medición inercial InvenSense MPU6050}
+
+% Para corroborar el correcto funcionamiento de la IMU se procedió a conectarlo a un Arduino MEGA2560 y se utilizó la librería Adafruit\_MPU6050, la cual se encuentra activamente mantenida por la compañía Adafruit por lo que se asume su correcto funcionamiento.
+
+% Se procedió así, al envío de información RAW via puerto serie y se procedió a graficar individualmente, cada uno de los componentes de los vectores de aceleración y giro proveídos por el sensor.
+
+% \subsection{Single board computer OrangePI PC}
+
 
 %----------------------------------------------------------------------------------------
-%	SECTION 1
+%	SECTION 2
 %----------------------------------------------------------------------------------------
 
-\section{Pruebas funcionales del hardware}
-\label{sec:pruebasHW}
+\section{Pruebas funcionales del software}
+\label{sec:pruebasSW}
 
-La idea de esta sección es explicar cómo se hicieron los ensayos, qué resultados se obtuvieron y analizarlos.
+Aquí se describen las pruebas que se realizaron individualmente a cada uno de los módulos de software que componen el sistema.
+
+\subsection{Envío y recepción de datos entre el robot y microcontrolador}
+
+Al tratarse esta de una base móvil comercial, y gracias a la existencia de un documento oficial publicado por el fabricante con información detallada sobre el protocolo de comunicación del robot, se dispone de la gama completa de comandos para manipular los actuadores, así como para leer los sensores disponibles.
+
+Mediante las pruebas descriptas a continuación, se procedió a verificar el subconjunto de periféricos que fueron implementados en el microcontrolador que actúa como interfaz entre el robot y el sistema ROS, corroborando que los mismos funcionen tal y como se describen en el documento mencionado anteriormente.
+
+Para el envío de comandos hacia el robot, se analizó la respuesta por parte del robot ante los siguientes comandos:
+
+\begin{table}[h]
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Comando & Argumentos & Descripción \\ \hline
+START & Ninguno & Se inicializa el protocolo OpenInterface \\ \hline
+STOP & Ninguno & Se finaliza el protocolo OpenInterface \\ \hline
+SAFE & Ninguno & El robot pasa a modo seguro \\ \hline
+FULL & Ninguno & El robot pasa a modo full \\ \hline
+DRIVE DIRECT & uint16, uint16 & \begin{tabular}[c]{@{}l@{}}El robot recibe comandos de velocidad\\ para cada rueda y las aplica\\ inmediatamente\end{tabular} \\ \hline
+SENSORS & uint\_8 & \begin{tabular}[c]{@{}l@{}}Se solicita la lectura del estado actual\\ de un sensor\end{tabular} \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Publicación y recepción de mensajes ROS en el microcontrolador}
+
+hola cmd\_vel
+
+tinyIMU -> sensorMsgs
+
+uint16\_t -> odometry
+
+%----------------------------------------------------------------------------------------
+%	SECTION 3
+%----------------------------------------------------------------------------------------
+
+\section{Pruebas de integración}
+
+Estas pruebas integran las tareas de alto nivel que se pretende puedan ser utilizadas por los usuarios que adopten la plataforma. Estas involucran la interacción entre todos los componentes del sistema en simultáneo, así como su interacción con el sistema ROS.
+
+\subsection{Teleoperación del robot mediante un nodo ROS}
+
+\subsection{Estimador de pose utilizando IMU}
+
+\subsection{Generación de mapa}
+
+\subsection{Localización en mapa pre-existente}
+
+\subsection{Navegación sobre mapa pre-existente}
+
+\label{sec:pruebasIN}
