@@ -4,8 +4,9 @@
 
 \chapter{Conclusiones} % Main chapter title
 
-\label{Chapter5} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+En este capítulo se describen los aportes generados con el trabajo realizado, detallando los logros obtenidos. Así también, se especifican las técnicas mediante las cuales se hizo posible la ejecución del proyecto. Por último, se deja constancia de las metas originales que no pudieron ser abordadas dentro del alcance final, identificando las propuestas de acción a futuro.
 
+\label{Chapter5} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
 %----------------------------------------------------------------------------------------
 
@@ -13,24 +14,33 @@
 %	SECTION 1
 %----------------------------------------------------------------------------------------
 
-\section{Conclusiones generales }
+\section{Conclusiones generales}
 
-La idea de esta sección es resaltar cuáles son los principales aportes del trabajo realizado y cómo se podría continuar. Debe ser especialmente breve y concisa. Es buena idea usar un listado para enumerar los logros obtenidos.
+En este trabajo se completó la primer iteración en el ciclo de diseño e implementación de una planta de pruebas destinada a utilizarse en el aprendizaje de técnicas de robótica móvil a nivel personal o universitario.
 
-Algunas preguntas que pueden servir para completar este capítulo:
+Se pudo desarrollar una planta de pruebas completa y funcional en base a componentes disponibles en el mercado local, integrándola con el framework de robótica ROS. Se pudo desarrollar un firmware capaz de funcionar como una interfaz entre una base móvil comercial y ROS, así como interfacear los sensores necesarios con dicho framework de modo a posibilitar su uso inmediato en aplicaciones de navegación autónoma. Este desarrollo sienta las bases y estructura para una segunda iteración, dejando abiertas una serie de propuestas con mejoras que pueden implementarse en base a las necesidades que se le vayan presentando al usuario.
+
+A lo largo del desarrollo de este trabajo final, se aplicaron extensivamente los conocimientos adquiridos durante la carrera. Mas allá de que el conjunto de asignaturas posibilitaron la apreciación de un panorama muy completo en lo que refiere a diseño y ejecución de un proyecto de sistemas embebidos, se destacan a continuación aquellas materias cuyo impacto en el desarrollo de este trabajo:
+
 
 \begin{itemize}
-\item ¿Cuál es el grado de cumplimiento de los requerimientos?
-\item ¿Cuán fielmente se puedo seguir la planificación original (cronograma incluido)?
-\item ¿Se manifestó algunos de los riesgos identificados en la planificación? ¿Fue efectivo el plan de mitigación? ¿Se debió aplicar alguna otra acción no contemplada previamente?
-\item Si se debieron hacer modificaciones a lo planificado ¿Cuáles fueron las causas y los efectos?
-\item ¿Qué técnicas resultaron útiles para el desarrollo del proyecto y cuáles no tanto?
+
+    \item Protocolos de Comunicación: se aplicaron los conocimientos adquiridos en la utilización de protocolos UART e I2C. Así también, se implementó la librería rosserial, la cual permite ser utilizada de manera intercambiable tanto con comunicación UART como Ethernet, utilizadas durante la etapa inicial y final del proyecto, respectivamente.
+
+    \item Sistemas Operativos de Tiempo Real (I y II): se utilizaron los conocimientos adquiridos aplicando FreeRTOS como sistema operativo para el sistema propuesto.
+
+    \item Arquitectura de microprocesadores: resultó necesario tener conocimientos sobre la Arquitectura ARM Cortex M para la programación de la plataforma STM32 NUCLEO y el uso efectivo de sus periféricos.
+
+    \item Programación de microprocesadores: se aplicaron las buenas prácticas de programación que fueron mostradas a lo largo de la materia. Se empleó un formato de código consistente a modo de obtener código más modular, legible y reutilizable.
+
+    \item Gestión de Proyectos en Ingeniería: la elaboración de un Plan de Proyecto para organizar el Trabajo Final, el cual facilitó en gran manera la ejecución del mismo y evitó demoras innecesarias.
+
 \end{itemize}
 
+Por lo tanto, se concluye que los objetivos planteados al comienzo del trabajo han sido alcanzados satisfactoriamente, habiéndose cumplido con los criterios de aceptación del sistema final y obtenido conocimientos valiosos para la formación profesional del autor.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 2
 %----------------------------------------------------------------------------------------
 \section{Próximos pasos}
 
-Acá se indica cómo se podría continuar el trabajo más adelante.
