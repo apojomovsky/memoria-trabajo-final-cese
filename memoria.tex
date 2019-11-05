@@ -68,6 +68,8 @@ headsepline, % Uncomment to get a line under the header
 \usepackage{color}
 \usepackage[table,xcdraw]{xcolor}
 
+\newcommand{\shellcmd}[1]{\\\indent\indent\texttt{\footnotesize\# #1}\\}
+
 %
 %----------------------------------------------------------------------------------------
 %	MARGIN SETTINGS
@@ -115,8 +117,8 @@ headsepline, % Uncomment to get a line under the header
 \newcaptionname{spanish}{\abbrevname}{Glosario}
 \newcaptionname{spanish}{\byname}{por}
 
-\renewcommand{\lstlistingname}{Algoritmo}% Listing -> Algorithm
-\renewcommand{\lstlistlistingname}{Índice de \lstlistingname s}% List of Listings -> List of Algorithms
+% \renewcommand{\lstlistingname}{Algoritmo}% Listing -> Algorithm
+% \renewcommand{\lstlistlistingname}{Índice de \lstlistingname s}% List of Listings -> List of Algorithms
 
 \renewcommand{\listtablename}{Índice de Tablas}
 \renewcommand{\tablename}{Tabla} 
@@ -182,7 +184,7 @@ headsepline, % Uncomment to get a line under the header
 
 	En el presente trabajo se describe el desarrollo de un robot móvil destinado a utilizarse por estudiantes universitarios en el aprendizaje de tópicos de robótica, tales como odometría, localización y navegación.
 
-	Esta propuesta se ajusta a dos importantes restricciones: disponibilidad de componentes en el mercado local y bajo precio, siendo esta última relativa a productos comerciales de similares características.
+	Esta propuesta se ajusta a dos importantes restricciones: disponibilidad de componentes en el mercado local y precio competitivo respecto a productos comerciales de similares características.
 
 	Se incluye además, un repositorio público en Github desde el que se puede acceder al software de ejemplo y documentación necesaria para comenzar a utilizar la plataforma.
 
