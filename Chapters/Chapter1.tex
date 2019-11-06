@@ -26,7 +26,7 @@ Los robots móviles operando en grandes ambientes no estructurados deben enfrent
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=.5]{./Figures/trayectorias_posibles.png}
-	\caption{Algunas de las posibles trayectorias que podría adoptar el robot móvil.}
+	\caption{Algunas de las posibles trayectorias que podría adoptar un robot móvil.}
 	\label{fig:trayectoriasPosibles}
 \end{figure}
 
@@ -40,20 +40,45 @@ El estudio de la robótica en las universidades de la región se encuentra mayor
 
 Teniendo en cuenta que hasta hace solo un puñado de años atrás, los dispositivos requeridos para llevar a cabo estas tareas hacían que el estudio, desarrollo y aplicación de tareas de robótica móvil sean extremadamente costosos, aún a pequeña escala, la realidad actual es diferente. Hoy, y gracias a la masificación de ciertas tecnologías, es posible armarse de toda una gama de sensores, actuadores y sistemas capaces de procesar el flujo de datos requerido para estas aplicaciones con muy poco dinero, en muchos casos reutilizando componentes originalmente destinados a otros propósitos.
 
-Aún con la importante reducción de precios vivida en los últimos años, las plantas de prueba ofrecidas por empresas internacionales para fines didácticos continúan siendo prohibitivas para muchas instituciones educativas, así como también para la mayoría de los estudiantes. Es por esto que el presente trabajo se desarrolla en torno a la propuesta de planta de pruebas para el estudio y aplicación de técnicas de robótica móvil. Esta propuesta se centra en dos restricciones importantes, bajo costo y disponibilidad en el mercado local.
+Aún con la importante reducción de precios vivida en los últimos años, las plantas de prueba ofrecidas por empresas internacionales para fines didácticos continúan siendo prohibitivas para muchas instituciones educativas, así como también para la mayoría de los estudiantes. Es por esto que el presente trabajo se desarrolla en torno a la propuesta de una planta de pruebas para el estudio y aplicación de técnicas de robótica móvil. Esta propuesta se centra en dos restricciones importantes, bajo costo y disponibilidad en el mercado local.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 3
 %----------------------------------------------------------------------------------------
 
-\section{Descripción de tecnologías}
+\section{Objetivos}
 
-Blabla.
+Los objetivos de este trabajo fueron:
+\begin{itemize}
+	\item Seleccionar los componentes necesarios para la implementación de un robot móvil de bajo costo con componentes disponibles en el mercado local argentino.
+	\item Generar el código de acceso público y la documentación necesaria para que el robot pueda ser aprovechado, modificado y mejorado por alumnos universitarios de la materia robótica.
+\end{itemize}
 
-%----------------------------------------------------------------------------------------
-%	SECTION 4
-%----------------------------------------------------------------------------------------
+\section{Alcance}
 
-\section{Objetivos y alcance}
+Este trabajo se basó en los siguientes lineamientos:
 
-Blabla.
+\begin{itemize}
+	\item Los componentes que conforman el robot deben estar disponibles en el mercado local o en su defecto ser fácilmente adquiridos en tiendas online con envío internacional. 
+	\item Los componentes de software utilizados, así como los recursos generados a lo largo de este trabajo son gratuitos y de código abierto.
+	\item La plataforma es escalable tanto en términos de componentes físicos como de \textit{software}.
+\end{itemize}
+
+En este trabajo se incluyó:
+
+\begin{itemize}
+	\item Selección de la base móvil, y placa de desarrollo.
+	\item Selección de la cámara de profundidad, IMU y computadora de a bordo.
+	\item Diseño y armado de una superficie de tres niveles para el montaje de los distintos componentes sobre la base móvil.
+	\item Implementación de la librería rosserial y desarrollo del \textit{firmware} de interfaz entre la base móvil iRobot Roomba 500 y ROS, sobre la plataforma STM32F746-NUCLEO.
+	\item Implementación de un nodo ROS para el cálculo de odometría a partir de las lecturas de los encoders.
+	\item Generación de la estructura de archivos de ROS necesarios para lanzar los diferentes módulos de software en simultáneo.
+\end{itemize}
+
+En este trabajo no se incluyó:
+
+\begin{itemize}
+	\item El desarrollo de una base móvil desde cero.
+	\item El desarrollo de un software de navegación para el robot.
+	\item El desarrollo de una placa de circuito impresa dedicada.
+\end{itemize}

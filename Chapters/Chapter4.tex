@@ -124,7 +124,7 @@ Mediante el nodo imu\_complementary\_filter, integrado como parte del paquete im
 \footnotetext{\url{https://github.com/ccny-ros-pkg/imu_tools}}
 \footnotetext{\url{https://docs.ros.org/melodic/api/sensor_msgs/html/msg/Imu.html}}
 
-\subsection{Tele-operación del robot mediante un nodo ROS}
+\subsection{Tele-operación del robot}
 
 Esta prueba consistió en operar el robot mediante un nodo de ROS, el cual se encarga de publicar mensajes del tipo geometry\_msgs/Twist\protect\footnotemark. Este mensaje es recibido por el robot y aplica los comandos de velocidad a cada una de las ruedas. Para esto se utilizó el nodo teleop\_twist\_keyboard:
 
@@ -170,11 +170,24 @@ Una vez listo, se hace un eco del tópico de odometría, el cual arrojará los v
 
 \subsection{Generación de mapa}
 
-Para generar un mapa se utilizó la herramienta gmapping\protect\footnotemark, ofrecida como un paquete de ROS. Esta herramienta es capaz de generar un \textit{occupancy grid} en 2D, muy similar a un plano civil, a partir de las lecturas de \textit{laserscan} generadas por el sensor Kinect, mas la información de odometría colectada por el robot.
-
+Para generar un mapa se utilizó la herramienta gmapping\protect\footnotemark, ofrecida como un paquete de ROS. Esta herramienta es capaz de generar un \textit{occupancy grid} en 2D, muy similar a un plano civil, a partir de las lecturas de \textit{laserscan} generadas por el sensor Kinect, mas la información de odometría colectada por el robot. En la figura \ref{fig:creacion_mapa_rviz} se puede apreciar como el mapa es generado a partir de las lecturas del \textit{laserscan}. Por el contrario en la figura \ref{fig:mapa_rviz}, se aprecia el mapa final generado satisfactoriamente.
 \footnotetext{\url{https://wiki.ros.org/gmapping}}
 
-\subsection{Localización en mapa pre-existente}
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=.25]{./Figures/creacion_mapa_rviz.png}
+    \caption{Visualización en RViz de un mapa en proceso de generación}
+    \label{fig:creacion_mapa_rviz}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=.25]{./Figures/map_rviz.png}
+    \caption{Visualización en RViz de un mapa terminado}
+    \label{fig:mapa_rviz}
+\end{figure}
+
+\subsection{Localización sobre mapa pre-existente}
 
 Esta prueba consistió en colocar el robot en un punto arbitrario del mapa sin proveerle información previa sobre su localización. Aquí el robot debe ser capaz de utilizar sus sensores para reconocer su entorno cercano y reconocer características conocidas entre este y el mapa, siendo capaz de estimar su ubicación. Para este procedimiento se utilizó el mapa generado en el apartado anterior en conjunto con la aplicación RViz para visualizar el estado del procedimiento.
 
