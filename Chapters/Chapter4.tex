@@ -64,13 +64,13 @@ Para el envío de órdenes desde el microcontrolador hacia el robot, se analizó
 \begin{table}[h]
     \centering
     \caption{Sub-conjunto de comandos utilizados para testear el correcto funcionamiento del la base móvil}
-    \label{comandos hacia robot}
+    \label{tab:comandosRobot}
     \begin{tabular}{lll}
         \toprule
         \multicolumn{1}{c}{\textbf{ Comando }} & \multicolumn{1}{c}{\textbf{Descripción}} & \multicolumn{1}{c}{\textbf{Verificación}} \\
         \midrule
-        \textbf{START }                        & \begin{tabular}[c]{@{}l@{}}Se inicializa el protocolo\\OpenInterface\end{tabular}                & \begin{tabular}[c]{@{}l@{}}El robot deja de\\ignorar comandos\end{tabular}                 \\
-        \textbf{STOP }                         & \begin{tabular}[c]{@{}l@{}}Se finaliza el protocolo\\OpenInterface\end{tabular}                & \begin{tabular}[c]{@{}l@{}}El robot empieza a\\ignorar comandos\end{tabular}                 \\
+        \textbf{START }                        & \begin{tabular}[c]{@{}l@{}}Se inicializa el protocolo\\Open Interface\end{tabular}                & \begin{tabular}[c]{@{}l@{}}El robot deja de\\ignorar comandos\end{tabular}                 \\
+        \textbf{STOP }                         & \begin{tabular}[c]{@{}l@{}}Se finaliza el protocolo\\Open Interface\end{tabular}                & \begin{tabular}[c]{@{}l@{}}El robot empieza a\\ignorar comandos\end{tabular}                 \\
         \textbf{SAFE }                         & \begin{tabular}[c]{@{}l@{}}El robot pasa a modo\\seguro\end{tabular}                & \begin{tabular}[c]{@{}l@{}}El robot deja de moverse\\si es levantado del suelo\end{tabular}                 \\
         \textbf{FULL }                         & \begin{tabular}[c]{@{}l@{}}El robot pasa a modo\\full\end{tabular}                & \begin{tabular}[c]{@{}l@{}}El robot no deja de\\moverse a menos que\\reciba explícitamente un\\comando STOP\end{tabular}                 \\
         \textbf{DRIVE DIRECT }                 & \begin{tabular}[c]{@{}l@{}}El robot recibe comandos\\de velocidadpara cada\\rueda\end{tabular}               & \begin{tabular}[c]{@{}l@{}}El robot empieza a moverse\\inmediatamente después\\de recibir el comando\end{tabular}                \\

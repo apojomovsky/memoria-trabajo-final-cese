@@ -1,220 +1,239 @@
 % !TEX root = ../memoria.tex
 
-\chapter{Introducción Específica} % Main chapter title
+% Chapter 2
+
+\chapter{Introducción específica}
+
+En este capítulo se desglosan las diferentes herramientas, tanto de software como hardware, elegidas para el desarrollo del robot móvil propuesto en este trabajo.
 
 \label{Chapter2}
 
-%----------------------------------------------------------------------------------------
-%	SECTION 1
-%----------------------------------------------------------------------------------------
-Todos los capítulos deben comenzar con un breve párrafo introductorio que indique cuál es el contenido que se encontrará al leerlo.  La redacción sobre el contenido de la memoria debe hacerse en presente y todo lo referido al proyecto en pasado, siempre de modo impersonal.
+\section{Robot Operating System}
 
-\section{Estilo y convenciones}
-\label{sec:ejemplo}
+ROS, el Sistema Operativo Robótico o \textit{Robot Operating System}, es un \textit{framework} de código abierto. ROS esta pensado para funcionar como una plataforma de software común para personas que diseñan y usan robots. La misma permite compartir código y y paquetes de una manera fácil y práctica lo cual permite minimizar el tiempo de desarrollo necesario para lograr que un robot comience a moverse.
 
-\subsection{Uso de mayúscula inicial para los título de secciones}
+\subsection{Descripción de la plataforma}
 
-Si en el texto se hace alusión a diferentes partes del trabajo referirse a ellas como capítulo, sección o subsección según corresponda. Por ejemplo: ``En el capítulo \ref{Chapter1} se explica tal cosa'', o ``En la sección \ref{sec:ejemplo} se presenta lo que sea'', o ``En la subsección \ref{subsec:ejemplo} se discute otra cosa''.
-
-Cuando se quiere poner una lista tabulada, se hace así:
-
-\begin{itemize}
-	\item Este es el primer elemento de la lista.
-	\item Este es el segundo elemento de la lista.
-\end{itemize}
-
-Notar el uso de las mayúsculas y el punto al final de cada elemento.
-
-Si se desea poner una lista numerada el formato es este:
+El ecosistema ROS esta compuesto de los siguientes elementos principales:
 
 \begin{enumerate}
-	\item Este es el primer elemento de la lista.
-	\item Este es el segundo elemento de la lista.
+    \item Un set de drivers que permiten leer informacion desde sensores y comandar actuadores de manera abstraída del hardware y con un formato bien definido. Una gran variedad de hardware popular se encuentra actualmente soportada, incluyendo un enorme número de robots disponibles comercialmente.
+    \item Una gran y creciente colección de algoritmos de robótica básicos o fundamentales para casi cualquier tipo de robot. Esto permite generar mapas del ``mundo'', navegarlo, representar e interpretar información generada por sensores, planear trayectorias, manipular objetos entre muhos otros. Gracias a la adopción de la plataforma en la comunidad acadpemica, una gran cantidad de algoritmos experimentales de última generación se encuentran disponibles para ROS.
+    \item Una infrastructura computacional basada en grafos que permite ``mover'' información, interconectar los componentes de un sistema robótico complejo, además de incorporar piezas de software personalizadas, tales implementaciones de algoritmos propiios. ROS es inherentemente distribuido, lo que significa que es posible separar las cargas de trabajo de los distintos componentes que conforman el robot entre diferentes computadoras de manera totalmente transparente.
+    \item Una gran cantidad de herramientas que facilitan la visualización del estado del robot y sus algoritmos, la depuración y el almacenamiento de datos recolectados o generados. La depuración del software de un robot es una tarea notablemente difícil, por lo que este set de herramientas constituye uno de los diferenciadores que hacen de ROS una plataforma tan potente como la es.
+    \item Por último, el gran ecosistema de ROS incluye un set extensivo de recursos, tales como una wiki donde se documentan varios de los aspectos del framework, además de una plataforma de preguntas y respuestas muy activa entre los miembros de la comunidad.
 \end{enumerate}
 
-Notar el uso de las mayúsculas y el punto al final de cada elemento.
+\subsection{Decisiones de diseño}
 
-\subsection{Este es el título de una subsección}
-\label{subsec:ejemplo}
+El diseño original de ROS se guió por las siguientes restricciones:
 
-Se recomienda no utilizar \textbf{texto en negritas} en ningún párrafo, ni tampoco texto \underline{subrayado}. En cambio sí se debe utilizar \textit{texto en cursiva} para palabras en un idioma extranjero, al menos la primera vez que aparecen en el texto. En el caso de palabras que estamos inventando se deben utilizar ``comillas''. Por ejemplo, un \textit{digital filter} es una especie de ``selector'' que permite separar ciertos componentes armónicos en partícular..
+\begin{itemize}
+    \item El \textit{stack} de la aplicación puede descomponerse en varios sub-sistemas independientes, como navegación, visión artificial, locomoción, etc.
+    \item Los sub-sistemas pueden re-utilizarse en distintas tareas, tales como patrullas de seguridad, limpieza, sistemas de \textit{delivery}, etc.
+    \item Mediante la correcta implementación de las capas abstracción de hardware y geometría del dispositivo, la mayor parte del software de aplicación puede reutilizarse en \textit{cualquier} robot.
+\end{itemize}
 
-La escritura debe ser impersonal. Por ejemplo, no utilizar ``el diseño del firmware lo hice de acuerdo con tal principio'', sino ``el firmware fue diseñado utilizando tal principio''. 
+En la siguiente sección se describen los principales componentes que hacen a un sistema ROS,
 
-El trabajo es algo que al momento de escribir la memoria se supone que ya está concluido, entonces todo lo que se refiera a hacer el trabajo se narra en tiempo pasado, porque es algo que ya ocurrió. Por ejemplo, "se diseñó el firmware empleando la técnica de test driven development".
+\subsection{El ROS Graph}
 
-En cambio la memoria es algo que está vivo cada vez que el lector la lee. Por eso transcurre siempre en tiempo presente, como por ejemplo "En el presente capítulo se da una visión global sobre las distintas pruebas realizadas y los resultados obtenidos. Se explica el modo en que fueron llevados a cabo los test unitarios y las pruebas del sistema"
-
-Se recomienda no utilizar una sección de glosario sino colocar la descripción de las abreviaturas como parte del mismo cuerpo del texto. Por ejemplo, RTOS (\textit{Real Time Operating System}, Sistema Operativo de Tiempo Real) o en caso de considerarlo apropiado mediante notas a pie de página.
-
-Si se desea indicar alguna página web utilizar el siguiente formato de referencias bibliográficas, dónde las referencias se detallan en la sección de bibliografía de la memoria, utilizado el formato establecido por IEEE en \citep{IEEE:citation}. Por ejemplo, ``el presente trabajo se basa en la plataforma EDU-CIAA-NXP \citep{CIAA}, la cual...''.
-
-\subsection{Figuras} 
-
-Al insertar figuras en la memoria se deben considerar determinadas pautas. Para empezar, usar siempre tipografía claramente legible. Luego, tener claro que es incorrecto escribir por ejemplo esto: ``El diseño elegido es un cuadrado, como se ve en la siguiente figura:''
-
-\begin{figure}[h]
-\centering
-\includegraphics[scale=.3]{./Figures/cuadradoAzul.png}
-\end{figure}
-
-La forma correcta de utilizar una figura es la siguiente: ``Se eligió utilizar un cuadrado azul para el logo, como puede observarse en la figura \ref{fig:cuadradoAzul}''.
+Estos requerimientos pueden ilustrarse mediante el sistema de representación fundamental de un sistema ROS: El ROS Graph. Un sistema ROS esta conformado por muchos programas distintos corriendo simultáneamente, los cuales se comunican entre sí mediante el paso de mensajes. Resulta conveniente el uso de un \textit{grafo} matemático para representar esta colección de programas y mensajes: los programas se representan mediante \textit{nodos} y los mismos se conectan entre sí mediante \textit{edges} o aristas. Típicamente, los nodos corresponden a procesos POSIX mientras que las aristas a conexiones TCP. Estas aristas representan el flujo de mensajes entre dos nodos, tal como puede apreciarse en la figura \ref{fig:rosNodeGraph}.
 
 \begin{figure}[ht]
-	\centering
-	\includegraphics[scale=.3]{./Figures/cuadradoAzul.png}
-	\caption{Ilustración del cuadrado azul que se eligió para el diseño del logo.}
-	\label{fig:cuadradoAzul}
+    \centering
+    \includegraphics[scale=.6]{./Figures/ros_node_graph.png}
+    \caption{Ejemplo de un ROS Node Graph. Los nodos en el grafo representan los programas individuales. Las aristas representan el flujo de información entre los diferentes nodos.}
+    \label{fig:rosNodeGraph}
 \end{figure}
 
-El texto de las figuras debe estar siempre en español, excepto que se decida reproducir una figura original tomada de alguna referencia. En ese caso la referencia de la cual se tomó la figura debe ser indicada en el epígrafe de la figura e incluida como una nota al pie, como se ilustra en la figura \ref{fig:palabraIngles}.
+Entre otras ventajas, esta arquitectura ofrece un nivel de tolerancia a fallos adicional: un crash en una de las piezas de software típicamente solo echará abajo a su proceso asociado, mientras que el resto del grafo seguirá funcionando de manera normal. Las circunstancias del fallo podrán luego ser recreadas de manera sencilla grabando los mensajes que entran y salen de ese nodo en particular en un log y luego reproduciéndolo como si se tratase de una pista de sonido.
 
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[scale=.25]{./Figures/word.jpeg}
-	\caption{Imagen tomada de la página oficial del procesador\protect\footnotemark.}
-	\label{fig:palabraIngles}
-\end{figure}
+Hasta este punto se ha asumido que los nodos son capaces de encontrarse unos con otros pero todavía no se ha expuesto como funciona este sistema. La respuesta esta en un programa llamado \texttt{roscore}.
 
-\footnotetext{\url{https://goo.gl/images/i7C70w}}
+\subsubsection{Roscore}
 
-
-La figura y el epígrafe deben conformar una unidad cuyo significado principal pueda ser comprendido por el lector sin necesidad de leer el cuerpo central de la memoria. Para eso es necesario que el epígrafe sea todo lo detallado que corresponda y si en la figura se utilizan abreviaturas entonces aclarar su significado en el epígrafe o en la misma figura.
+El roscore es un servicio que provee de la información necesaria a los nodos, de modo a que estos puedan transmitir mensajes unos a otros. Cada nodo se conecta individualmente al roscore al momento de iniciarse para registrar los detalles sobre los mensajes que este publica y los que desea recibir. Cuando un nuevo nodo aparece, el roscore lo abastece con la información que este necesita para conformar una comunicación directa o \textit{peer-to-peer} con otros nodos publicando y suscribiéndose al mismo tópico de mensaje. Cada sistema ROS necesita de un roscore corriendo ya que sin el, los nodos no serían capaces de encontrarse entre sí, aún así, la interacción real entre el roscore y el nodo se realiza solo al momento en que el nodo es lanzado, tal como se demuestra en la figura \ref{fig:roscoreAndNodes}.
 
 \begin{figure}[ht]
-	\centering
-	\includegraphics[scale=.37]{./Figures/questionMark.png}
-	\caption{Por qué de pronto aparece esta figura?.}
-	\label{fig:questionMark}
-\end{figure}
-
-Nunca colocar una figura en el documento antes de hacer la primera referencia a ella, como se ilustra con la figura \ref{fig:questionMark}, porque sino el lector no comprenderá por qué de pronto aparece la figura en el documento, lo que distraerá su atención.
-
-En la figura \ref{fig:izquierda} y \ref{fig:derecha} se presenta un ejemplo de cómo incluir más de una figura utilizando un entorno \textit{minipage}.
-
-\begin{figure}[htbp]
-  \centering
-  \begin{minipage}[b]{0.47\textwidth}
     \centering
-     \includegraphics[width=.47\textwidth]{./Figures/questionMark.png}
-	\caption{\protect\raggedright Una imagen a la izquierda.}
-	\label{fig:izquierda}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[b]{0.47\textwidth}
+    \includegraphics[scale=.6]{./Figures/diagrama_nodos.png}
+    \caption{El roscore se conecta solo de manera efímera con otros nodos en el sistema.}
+    \label{fig:roscoreAndNodes}
+\end{figure}
+
+\subsubsection{Tópicos}
+
+Como ya se vió en el apartado anterior, un sistema ROS consiste en un número de nodos independientes que se relacionan en un grafo. Un nodo por si solo no resulta especialmente útil, pero el conjunto se vuelve realmente potente una vez que los pares empiezan a comunicarse unos con otros e intercambiar información. El canal más típico para este intercambio de mensajes se lleva a cabo a través de tópicos, una de las interpretaciones de las aristas de un grafo. Un tópico es el nombre dado a un canal de comunicaciones capaz de pasar mensajes de un tipo definido. Por ejemplo, la información de un escáner láser 2D podría transmitirse en un tópico llamado \texttt{/scan}, con un mensaje del tipo \texttt{LaserScan}, mientras que la información de una cámara modría enviarse a través de un tópico llamado \texttt{/image}, con un mensaje del tipo \texttt{Image}.
+
+
+\subsection{Espacios de trabajo o workspaces}
+
+Un \textit{workspace} ROS es simplemente un conjunto de directorios dentro de los cuales reside un conjunto de código ROS. En general, un workspace representa un conjunto de paquetes que implementan funcionalidades distintas y que son integrados juntos para una finalidad particular. Es posible tener múltiples workspaces ROS, pero solo es posible trabajar en uno de ellos a la vez, ya que para un paquete solo es posible ``ver'' código que reside dentro del mismo workspace que él. Por ejemplo, para el desarrollo de este trabajo final se hizo uso de un solo workspace. La estructura típica de un workspace ROS podría verse así:
+
+\begin{lstlisting}[basicstyle=\ttfamily, keywords={}]
+cese_ws/
+`-- src
+    `-- cese-bot
+        |-- CMakeLists.txt
+        |-- package.xml
+        |-- include
+        |   `-- robot_node.h
+        `-- src
+            `-- robot_node.cpp
+\end{lstlisting}
+
+
+
+
+\subsection{Paquetes}
+
+El software desarrollado utilizando ROS se encuentra organizado en paquetes o \textit{rospackages}, cada uno de los cuales contiene alguna combinación de código y documentación. Estos paquetes funcionan de manera similar a los paquetes que pueden instalarse en Ubuntu vía el comando \texttt{apt}. El ecosistema ROS contiene miles de paquetes disponibles en repositorios abiertos, los cuales pueden ser fácilmente instalados para ser aprovechado por cualquier usuario.
+
+Los paquetes se ubican dentro del directorio \texttt{src}. Cada uno de estos paquetes debe incluir un archivo \textit{CMakeLists.txt} y un \textit{packages.xml} que describe el contenido de los mismos así como indicar a catkin cómo interactuar con los mismos.
+
+\subsection{Sistema de compilación catkin}
+
+\texttt{catkin} es el sistema de compilación defacto de ROS. Este consiste en un set de herramientas que ROS utiliza para generar ejecutables, librerías, scripts e interfaces que pueden ser utilizadas por otras plataformas. Catkin resulta indispensable para trabajar en lenguaje C++ con ROS.
+Catkin esta formado por un conjunto de macros de \texttt{CMake} y scripts de Python que proveen funcionalidad añadida al CMake tradicional de modo a facilitar su uso por parte del roboticista.
+
+\subsection{RViz}
+
+RViz son las siglas de ROS Visualization. Es un entorno de visualización en 3D de propósito general para robots, sensores y algoritmos. Como la mayoría de las herramientas de ROS, puede ser usado para cualquier robot y rápidamente adaptado a una aplicación en particular. RViz es capaz de mostrar una variedad de tipos de dato transmitidos a través de un sistema ROS con énfasis especial, pero no limitado a, tipos de datos representables en tres dimensiones.
+
+Así como otros sistemas complejos con interfaz gráfica, RViz posee un número de paneles y plugins que pueden ser configurados según necesidad para una tarea en particular, como el mostrado en la figura \ref{fig:rvizScreenshot}. Configurar RViz correctamente puede tomar cierto tiempo, por lo que es posible guardar la configuración del mismo en un archivo para usarse en la posteridad. En este trabajo se incluyen dos de estos archivos de configuración, uno para la generación del mapa y otro para la navegación del robot.
+
+% TODO: agregar referencias a los archivos en github
+
+\begin{figure}[ht]
     \centering
-     \includegraphics[width=.47\textwidth]{./Figures/questionMark.png}
-	\caption{\protect\raggedright Una imagen a la derecha.}
-	\label{fig:derecha}
-  \end{minipage}
+    \includegraphics[scale=.3]{./Figures/rviz_screenshot.png}
+    \caption{El panel de RViz cargado con un panel adicional para visualización de cámara durante una simulación.}
+    \label{fig:rvizScreenshot}
 \end{figure}
 
-Otra posibilidad es utilizar el entorno \textit{subfigure} para incluir más de una figura, como se puede ver en la figura \ref{fig:three graphs}. Notar que se pueden referenciar también las figuras internas individualmente de esta manera: \ref{fig:1de3}, \ref{fig:2de3} y \ref{fig:3de3}.
- 
-\begin{figure}[!htpb]
-     \centering
-     \begin{subfigure}[b]{0.3\textwidth}
-         \centering
-         \includegraphics[width=.65\textwidth]{./Figures/questionMark}
-         \caption{Un caption.}
-         \label{fig:1de3}
-     \end{subfigure}
-     \hfill
-     \begin{subfigure}[b]{0.3\textwidth}
-         \centering
-         \includegraphics[width=.65\textwidth]{./Figures/questionMark}
-         \caption{Otro.}
-         \label{fig:2de3}
-     \end{subfigure}
-     \hfill
-     \begin{subfigure}[b]{0.3\textwidth}
-         \centering
-         \includegraphics[width=.65\textwidth]{./Figures/questionMark}
-         \caption{Y otro más.}
-         \label{fig:3de3}
-     \end{subfigure}
-        \caption{Tres gráficos simples}
-        \label{fig:three graphs}
+%----------------------------------------------------------------------------------------
+%	SECTION 2
+%----------------------------------------------------------------------------------------
+
+\section{iRobot Roomba 500/600}
+
+La serie Roomba es una gama de robots domésticos de limpieza, producidos por la empresa estadounidense iRobot. Estos robots se caracterizan por disponer de un puerto serie como el que se aprecia en la figura \ref{fig:roombaSerialPort}, destinado originalmente a procesos de depuración, mediante el cual es posible comunicarse bi-direccionalmente con el robot permitiendo, entre otras cosas, la lectura de sus sensores y el comando de sus actuadores. Esta comunicación se realiza mediante un protocolo propio de la empresa denominado Open Interface\protect\footnotemark que ha sido liberado al público para utilizarse en proyectos de \textit{STEM}, por sus siglas en inglés: ciencia, tecnología, ingeniería y matemáticas.
+
+\footnotetext{\url{https://www.irobot.lv/uploaded_files/File/iRobot_Roomba_500_Open_Interface_Spec.pdf}}
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=.5]{./Figures/roomba_serial_port.jpg}
+    \caption{Puerto serie de depuración en robot Roomba 550.}
+    \label{fig:roombaSerialPort}
 \end{figure}
 
-El código para generar las imágenes se encuentra disponible para su reutilización en el archivo \file{Chapter2.tex}.
+Existe una variedad importante de robots Roomba, principalmente gracias a que la plataforma posee ya 17 años en el mercado. Por este motivo, resulta importante describir los modelos compatibles con este trabajo: todos los modelos de la serie 500 y 600. Estos, además de incluir el puerto de la Open Interface, disponen de sensores de mayor definición y precisión que la serie 400. Las series posteriores como la 700 en adelante, ya no disponen del puerto Open Interface por lo que debieron quedar descartadas.
 
-\subsection{Tablas}
 
-Para las tablas utilizar el mismo formato que para las figuras, sólo que el epígrafe se debe colocar arriba de la tabla, como se ilustra en la tabla \ref{tab:peces}. Observar que sólo algunas filas van con líneas visibles y notar el uso de las negritas para los encabezados.  La referencia se logra utilizando el comando \verb|\ref{<label>}| donde label debe estar definida dentro del entorno de la tabla.
+%-----------------------------------
+%	SUBSECTION 2.1
+%-----------------------------------
 
-\begin{verbatim}
-\begin{table}[h]
-	\centering
-	\caption[caption corto]{caption largo más descriptivo}
-	\begin{tabular}{l c c}    
-		\toprule
-		\textbf{Especie}     & \textbf{Tamaño} & \textbf{Valor}\\
-		\midrule
-		Amphiprion Ocellaris & 10 cm           & \$ 6.000 \\		
-		Hepatus Blue Tang    & 15 cm           & \$ 7.000 \\
-		Zebrasoma Xanthurus  & 12 cm           & \$ 6.800 \\
-		\bottomrule
-		\hline
-	\end{tabular}
-	\label{tab:peces}
-\end{table}
-\end{verbatim}
+\subsection{Protocolo Open Interface}
+
+El protocolo Roomba Open Interface (OI), es una interfaz para controlar y manipular el comportamiento del robot Roomba. Esta interface permite manipular el comportamiento del robot, así como leer el estado de sus sensores a través de comandos serie que uno envía al robot conectando el puerto a una PC o microcontrolador mediante un conector Mini-DIN.
+
+
+\subsection{Conexión física}
+
+Para utilizar el OI; un procesador capaz de manipular un puerto serie, tal como una PC o microcontrolador, debe conectarse al conector externo Mini-DIN del que dispone la Roomba. Este conector ofrece una comunicación serie bi-direccional con niveles de tensión TTL (0 - 5 VCC). El mismo provee además de un pin de tensión no-regulada, conectada directamente a la batería de la Roomba. Para acceder a este puerto es necesario remover primeramente la careta plástica de la parte superior del robot.
+
+\subsubsection{Distribución de pines del conector Mini-DIN}
+
+En la figura \ref{fig:roscoreAndNodes} se muestra la distribucion de pines del conector hembra de la Roomba y en la tabla \ref{fig:cuadradoAzul} se describen cada uno de los mismos.
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=.4]{./Figures/pinout.png}
+    \caption{Distribución de pines en el conector hembra Mini-DIN.}
+    \label{fig:roombaPinout}
+\end{figure}
 
 
 \begin{table}[h]
-	\centering
-	\caption[caption corto]{caption largo más descriptivo}
-	\begin{tabular}{l c c}    
-		\toprule
-		\textbf{Especie} 	 & \textbf{Tamaño} 		& \textbf{Valor}  \\
-		\midrule
-		Amphiprion Ocellaris & 10 cm 				& \$ 6.000 \\		
-		Hepatus Blue Tang	 & 15 cm				& \$ 7.000 \\
-		Zebrasoma Xanthurus	 & 12 cm				& \$ 6.800 \\
-		\bottomrule
-		\hline
-	\end{tabular}
-	\label{tab:peces}
+    \centering
+    \caption{Referencia de pines en conector Mini-DIN hembra}
+    \label{tab:Pines}
+    \begin{tabular}{rll}
+        \toprule
+        \multicolumn{1}{l}{Pin} & Nombre & Descripción                        \\
+        \midrule
+        1                       & Vpwr   & Directo de batería + (no regulado) \\
+        2                       & Vpwr   & Directo de batería + (no regulado) \\
+        3                       & RXD    & 0 - 5 VCC Entrada serie            \\
+        4                       & TXD    & 0 - 5 VCC Salida serie             \\
+        5                       & BRC    & Cambio de baud-rate                \\
+        6                       & GND    & Tierra del robot                   \\
+        7                       & GND    & Tierra del robot                   \\
+        \bottomrule
+    \end{tabular}
 \end{table}
+%----------------------------------------------------------------------------------------
+%	SECTION 3
+%----------------------------------------------------------------------------------------
+\section{Placa de desarollo NUCLEO-F746ZG}
 
-En cada capítulo se debe reiniciar el número de conteo de las figuras y las tablas, por ejemplo, Fig. 2.1 o Tabla 2.1, pero no se debe reiniciar el conteo en cada sección. Por suerte la plantilla se encarga de esto por nosotros.
+La placa NUCLEO-F746ZG es un producto ofrecido por el fabricante ST como una plataforma de prototipado rápido basado en el microcontrolador STM32F746ZG. La misma se caracteriza por contar con un controlador Ethernet integrado, un programador-debugger que además puede funcionar como interfaz RS-232/USB, especialmente útil para tareas de desarrollo y depuración.
 
-\subsection{Ecuaciones}
-\label{sec:Ecuaciones}
+Este microcontrolador dispone de un núcleo ARM Cortex-M7 que corre a frecuencias de hasta 216 MHz. Posee además, 1 Mbyte de memoria tipo flash, y 320 KB de memoria RAM. Destaca por su gran cantidad de periféricos, los cuales son fácilmente configurables a través de la plataforma STM32CubeMX, una interfaz gráfica de configuración para microcontroladores ST que permite, además de inicializar periféricos, integrar middlewares de terceros tales como FreeRTOS, LwIP, etc., con una simplicidad sin precedentes. En la figura \ref{fig:stm32CubeMX} se puede apreciar una de las pantallas de configuración de la aplicación.
 
-Al insertar ecuaciones en la memoria dentro de un entorno \textit{equation}, éstas se numeran en forma automática  y se pueden referir al igual que como se hace con las figuras y tablas, por ejemplo ver la ecuación \ref{eq:metric}.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=.3]{./Figures/stm32_cubemx.png}
+    \caption{Configuración de un microcontrolador a través de la aplicación STM32CubeMX.}
+    \label{fig:stm32CubeMX}
+\end{figure}
 
-\begin{equation}
-	\label{eq:metric}
-	ds^2 = c^2 dt^2 \left( \frac{d\sigma^2}{1-k\sigma^2} + \sigma^2\left[ d\theta^2 + \sin^2\theta d\phi^2 \right] \right)
-\end{equation}
-                                                        
-Es importante tener presente que si bien las ecuaciones pueden ser referidas por su número, también es correcto utilizar los dos puntos, como por ejemplo ``la expresión matemática que describe este comportamiento es la siguiente:''
+Resulta importante destacar que esta aplicación permite la exportación de proyectos pre-generados hacia una amplia variedad de IDEs comerciales y gratuitos, además de una opción basada en Makefiles, especialmente útil para su uso en flujos de trabajo más ``minimalistas'', como los basados en editores de texto avanzados y línea de comandos.
 
-\begin{equation}
-	\label{eq:schrodinger}
-	\frac{\hbar^2}{2m}\nabla^2\Psi + V(\mathbf{r})\Psi = -i\hbar \frac{\partial\Psi}{\partial t}
-\end{equation}
 
-Para generar la ecuación \ref{eq:metric} se utilizó el siguiente código:
 
-\begin{verbatim}
-\begin{equation}
-	\label{eq:metric}
-	ds^2 = c^2 dt^2 \left( \frac{d\sigma^2}{1-k\sigma^2} + 
-	\sigma^2\left[ d\theta^2 + 
-	\sin^2\theta d\phi^2 \right] \right)
-\end{equation}
-\end{verbatim}
+% M7, Ethernet, RAM
 
-Y para la ecuación \ref{eq:schrodinger}:
 
-\begin{verbatim}
-\begin{equation}
-	\label{eq:schrodinger}
-	\frac{\hbar^2}{2m}\nabla^2\Psi + V(\mathbf{r})\Psi = 
-	-i\hbar \frac{\partial\Psi}{\partial t}
-\end{equation}
+%----------------------------------------------------------------------------------------
+%	SECTION 5
+%----------------------------------------------------------------------------------------
+\section{Computadora OrangePI PC}
 
-\end{verbatim}
+La OrangePI PC es una \textit{Single Board Computer} de hardware abierto, es decir que tanto sus esquemáticos como el firmware de la misma se encuentran disponibles de manera pública. Este dispositivo es, en factor de forma y características, similar a la ampliamente conocida Raspberry PI, pero con un precio de venta aún mas moderado, lo que la vuelve una alternativa interesante para este trabajo, en que se busca reducir costos.
+
+Esta placa disponde de un microprocesador Allwinner de 32bit y 4 núcleos, y cuenta con 1 GB de memoria RAM DDR3. Es compatible con una amplia gama de sistemas operativos y distribuciones, y para este trabajo en particular, se decidió utilizarla con Ubuntu 14.04. Esta decisión viene ligada a que ROS Indigo, la versión de ROS compatible con este sistema, es la más ampliamente difundida y la que dispone de una mayor cantidad de paquetes.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=.2]{./Figures/orangepi.png}
+    \caption{Vista superior de la SBC OrangePI PC, alternativa económica al Raspberry PI.}
+    \label{fig:orangePI}
+\end{figure}
+
+En la figura \ref{fig:orangePI} se muestra una vista superior de la placa OrangePI PC donde se pueden apreciar sus conectores y layout, muy similares a los de la Raspberry PI 2. Para este trabajo, se hizo uso del conector ethernet así como de 2 de sus 3 puertos USB 2.0.
+
+
+%----------------------------------------------------------------------------------------
+%	SECTION 6
+%----------------------------------------------------------------------------------------
+\section{Sensor Kinect para Xbox 360}
+
+El Kinect para Xbox 360 o simplemente Kinect, es un dispositivo de captura de movimiento diseñado por la empresa Microsoft, utilizando la tecnología desarrollada por la empresa israelita PrimeSense. El dispositivo cuenta con una cámara RGB, un sensor de profundidad, un micrófono de múltiples matrices y un procesador personalizado, que proporcionan, al utilizarse en una consola Xbox 360, captura de movimiento de todo el cuerpo en 3D, reconocimiento facial y capacidades de reconocimiento de voz.
+
+El sensor de profundidad es un proyector de infrarrojos combinado con un sensor CMOS monocromo que permite a Kinect ``ver'' la habitación en 3D incluso en condiciones de ausencia total de luz.
+
+Gracias al desarrollo de un conjunto de controladores open source llamado freenect\protect\footnotemark, el uso del sensor Kinect se ha extendido a sistemas operativos del tipo GNU/Linux y con este, su utilización en ROS.
+
+Salvando distancias entre una cámara de profundidad y un sensor LIDAR, en determinados escenarios es posible remplazar un costoso sensor LIDAR con un Kinect, procesando el mapa de puntos en 3D y generando un LaserScan en 2D a partir de uno de los múltiples planos que lo componen. Esta información ya procesada, puede utilizarse para alimentar paquetes de ROS diseñados para consumir datos generados por un LIDAR.
+\footnotetext{\url{https://github.com/OpenKinect/libfreenec}}
+
+
+
+% Descripción, disponibilidad y restricciones de uso.
+% Imagen de un pointcloud raw
