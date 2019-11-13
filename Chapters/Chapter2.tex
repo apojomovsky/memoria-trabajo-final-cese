@@ -226,14 +226,27 @@ En la figura \ref{fig:orangePI} se muestra una vista superior de la placa Orange
 
 El Kinect para Xbox 360 o simplemente Kinect, es un dispositivo de captura de movimiento diseñado por la empresa Microsoft, utilizando la tecnología desarrollada por la empresa israelita PrimeSense. El dispositivo cuenta con una cámara RGB, un sensor de profundidad, un micrófono de múltiples matrices y un procesador personalizado, que proporcionan, al utilizarse en una consola Xbox 360, captura de movimiento de todo el cuerpo en 3D, reconocimiento facial y capacidades de reconocimiento de voz.
 
-El sensor de profundidad es un proyector de infrarrojos combinado con un sensor CMOS monocromo que permite a Kinect ``ver'' la habitación en 3D incluso en condiciones de ausencia total de luz.
+El sensor de profundidad es un proyector de infrarrojos combinado con un sensor CMOS monocromo que permite al Kinect generar un \textit{Depth Map}
+o mapa de profundidad, es decir, una imagen que contiene información relativa a la distancia de las superficies presentes en una escena con respecto a un punto de vista determinado. En la figura \ref{fig:depthImage} se puede apreciar el Depth Map generado por el sensor Kinect en el que se puede distinguir la silueta de una persona en una habitación. Las tonalidades de grises son una representación de la distancia por lo que para puntos cercanos veremos un pixel mas claro, mientras que para puntos mas lejanos veremos píxeles mas oscuros.
 
-Gracias al desarrollo de un conjunto de controladores open source llamado freenect\protect\footnotemark, el uso del sensor Kinect se ha extendido a sistemas operativos del tipo GNU/Linux y con este, su utilización en ROS.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=.3]{./Figures/depth_image.png}
+    \caption{Ejemplo de un Depth Map generado por el sensor Kinect.}
+    \label{fig:depthImage}
+\end{figure}
 
-Salvando distancias entre una cámara de profundidad y un sensor LIDAR, en determinados escenarios es posible remplazar un costoso sensor LIDAR con un Kinect, procesando el mapa de puntos en 3D y generando un LaserScan en 2D a partir de uno de los múltiples planos que lo componen. Esta información ya procesada, puede utilizarse para alimentar paquetes de ROS diseñados para consumir datos generados por un LIDAR.
-\footnotetext{\url{https://github.com/OpenKinect/libfreenec}}
+Gracias al desarrollo de un conjunto de controladores open source llamado freenect\protect\footnotemark, el uso del sensor Kinect se ha extendido a sistemas operativos del tipo GNU/Linux y con esto, su introdución al universo ROS. Al día de hoy, exisen una serie de paquetes listos para usar que permiten consumir la información de profundidad, cámara RGB y micrófonos directamente desde tópicos ROS.
 
 
+\subsection{Limitaciones}
+
+Como ya se mencionó anteriormente, el sensor de profundidad del Kinect funciona gracias a un proyector de puntos de luz en el espectro infrarrojo y en una cámara especializada diseñada para captar los haces rebotantes.
+
+Un detalle importante a tener en cuenta a la hora de decidir si el Kinect es el sensor adecuado para una aplicación en particular es la incapacidad de éste de funcionar en entornos con luz solar directa. Esto viene dado a que la luz solar abarca el espectro electromagnético comprendido entre longitudes de onda 250 hasta 2500 nanometros donde es incluye pequeño el espectro de luz infrarroja utilizado por el sensor Kinect. Esto genera lecturas erroneas que hacen al sensor totalmente inutilizable bajo dichas circunstancias.
+
+% Salvando distancias entre una cámara de profundidad y un sensor LIDAR, en determinados escenarios es posible remplazar un costoso sensor LIDAR con un Kinect, procesando el mapa de puntos en 3D y generando un LaserScan en 2D a partir de uno de los múltiples planos que lo componen. Esta información ya procesada, puede utilizarse para alimentar paquetes de ROS diseñados para consumir datos generados por un LIDAR.
+% \footnotetext{\url{https://github.com/OpenKinect/libfreenec}}
 
 % Descripción, disponibilidad y restricciones de uso.
 % Imagen de un pointcloud raw
