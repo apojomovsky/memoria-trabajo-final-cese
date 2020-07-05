@@ -38,25 +38,66 @@ TurtleBot constituye al día de hoy una familia de robots móviles para uso pers
 Aunque su primera iteración vió la luz en 2010 con un set de características bastante modestas, el lanzamiento de nuevas versiones le aseguró su lugar como dispositivo de referencia para la plataforma ROS. \newline
 Muchas de las características de diseño de éste robot se tomaron como referencia para el presente trabajo.
 
-\subsection{Clearpath Jackal UGV}
+\subsection{Clearpath Jackal}
 
-El Jackal es un robot móvil 4x4 apto para uso en exteriores. Su robustez lo hacen la elección preferida de muchas universidades a la hora de implementar soluciones "de campo", principalmente debido a su resistencia total al polvo y al agua de lluvia. Posee una capacidad de carga de hasta 20 kg, lo que lo hace apto para cargar una importante cantidad de sensores, actuadores y manipuladores.
+El Jackal es un robot móvil 4x4 apto para uso en exteriores. Su robustez lo hacen la elección preferida de muchas universidades a la hora de implementar soluciones "de campo", principalmente debido a su resistencia total al polvo y al agua de lluvia.\newline
+Posee una capacidad de carga de hasta 20 kg, lo que lo hace apto para cargar una importante cantidad de sensores, actuadores y manipuladores.
 
 \subsection{Fetch Freight Base}
 
-Fetch Robotics ofrece con el Freight Base una base robótica para uso en interiores \citep{PAPER:1}. La misma fue diseñada específicamente para moverse en edificios adaptados a personas en sillas de ruedas que cumplen con la normativa ADA o \textit{Americans with Disabilities Act}. Gracias a esto, es posible saber de antemano si dicho robot puede utilizarse para recorrer las distintas dependencias de un edificio sin la necesidad de hacer pruebas preliminares \textit{in-situ}.
+Fetch Robotics ofrece con el Freight Base una base robótica para uso en interiores \citep{PAPER:1}. La misma fue diseñada específicamente para moverse en edificios adaptados a personas en sillas de ruedas que cumplen con la normativa ADA o \textit{Americans with Disabilities Act}. Gracias a esto, es posible saber de antemano si dicho robot puede utilizarse para recorrer las distintas dependencias de un edificio sin la necesidad de hacer pruebas \textit{in-situ}.
 
-\subsection{Festo Robotino}
+\subsection{FESTO Robotino}
+
+Robotino es un robot móbil comercializado por la compañía alemana FESTO Didactic. El mismo esta diseñado para entornos educativos, de entrenamiento y de investigación.
+Esta plataforma dispone de un sistema de tracción omni que como su nombre sugiere, le otorga libertad de movimiento omnidireccional en dos dimensiones.\newline
+Asímismo, Robotino viene equipado de fábrica con una computadora de grado industrial, haciendo mas fácil su integración con elementos de hardware y software añadidos.
 
 
 \subsection{Pioneer 3-DX}
 
+El Pioneer 3-DX es un pequeño robot de tracción diferencial ideal para utilizarse en entornos académicos ya sea de laboratorio o en salón de clases. El mismo incorpora de fábrica una serie de sensores del tipo Sonar, encóders para las ruedas y un microcontrolador con firmware específico.\newline
+Su amplia superficie de carga le permite mover cargas de hasta 8 Kg, por lo que es un buen candidato para añadir sensores y actuadores extra, como cámaras o manipuladores.
+
+
 \section{Motivación}
+
+Los robots móviles expuestos en la sección anterior representan propuestas comerciales listas para usar que permiten a profesores, investigadores y alumnos concentrarse en el estudio o desarrollo de aplicaciones de la robótica móvil, eliminando la necesidad de diseñar un robot desde cero para cada caso de uso específico. Gracias a esto, las instituciones o individuos que adquieren dichos equipos pueden concentrarse de inmediato en las tareas de interés para el estudio de la materia, ahorrando tiempo y esfuerzo.\newline
+Resulta tentador entonces preguntarse ¿por qué no todas las instituciones adquieren un robot comercial para el laboratorio de robótica?. La respuesta esta en los altos costos asociados a la adquisición de estos equipos. Los robots destinados a investigación son costosos y por ende, son pocas las instituciones educativas en condiciones de invertir en ellos.
 
 
 \section{Objetivos}
 
-
+Mediante este trabajo se planteó el desarrollo de una plataforma destinada a la enseñanza de robótica móvil en instituciones educativas de nivel universitario.
 
 \section{Alcance}
 
+Se procedió a separar el alcance en base al tipo de trabajo realizado, así como lo que no se incluye con el mismo.
+
+El alcance del presente trabajo involucró el desarrollo del firmware para el microcontrolador encargado de:
+\begin{itemize}
+	\item Intermediar la comunicación entre la base robótica ``Roomba 500'' y el framework de robótica ROS (\textit{Robot Operating System}).
+	\item Realizar la interfaz entre la unidad de medición inercial MPU6050 con ROS.
+	\item Port de la librería rosserial para ser utilizada con FreeRTOS y STM32Cube HAL en el lenguaje de programación C++.
+\end{itemize}
+
+Se incluye el desarrollo de softwere requerido para:
+\begin{itemize}
+	\item El paquete para ROS que brinda soporte básico para el robot propuesto "Lubobot", con sus sensores y actuadores.
+	\item Calcular la odometría del robot utilizando las lecturas de los encoders.
+	\item La descripción del robot en formato URDF (\textit{Unified Robot Description Format}), requerido para representar correctamente el robot en la herramienta RViz.
+	\item Una imagen de Docker con todas las dependencias necesarias para utilizar el robot de manera encapsulada y sin la necesidad de modificar la configuración del sistema operativo del usuario.
+\end{itemize}
+
+Se incluye una seccion extra en el repositorio oficial en GitHub con una Wiki con la documentación básica necesaria para que un nuevo usuario sea capaz de:
+
+\begin{itemize}
+	\item Crear un nuevo robot idéntico al propuesto
+	\item Configurar el robot para utilizar el stack de navegación de ROS
+\end{itemize} 
+
+No se incluye con el presente trabajo:
+\begin{itemize}
+	\item Ningún algoritmo de navegación local ni global.
+	\item Código requerido para la conexión al microcontrolador mediante Ethernet.
+\end{itemize}
