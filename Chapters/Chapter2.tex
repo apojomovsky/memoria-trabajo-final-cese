@@ -63,10 +63,10 @@ La herramienta RViz (o ROS Visualization tool), es la herramienta oficial de vis
 RViz permite visualizar la representación física del robot, de modo a analizar su configuración de articulaciones (o \textit{joints}) y enlaces (o \textit{links}), como se muestra en la figura \ref{fig:rviz}.
 
 \begin{figure}[ht]
-	\centering
-	\includegraphics{./Figures/rviz.png}
-	\caption{Interfaz gráfica de RViz mostrando los links y joints del robot Lubobot.}
-	\label{fig:rviz}
+    \centering
+    \includegraphics{./Figures/rviz.png}
+    \caption{Interfaz gráfica de RViz mostrando los links y joints del robot Lubobot.}
+    \label{fig:rviz}
 \end{figure}
 
 \subsection{Formato universal de descripción de robots URDF}
@@ -83,10 +83,10 @@ Además de la definición del protocolo de serialización en si mismo, rosserial
 \end{itemize}
 
 \begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.6]{./Figures/rosserial.png}
-	\caption{Interacción entre ROS y rosserial corriendo en un microcontrolador}
-	\label{fig:rosserial}
+    \centering
+    \includegraphics[scale=0.6]{./Figures/rosserial.png}
+    \caption{Interacción entre ROS y rosserial corriendo en un microcontrolador}
+    \label{fig:rosserial}
 \end{figure}
 
 \subsection{Paquete de navegación ros\_navigation\_stack}
@@ -120,10 +120,10 @@ A nivel de locomoción, se catalogan como robots móviles con ruedas y utilizan 
 La base móvil utilizada para este trabajo consiste en un Roomba de la serie 500 como el mostrado en la figura \ref{fig:roomba}, el cual fue introducido al mercado en el año 2007 y se mantuvo en el mercado hasta el 2017. Actualmente es posible conseguir estos equipos en condicion de usado o remanufacturado a precios muy accesibles comparado al precio de un equipo mas actual.
 
 \begin{figure}[ht]
-	\centering
-	\includegraphics[scale=2.5]{./Figures/roomba.png}
-	\caption{iRobot Roomba 500, utilizado como base móvil para este trabajo.\protect\footnotemark}
-	\label{fig:roomba}
+    \centering
+    \includegraphics[scale=2.5]{./Figures/roomba.png}
+    \caption{iRobot Roomba 500, utilizado como base móvil para este trabajo.\protect\footnotemark}
+    \label{fig:roomba}
 \end{figure}
 
 \footnotetext{\url{https://uncrate.com/assets_c/2009/04/roomba-560-stretched-thumb-960x640-3177.jpg}}
@@ -132,6 +132,37 @@ La base móvil utilizada para este trabajo consiste en un Roomba de la serie 500
 Todos los Roomba lanzados a partir del año 2005 son compatibles con una interfaz de comunicación serial denominada Roomba Open Interface, a la cual es posible acceder mediante la conexión a un puerto físico disponible en la placa madre del robot. Esto habilita al usuario a todo tipo de interacción con el hardware del robot, tales como consultar la lectura de cada uno de sus sensores, así como comandar sus actuadores. Este protocolo ha sido actualizado a la par de de las sucesivas actualizaciones del Roomba para ofrecer nuevas funcionalidades o mejoras y en cada caso, se encuentra acompañado de un documento oficial por parte de iRobot en formato PDF\protect\footnotemark.
 
 \footnotetext{\url{https://cdn-shop.adafruit.com/datasheets/create_2_Open_Interface_Spec.pdf}}
+
+
+\subsection{Conexionado del robot por puerto serie}
+
+En la figura \ref{fig:roombaPinout} y la tabla \ref{tab:Pines} se exponen respectivamente, la distribución de pines en el conector y su conexión correspondiente para entablar comunicación con el robot mediante el puerto Mini-DIN.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=.4]{./Figures/pinout.png}
+    \caption{Distribución de pines en el conector hembra Mini-DIN.}
+    \label{fig:roombaPinout}
+\end{figure}
+
+\begin{table}[h]
+    \centering
+    \caption{Referencia de pines en conector Mini-DIN hembra}
+    \label{tab:Pines}
+    \begin{tabular}{rll}
+        \toprule
+        \multicolumn{1}{l}{Pin} & Nombre & Descripción                                  \\
+        \midrule
+        1                       & Vpwr   & Positivo directo de la batería (no regulado) \\
+        2                       & Vpwr   & Positivo directo de la batería (no regulado) \\
+        3                       & RXD    & 0 - 5 VCC Entrada serie                      \\
+        4                       & TXD    & 0 - 5 VCC Salida serie                       \\
+        5                       & BRC    & Cambio de baud-rate                          \\
+        6                       & GND    & Tierra del robot                             \\
+        7                       & GND    & Tierra del robot                             \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 \section{Placa de desarrollo STM32-NUCLEO}
 
@@ -147,10 +178,10 @@ Es una familia de placas de desarrollo elaboradas por la compañía ST. Entre su
 De modo a garantizar la escalabilidad del sistema, para este proyecto se optó por una de las placas mas avanzadas de esta familia, denominada NUCLEO-F746ZG y mostrada en la figura \ref{fig:stm32nucleo}. La misma provee un microcontrolador ARM Cortex-M7 con FPU de doble precisión, 320 kB de RAM, así como 1 MB de Flash. Ofrece además conexión ethernet y una amplia cantidad de GPIOs.
 
 \begin{figure}[ht]
-	\centering
-	\includegraphics[scale=1.5]{./Figures/stm32nucleo.png}
-	\caption{Placa de desarrollo STM32 NUCLEO-F746ZG elegida para comandar el robot.\protect\footnotemark}
-	\label{fig:stm32nucleo}
+    \centering
+    \includegraphics[scale=1.5]{./Figures/stm32nucleo.png}
+    \caption{Placa de desarrollo STM32 NUCLEO-F746ZG elegida para comandar el robot.\protect\footnotemark}
+    \label{fig:stm32nucleo}
 \end{figure}
 
 \footnotetext{\url{https://www.carminenoviello.com/wp-content/uploads/2015/12/nucleo_144_large-2-660x330.jpg}}
