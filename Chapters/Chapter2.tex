@@ -90,9 +90,53 @@ Además de la definición del protocolo de serialización en si mismo, rosserial
 \end{figure}
 
 \subsection{Paquete de navegación ros\_navigation\_stack}
+
+El paquete de navegación de ROS, usualmente referido como \textit{navigation stack}, es un set de algoritmos que hacen uso de los sensores del robot y la odometría para permitir controlar al robot utilizando un mensaje estándar mientras el mismo se encarga de evitar choques o atascos sin perder su ubicación en el mapa, previamente generado y proveido al mismo.\newline
+Para que un robot pueda hacer uso de este paquete correctamente, es necesario que se satisfaga una serie de requisitos:
+\begin{itemize}
+    \item Solo puede utilizarse en robots con ruedas en configuración de tracción diferencial u holonómica. Cabe mencionar que el robot presentado en este trabajo es de configuración diferencial.
+    \item Es necesario que el robot publique la información sobre las relaciones entre las posiciones de todas las articulaciones y sensores que lo componen.
+    \item El robot deberá reportar sus velocidades lineal y angular utilizando un mensaje estándar de ROS.
+    \item Un sensor del tipo LIDaR 2D deberá estar presente en el robot para generar el mapa y para el proceso de localización. Alternativamente, es posible utilizar otros tipos de sensores como cámaras de profundidad o \textit{depth cameras} o SONAR, siempre y cuando la información recolectada se publique con el tipo de mensaje adecuado.
+\end{itemize}
+
+En la figura \ref{fig:navigationStack} se puede apreciar como se encuentra organizado el paquete de navegación, el cual utiliza dos mapas de obstáculos, uno local y otro global, que son construidos a partir de la información generada por el escaner laser en conjunto con el sistema de navegación. El mapa global es un mapa más extenso en dimiensiones y esta diseñado para el cálculo de trayectorias global, por otro lado, el mapa local es usualmente un mapa mas acotado pero con mayor detalle y su objetivo es el de evadir obstáculos cercanos.
+
+\begin{figure}[ht]
+    \centering
+    \def\svgwidth{350pt}
+    \input{./Figures/navigation_stack.pdf_tex}
+    \caption{Configuración típica del paquete de navegación en ROS}
+    \label{fig:navigationStack}
+\end{figure}
+
+Los mapas global y local son utilizados por los planeadores global y local, respectivamente. El planeador global se encarga de generar un plan para ir de un punto a otro del mapa homónimo. Por otro lado, el local se encarga de controlar los distintos actuadores del robot, por ejemplo las ruedas, para llevar a cabo el plan global pero a la vez que esquiva los obstaculos cercanos que puedan aparecer, incluso si los mismos no se encontrasen registrados en el mapa global. Esto resulta especialmente útil a la hora de esquivar obstáculos nuevos, hasta el momento desconocidos.
+
 \section{iRobot Roomba 500}
-\subsection{Consideraciones}
+
+El Roomba es un robot de limpieza fabricado y comercializado por la compañía iRobot. El primer modelo salió al mercado en el año 2002 y ha recibido siete actualizaciones desde entonces. En cada iteración, se han mejorado aspectos tanto de diseño como funcionalidad y esto le ha permitido mantenerse como el robot de limpieza con mas unidades vendidas en el mundo.\newline
+Todos los Roomba incluyen una serie de sensores táctiles, ópticos y acústicos que le permiten detectar obstáculos, residuos, así como escalones o desniveles en el piso.\newline
+A nivel de locomoción, se catalogan como robots móviles con ruedas y utilizan el tipo de tracción diferencial, el cual consiste en dos ruedas motrices independientes que le permiten ejecutar giros de 360 grados. Esto es posible sin que el robot deba incurrir en desplazamiento lineal alguno como en el caso de los automóviles, por citar un ejemplo.\newline
+La base móvil utilizada para este trabajo consiste en un Roomba de la serie 500 como el mostrado en la figura \ref{fig:roomba}, el cual fue introducido al mercado en el año 2007 y se mantuvo en el mercado hasta el 2017. Actualmente es posible conseguir estos equipos en condicion de usado o remanufacturado a precios muy accesibles comparado al precio de un equipo mas actual.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=2.5]{./Figures/roomba.png}
+	\caption{iRobot Roomba 500, utilizado como base móvil para este trabajo.\protect\footnotemark}
+	\label{fig:roomba}
+\end{figure}
+
+\footnotetext{\url{https://uncrate.com/assets_c/2009/04/roomba-560-stretched-thumb-960x640-3177.jpg}}
+
+\subsection{Roomba Open Interface}
+Todos los Roomba lanzados a partir del año 2005 son compatibles con una interfaz de comunicación serial denominada Roomba Open Interface, a la cual es posible acceder mediante la conexión a un puerto físico disponible en la placa madre del robot. Esto habilita al usuario a todo tipo de interacción con el hardware del robot, tales como consultar la lectura de cada uno de sus sensores, así como comandar sus actuadores. Este protocolo ha sido actualizado a la par de de las sucesivas actualizaciones del Roomba para ofrecer nuevas funcionalidades o mejoras y en cada caso, se encuentra acompañado de un documento oficial por parte de iRobot en formato PDF\protect\footnotemark.
+
+\footnotetext{\url{https://cdn-shop.adafruit.com/datasheets/create_2_Open_Interface_Spec.pdf}}
+
 \section{Placa de desarrollo STM32-NUCLEO}
+
+
+
 \subsection{Descripción}
 \subsection{Consideraciones}
 \section{Sensor Kinect 360}
