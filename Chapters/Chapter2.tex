@@ -135,10 +135,26 @@ Todos los Roomba lanzados a partir del año 2005 son compatibles con una interfa
 
 \section{Placa de desarrollo STM32-NUCLEO}
 
+Es una familia de placas de desarrollo elaboradas por la compañía ST. Entre sus características principales se destacan:
 
+\begin{itemize}
+    \item Bajo costo
+    \item Compatibilidad con \textit{shields} de Arduino
+    \item Programador/debugger ST-Link integrado
+    \item Librería del tipo HAL con variados ejemplos de código
+\end{itemize}
 
-\subsection{Descripción}
-\subsection{Consideraciones}
+De modo a garantizar la escalabilidad del sistema, para este proyecto se optó por una de las placas mas avanzadas de esta familia, denominada NUCLEO-F746ZG y mostrada en la figura \ref{fig:stm32nucleo}. La misma provee un microcontrolador ARM Cortex-M7 con FPU de doble precisión, 320 kB de RAM, así como 1 MB de Flash. Ofrece además conexión ethernet y una amplia cantidad de GPIOs.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=1.5]{./Figures/stm32nucleo.png}
+	\caption{Placa de desarrollo STM32 NUCLEO-F746ZG elegida para comandar el robot.\protect\footnotemark}
+	\label{fig:stm32nucleo}
+\end{figure}
+
+\footnotetext{\url{https://www.carminenoviello.com/wp-content/uploads/2015/12/nucleo_144_large-2-660x330.jpg}}
+
 \section{Sensor Kinect 360}
 \subsection{Descripción}
 \subsection{Comparación con otras cámaras de profundidad}
