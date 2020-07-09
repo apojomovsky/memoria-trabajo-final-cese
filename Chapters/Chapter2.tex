@@ -71,9 +71,24 @@ RViz permite visualizar la representación física del robot, de modo a analizar
 
 \subsection{Formato universal de descripción de robots URDF}
 
-El formato universal de descripción de robots o \textit{Universal Robot Description System}, comunmente referido como URDF es un formato estándar para representación de modelos que contengan múltiples piezas conectadas entre sí, como es el caso de los brazos robóticos o líneas de ensamblaje. El mismo es ampliamente utilizado dentro del ecosistema de ROS, plataforma donde vio su origen aunque al día de hoy su uso se ha extendido a otras herramientas fuera del mismo.
+El formato universal de descripción de robots o \textit{Universal Robot Description System}, comúnmente referido como URDF es un formato estándar para representación de modelos conformados por múltiples piezas conectadas entre sí, como es el caso de brazos robóticos o líneas de ensamblaje. El mismo es ampliamente utilizado dentro del ecosistema de ROS, plataforma donde vio su origen aunque al día de hoy su uso se ha extendido a herramientas fuera del mismo como MATLAB, la cual permite importar archivos URDF directamente a su \textit{toolbox} de robótica.
 
 \subsection{Librería rosserial}
+
+Es un protocolo para la transmisión serial de mensajes y multiplexación de múltiples tópicos y servicios de ROS sobre un \textit{character device} tal como un puerto UART o un sócket de red.
+Además de la definición del protocolo de serialización en si mismo, rosserial se compone de otros dos elementos principales:
+\begin{itemize}
+    \item \textbf{Librerías cliente}: permiten la integración de nodos ROS en diferentes plataformas, apuntando principalmente a sistemas embebidos. Dichas librerias son especializaciones de una clase base, escrita en ANSI C++ para mayor compatiblidad y denominada rosserial\_client. Para este trabajo se realizó un \textit{port} de dicha librería a la plataforma STM32CubeHAL.
+    \item \textbf{Interfaz con ROS}: Las librerías cliente requieren de un nodo corriendo en la computadora \textit{host} que funcione como puente entre el serie y la red de ROS, encargándose de des-serializar y serializar los mensajes que llegan y se despachan, respectivamente. La participación de los distintos actores involucrados en el uso de rosserial se muestran en la figura \ref{fig:rosserial}.
+\end{itemize}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.6]{./Figures/rosserial.png}
+	\caption{Interacción entre ROS y rosserial corriendo en un microcontrolador}
+	\label{fig:rosserial}
+\end{figure}
+
 \subsection{Paquete de navegación ros\_navigation\_stack}
 \section{iRobot Roomba 500}
 \subsection{Consideraciones}
