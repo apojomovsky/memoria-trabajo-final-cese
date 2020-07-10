@@ -1,4 +1,4 @@
-\chapter{Introducción Específica}
+\chapter{Introducción específica}
 
 \label{Capitulo2}
 
@@ -6,7 +6,8 @@ En este capítulo se desglosan las diferentes herramientas tanto de hardware com
 
 \section{Robot Operating System}
 
-Típicamente denominado ROS, es un framework de robótica de código abierto, el cual fue diseñado originalmente para robots de uso académico. Sin embargo, al día de hoy su uso se ha extendido tanto a la industria como al público aficionado.\newline
+Típicamente denominado ROS, es un framework de robótica de código abierto, el cual fue diseñado originalmente para robots de uso académico. Sin embargo, al día de hoy su uso se ha extendido tanto a la industria como al público aficionado.
+
 ROS ofrece un variado set de herramientas que facilitan las tareas del roboticista en tareas tales como paso de mensajes, computación distribuida e implementación de algoritmos para aplicaciones robóticas.
 
 \subsection{Organización de archivos}
@@ -34,7 +35,8 @@ A continuación se detalla en qué consiste cada uno de los bloques que la compo
 \end{itemize}
 
 \subsection{Arquitectura interna}
-ROS esta construido sobre una arquitectura basada en grafos, esto significa que las tareas de cómputo son realizadas a través de una red de procesos llamados nodos. Esta red es denominada \textit{Computation Graph} o grafo de cómputo.\newline
+ROS esta construido sobre una arquitectura basada en grafos, esto significa que las tareas de cómputo son realizadas a través de una red de procesos llamados nodos. Esta red es denominada \textit{Computation Graph} o grafo de cómputo.
+
 Los principales componentes de este grafo son los nodos, el \textit{master} o maestro, el \textit{parameter server} o servidor de parámetros, además de los mensajes, tópicos, servicios y \textit{bags} o bolsas. Cada uno de estos elementos contribuye al funcionamiento del Computation Graph con una funcionalidad específica. Los elementos que lo componen, mostrados en la figura \ref{fig:computationGraph}, se describen a continuación:
 
 \newpage
@@ -59,7 +61,8 @@ Los principales componentes de este grafo son los nodos, el \textit{master} o ma
 
 \subsection{Herramienta RViz}
 
-La herramienta RViz (o ROS Visualization tool), es la herramienta oficial de visualización ROS, la cual permite representar de manera gráfica la información transmitida a través de los distintos tópicos. Posee soporte nativo para la mayoría de los mensajes estándar y permite además, expandir su funcionamiento mediante \textit{plugins} los que posiblitan visualizar mensajes personalizados, entre otros.\newline
+La herramienta RViz (o ROS Visualization tool), es la herramienta oficial de visualización ROS, la cual permite representar de manera gráfica la información transmitida a través de los distintos tópicos. Posee soporte nativo para la mayoría de los mensajes estándar y permite además, expandir su funcionamiento mediante \textit{plugins} los que posiblitan visualizar mensajes personalizados, entre otros.
+
 RViz permite visualizar la representación física del robot, de modo a analizar su configuración de articulaciones (o \textit{joints}) y enlaces (o \textit{links}), como se muestra en la figura \ref{fig:rviz}.
 
 \begin{figure}[ht]
@@ -91,7 +94,8 @@ Además de la definición del protocolo de serialización en si mismo, rosserial
 
 \subsection{Paquete de navegación ros\_navigation\_stack}
 
-El paquete de navegación de ROS, usualmente referido como \textit{navigation stack}, es un set de algoritmos que hacen uso de los sensores del robot y la odometría para permitir controlar al robot utilizando un mensaje estándar mientras el mismo se encarga de evitar choques o atascos sin perder su ubicación en el mapa, previamente generado y proveido al mismo.\newline
+El paquete de navegación de ROS, usualmente referido como \textit{navigation stack}, es un set de algoritmos que hacen uso de los sensores del robot y la odometría para permitir controlar al robot utilizando un mensaje estándar mientras el mismo se encarga de evitar choques o atascos sin perder su ubicación en el mapa, previamente generado y proveido al mismo.
+
 Para que un robot pueda hacer uso de este paquete correctamente, es necesario que se satisfaga una serie de requisitos:
 \begin{itemize}
     \item Solo puede utilizarse en robots con ruedas en configuración de tracción diferencial u holonómica. Cabe mencionar que el robot presentado en este trabajo es de configuración diferencial.
@@ -100,7 +104,7 @@ Para que un robot pueda hacer uso de este paquete correctamente, es necesario qu
     \item Un sensor del tipo LIDaR 2D deberá estar presente en el robot para generar el mapa y para el proceso de localización. Alternativamente, es posible utilizar otros tipos de sensores como cámaras de profundidad o \textit{depth cameras} o SONAR, siempre y cuando la información recolectada se publique con el tipo de mensaje adecuado.
 \end{itemize}
 
-En la figura \ref{fig:navigationStack} se puede apreciar como se encuentra organizado el paquete de navegación, el cual utiliza dos mapas de obstáculos, uno local y otro global, que son construidos a partir de la información generada por el escaner laser en conjunto con el sistema de navegación. El mapa global es un mapa más extenso en dimiensiones y esta diseñado para el cálculo de trayectorias global, por otro lado, el mapa local es usualmente un mapa mas acotado pero con mayor detalle y su objetivo es el de evadir obstáculos cercanos.
+En la figura \ref{fig:navigationStack} se puede apreciar como se encuentra organizado el paquete de navegación, el cual utiliza dos mapas de obstáculos, uno local y otro global, que son construidos a partir de la información generada por el escaner laser en conjunto con el sistema de navegación. El mapa global es un mapa más extenso en dimiensiones y está diseñado para el cálculo de trayectorias global, por otro lado, el mapa local es usualmente un mapa mas acotado pero con mayor detalle y su objetivo es el de evadir obstáculos cercanos.
 
 \begin{figure}[ht]
     \centering
@@ -114,9 +118,12 @@ Los mapas global y local son utilizados por los planeadores global y local, resp
 
 \section{iRobot Roomba 500}
 
-El Roomba es un robot de limpieza fabricado y comercializado por la compañía iRobot. El primer modelo salió al mercado en el año 2002 y ha recibido siete actualizaciones desde entonces. En cada iteración, se han mejorado aspectos tanto de diseño como funcionalidad y esto le ha permitido mantenerse como el robot de limpieza con mas unidades vendidas en el mundo.\newline
-Todos los Roomba incluyen una serie de sensores táctiles, ópticos y acústicos que le permiten detectar obstáculos, residuos, así como escalones o desniveles en el piso.\newline
-A nivel de locomoción, se catalogan como robots móviles con ruedas y utilizan el tipo de tracción diferencial, el cual consiste en dos ruedas motrices independientes que le permiten ejecutar giros de 360 grados. Esto es posible sin que el robot deba incurrir en desplazamiento lineal alguno como en el caso de los automóviles, por citar un ejemplo.\newline
+El Roomba es un robot de limpieza fabricado y comercializado por la compañía iRobot. El primer modelo salió al mercado en el año 2002 y ha recibido siete actualizaciones desde entonces. En cada iteración, se han mejorado aspectos tanto de diseño como funcionalidad y esto le ha permitido mantenerse como el robot de limpieza con mas unidades vendidas en el mundo.
+
+Todos los Roomba incluyen una serie de sensores táctiles, ópticos y acústicos que le permiten detectar obstáculos, residuos, así como escalones o desniveles en el piso.
+
+A nivel de locomoción, se catalogan como robots móviles con ruedas y utilizan el tipo de tracción diferencial, el cual consiste en dos ruedas motrices independientes que le permiten ejecutar giros de 360 grados. Esto es posible sin que el robot deba incurrir en desplazamiento lineal alguno como en el caso de los automóviles, por citar un ejemplo.
+
 La base móvil utilizada para este trabajo consiste en un Roomba de la serie 500 como el mostrado en la figura \ref{fig:roomba}, el cual fue introducido al mercado en el año 2007 y se mantuvo en el mercado hasta el 2017. Actualmente es posible conseguir estos equipos en condicion de usado o remanufacturado a precios muy accesibles comparado al precio de un equipo mas actual.
 
 \begin{figure}[ht]
@@ -188,7 +195,8 @@ De modo a garantizar la escalabilidad del sistema, para este proyecto se optó p
 
 \section{Sensor Kinect 360}
 
-El Kinect para Xbox 360 o simplemente Kinect, es un dispositivo de captura de movimiento diseñado por la empresa Microsoft que utiliza tecnología desarrollada por la empresa israelita PrimeSense.\newline
+El Kinect para Xbox 360 o simplemente Kinect, es un dispositivo de captura de movimiento diseñado por la empresa Microsoft que utiliza tecnología desarrollada por la empresa israelita PrimeSense.
+
 Cuenta con una cámara que captura imágenes en formato RGB, un \textit{array} de micrófonos, así como un sensor de profundidad. Si bien existen otras características que hacen a este dispositivo aún mas interesante, vale la pena detenerse en este último y explicar en qué consiste, puesto que se hace uso extensivo del mismo en la generación de mapas del robot propuesto.
 
 \subsection{Imagen de profundidad}
@@ -204,8 +212,10 @@ El sensor de profundidad del Kinect consiste en un proyector de nube de puntos i
 
 \section{Unidad de medición inercial}
 
-Una unidad de medición inercial o IMU por sus siglas en inglés, es un dispositivo electrónico capaz de medir y reportar la velocidad angular y en algunos casos, el campo magnético que rodea al cuerpo.\newline
-Las IMU funcionan detectando la aceleracion lineal mediante uno o más acelerómetros y la tasa de rotación usando uno o más giroscopios. Algunos de estos dispositivos incluyen también un magnetómetro que se utiliza comúnmente como una referencia de rumbo.\newline
+Una unidad de medición inercial o IMU por sus siglas en inglés, es un dispositivo electrónico capaz de medir y reportar la velocidad angular y en algunos casos, el campo magnético que rodea al cuerpo.
+
+Las IMU funcionan detectando la aceleracion lineal mediante uno o más acelerómetros y la tasa de rotación usando uno o más giroscopios. Algunos de estos dispositivos incluyen también un magnetómetro que se utiliza comúnmente como una referencia de rumbo.
+
 Las configuraciones típicas de una IMU continenen un acelerómetro, un giroscopio y un magnetómetro por eje, para cada uno de los tres ejes de giros y fuerzas del vehículo: cabeceo, alabeo y guiñada que se muestran en la figura ref{fig:imu}. Para el caso particular del robot móvil propuesto en este trabajo, solo se hace uso de las aceleraciones: angular en el eje Z y lineal en el eje X, respectivamente.
 
 \begin{figure}[ht]
