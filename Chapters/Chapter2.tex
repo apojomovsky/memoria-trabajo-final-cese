@@ -187,8 +187,43 @@ De modo a garantizar la escalabilidad del sistema, para este proyecto se optó p
 \footnotetext{\url{https://www.carminenoviello.com/wp-content/uploads/2015/12/nucleo_144_large-2-660x330.jpg}}
 
 \section{Sensor Kinect 360}
-\subsection{Descripción}
-\subsection{Comparación con otras cámaras de profundidad}
-\section{Unidad de medición inercial MPU6050}
-\subsection{Descripción}
-\subsection{Comparación con otras IMU}
+
+El Kinect para Xbox 360 o simplemente Kinect, es un dispositivo de captura de movimiento diseñado por la empresa Microsoft que utiliza tecnología desarrollada por la empresa israelita PrimeSense.\newline
+Cuenta con una cámara que captura imágenes en formato RGB, un \textit{array} de micrófonos, así como un sensor de profundidad. Si bien existen otras características que hacen a este dispositivo aún mas interesante, vale la pena detenerse en este último y explicar en qué consiste, puesto que se hace uso extensivo del mismo en la generación de mapas del robot propuesto.
+
+\subsection{Imagen de profundidad}
+
+El sensor de profundidad del Kinect consiste en un proyector de nube de puntos infrarrojos combinado con un sensor CMOS monocromático, similar al de una cámara fotográfica. Funcionando en combinación, estos dos elementos son capaces de captar la información necesaria para que un ASIC genere con ella una imagen de profundidad o \textit{Depth map}, la cual consiste en un mapa de bits con información sobre la distancia relativa entre el sensor y los objetos capturados por el mismo. En la figura \ref{fig:depthMap} se puede apreciar una imagen de profundidad generado mediante el sensor Kinect en el que se distingue claramente la silueta de una persona rodeada de diferentes objetos. Las distintas tonalidades de grises visualizadas son una representación de la distancia del objeto al sensor, por lo que para objetos cercanos veremos píxeles de color gris mas claro mientras que para objetos lejanos se verán mas oscuros.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=2.0]{./Figures/depth_map.png}
+    \caption{\textit{Depth map} de la silueta de una persona.}
+    \label{fig:depthMap}
+\end{figure}
+
+\section{Unidad de medición inercial}
+
+Una unidad de medición inercial o IMU por sus siglas en inglés, es un dispositivo electrónico capaz de medir y reportar la velocidad angular y en algunos casos, el campo magnético que rodea al cuerpo.\newline
+Las IMU funcionan detectando la aceleracion lineal mediante uno o más acelerómetros y la tasa de rotación usando uno o más giroscopios. Algunos de estos dispositivos incluyen también un magnetómetro que se utiliza comúnmente como una referencia de rumbo.\newline
+Las configuraciones típicas de una IMU continenen un acelerómetro, un giroscopio y un magnetómetro por eje, para cada uno de los tres ejes de giros y fuerzas del vehículo: cabeceo, alabeo y guiñada que se muestran en la figura ref{fig:imu}. Para el caso particular del robot móvil propuesto en este trabajo, solo se hace uso de las aceleraciones: angular en el eje Z y lineal en el eje X, respectivamente.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=1.8]{./Figures/imu.png}
+    \caption{Ejes de giros y fuerzas de un vehículo.\protect\footnotemark}
+    \label{fig:depthMap}
+\end{figure}
+
+\footnotetext{\url{http://skiras.blogspot.com/2012/10/4copter-conceptos-i-ejes-giros-y-fuerzas.html}}
+
+\subsection{Sensor MPU6050}
+
+El dispositivo MPU-6050 mostrado en la figura \ref{fig:mpu6050}, combina en el mismo chip un giroscopio de 3 ejes con un acelerómetro también de 3 ejes. Mediante lo que el fabricante denomina \textit{Digital Motion Processor} o DMP, esta IMU es capaz de procesar algoritmos de fusión de datos de 6 ejes, usualmente ejecutados en un microcontrolador o DSP mediante un filtro de Kalman o similar. Si bien el chip no incluye un magnetómetro, sí ofrece una interfaz I2C que posibilita conectarla a un magnetómetro externo, de este modo el DMP puede aprovechar la información de campo magnético en en sus algoritmos de fusión para generar resultados más precisos.
+    
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.5]{./Figures/mpu6050.jpg}
+    \caption{Sensor MPU-6050 con sus ejes de giros y fuerzas.}
+    \label{fig:mpu6050}
+\end{figure}
