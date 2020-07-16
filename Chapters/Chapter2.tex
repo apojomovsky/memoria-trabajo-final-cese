@@ -77,7 +77,7 @@ RViz permite visualizar la representación física del robot, de modo a analizar
 
 El formato universal de descripción de robots o \textit{Universal Robot Description System}, comúnmente referido como URDF es un formato estándar para representación de modelos conformados por múltiples piezas conectadas entre sí, como es el caso de brazos robóticos o líneas de ensamblaje. El mismo es ampliamente utilizado dentro del ecosistema de ROS, plataforma donde vio su origen aunque al día de hoy su uso se ha extendido a herramientas fuera del mismo como MATLAB, la cual permite importar archivos URDF directamente a su \textit{toolbox} de robótica.
 
-\subsection{Librería rosserial}
+\subsection{Librería rosserial}\label{sec:rosserial}
 
 Es un protocolo para la transmisión serial de mensajes y multiplexación de múltiples tópicos y servicios de ROS sobre un \textit{character device} tal como un puerto UART o un sócket de red.
 Además de la definición del protocolo de serialización en si mismo, rosserial se compone de otros dos elementos principales:
@@ -136,7 +136,7 @@ La base móvil utilizada para este trabajo consiste en un Roomba de la serie 500
 
 \footnotetext{\url{https://uncrate.com/assets_c/2009/04/roomba-560-stretched-thumb-960x640-3177.jpg}}
 
-\subsection{Roomba Open Interface}
+\subsection{Roomba Open Interface}\label{sec:openInterface}
 Todos los Roomba lanzados a partir del año 2005 son compatibles con una interfaz de comunicación serial denominada Roomba Open Interface, a la cual es posible acceder mediante la conexión a un puerto físico disponible en la placa madre del robot. Esto habilita al usuario a todo tipo de interacción con el hardware del robot, tales como consultar la lectura de cada uno de sus sensores, así como comandar sus actuadores. Este protocolo ha sido actualizado a la par de de las sucesivas actualizaciones del Roomba para ofrecer nuevas funcionalidades o mejoras y en cada caso, se encuentra acompañado de un documento oficial por parte de iRobot en formato PDF\protect\footnotemark.
 
 \footnotetext{\url{https://cdn-shop.adafruit.com/datasheets/create_2_Open_Interface_Spec.pdf}}
