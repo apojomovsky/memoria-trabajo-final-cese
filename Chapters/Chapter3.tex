@@ -107,11 +107,15 @@ Como se describió en la sección \ref{sec:organizacionArchivos}, se considera u
 
 \subsection{Nodo re-publicador de IMU ``lubo\_imu\_relay''}
 
-Este nodo se encuentra suscripto a los mensajes del tipo \file{lubo\_imu}, que se compone de las lecturas crudas de orientación y aceleración angular. Así, el programa se encarga de procesarlos a medida que llegan, agregandole información de tiempo y secuencia para luego republicarlos en el formato de mensaje estándar de ROS para unidades de medición inercial del tipo \file{sensor\_msgs/Imu}\protect\footnotemark.
+Este nodo se encuentra suscripto a los mensajes del tipo \file{lubo\_imu}, compuesto por las lecturas crudas de orientación y aceleración angular provenientes del microcontrolador. El programa se encarga de procesarlos a medida que llegan, agregandoles información de tiempo y secuencia y luego los republica en el formato de mensaje estándar de ROS para unidades de medición inercial\protect\footnotemark.
 
-El lector podría preguntarse por qué de no se eligió publicar el mensaje con el tipo estándar desde el microcontrolador directamente y ahorrarse la existencia de este nodo. La respuesta es que los mensajes estándares de ROS en general no resultan adecuados para dispositivos con poca memoria RAM y buses de transmisión como los que se encuentran típicamente en un microcontrolador. El uso de mensajes especiales diseñados específicamente para este fin, permitieron lograr un aumento en la frecuencia del mensaje y a su vez, la publicación de otros mensajes en simultáneo sin saturar el bus.
+Cabe preguntarse por qué de no evitar este nodo y publicar  mensajes con el tipo estándar directamente desde el microcontrolador. Hay un par de motivos específicos que son válidos no solo para este mensaje en particular, sino para la mayoría de los mensajes intercambiados con el microcontrolador:
+\begin{itemize}
+  \item los mensajes estandar de ROS poseen un \textit{footprint} en memoria poco adecuado para dispositivos con poca memoria RAM.
+  \item el bus UART utilizado para la comunicación con el microcontrolador ofrece un ancho de banda ajustado que se satura rápidamente con mensajes del tipo estándar.
+\end{itemize}
 
-\footnotetext{\url{Imagen tomada de http://docs.ros.org/kinetic/api/sensor_msgs/html/msg/Imu.html}}
+\footnotetext{Imagen tomada de \url{http://docs.ros.org/kinetic/api/sensor_msgs/html/msg/Imu.html}}
 
 \subsection{Odometría basada en encoders}
 
