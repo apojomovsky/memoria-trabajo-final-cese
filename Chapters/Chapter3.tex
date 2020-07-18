@@ -13,10 +13,10 @@ En esta sección se describe la estructura física del robot y se explican los c
 Tal como se menciona en la sección \ref{sec:turtlebot}, el diseño propuesto toma como referencia a la base móvil \textit{open source} Turtlebot 2. Por este motivo, Lubobot también se compone de una base móvil cilindrica de tracción diferencial y la misma funciona como soporte para una estructura escalable en "niveles", gracias a a lo cual el usuario puede agregar nuevos componentes sin dificultad, según los requisitos particulares de su aplicación. En la figura \ref{fig:lubobotURDF} se muestra una representación en 3D de su estructura física en la configuración propuesta.
 
 \begin{figure}[ht]
-    \centering
-    \includegraphics[scale=0.5]{./Figures/lubobot_urdf.png}
-    \caption{Vista frontal del modelo URDF de Lubobot representado en RViz.}
-    \label{fig:lubobotURDF}
+  \centering
+  \includegraphics[scale=0.5]{./Figures/lubobot_urdf.png}
+  \caption{Vista frontal del modelo URDF de Lubobot representado en RViz.}
+  \label{fig:lubobotURDF}
 \end{figure}
 
 \newpage
@@ -36,10 +36,10 @@ Los diferentes componentes funcionales del robot fueron dispuestos en la configu
 \end{itemize}
 
 \begin{figure}[ht]
-    \centering
-    \includegraphics[scale=0.4]{./Figures/distribucion_componentes.png}
-    \caption{Distribución de componentes del robot.}
-    \label{fig:lubobotComponentes}
+  \centering
+  \includegraphics[scale=0.4]{./Figures/distribucion_componentes.png}
+  \caption{Distribución de componentes del robot.}
+  \label{fig:lubobotComponentes}
 \end{figure}
 
 \section{Diagrama en bloques de conexiones}
@@ -47,10 +47,10 @@ Los diferentes componentes funcionales del robot fueron dispuestos en la configu
 En la figura \ref{fig:lubobotComponentes} se muestra el diagrama de conexiones entre los distintos componentes electronicos que componen el sistema y se indica además, el protocolo utilizado para cada una de las mismas. Se decidió dotar al robot de un \textit{router} wifi a bordo de modo a facilitar su conexión con la computadora destinada a hacer de estación de control para el envío de misiones.
 
 \begin{figure}[ht]
-    \centering
-    \includegraphics[scale=0.5]{./Figures/lubobot_conexiones.png}
-    \caption{Diagrama de conexiones de los componentes constitutivos del robot.}
-    \label{fig:lubobotComponentes}
+  \centering
+  \includegraphics[scale=0.5]{./Figures/lubobot_conexiones.png}
+  \caption{Diagrama de conexiones de los componentes constitutivos del robot.}
+  \label{fig:lubobotComponentes}
 \end{figure}
 
 \newpage
@@ -74,14 +74,37 @@ Este conjunto de tareas cumplen la función de \textit{proxy} entre la base móv
 
 \subsection{Interfaz microcontrolador-ROS}
 
-Esta interfaz involucró la migración de la librería rosserial, mencionada en la sección \ref{sec:rosserial}, la cual posibilita entablar una comunicación serial asíncrona entre el microcontrolador y ROS utilizando el protocolo de mensajes estandar del \textit{framework}.
+Esta interfaz involucró la migración de la librería rosserial, mencionada en la sección \ref{sec:rosserial}, que hace posible entablar una comunicación serial asíncrona entre el microcontrolador y el una computadora corriendo ROS mediante su protocolo de mensajes estándar.
 
+\begin{itemize}
+  \item \textbf{Spin de ROS} esta tarea se encarga de llamar al método \file{spin} de la librería rosserial manera periódica. Esta cumple la función de \textit{heartbeat} para la comunicación con la computadora, donde ambas partes se indican mutuamente si existen mensajes o servicios que transmitir.
+  \item \textbf{Suscriptor de ROS} recibe los mensajes y solicitudes de servicios que fueron enviados desde ROS al microcontrolador y llama a las funciones de \textit{callback} requeridas para cada uno de ellos.
+  \item \textbf{Publicador de ROS} despacha los mensajes y solicitudes de servicios que salen del microcontrolador.
+\end{itemize}
 
 \section{Implementación de software}
 
-\subsection{Paquete Lubobot para ROS}
+En esta sección se entra en detalle sobre la organización del código y archivos que acompañan al robot propuesto en este trabajo.
 
-\subsection{IMU y estimador de orientación}
+\subsection{Metapaquete Lubobot para ROS}
+
+En esta sección se explica la estructura del meta-paquete Lubobot, el cual contiene las herramientas mínimas necesarias para comandar, modificar e inspeccionar el robot con ROS.
+
+Como se describió en la sección \ref{sec:organizacionArchivos}, se considera una buena práctica el utilizar un metapaquete para contener varios paquetes que estan relacionados entre sí. Siguiendo estas recomendaciones, el software que acompaña al robot propuesto se organiza de la siguiente manera:
+
+\begin{itemize}
+  \item \textbf{lubobot\_description} incluye los archivos de descripción del robot en formato URDF y los archivos de visualización para RViz.
+  \item \textbf{lubobot\_msgs} incluye los mensajes utilizados para intercambiar información entre el firmware y ros, a través de rosserial.
+  \item \textbf{lubobot\_drivers} incluye el código de fuente para los nodos o programas que monitorean los sensores del robot, así como los que envían comandos a los actuadores.
+\end{itemize}
+
+\subsection{Nodo re-publicador de IMU ``lubo\_imu\_relay''}
+
+Este nodo se encuentra suscripto a los mensajes del tipo \file{lubo\_imu}, el cual se compone de las lecturas crudas de orientación y aceleración angular. Así, el programa se encarga de procesarlos a medida que llegan, agregandole información de tiempo y secuencia para luego republicarlos en el formato de mensaje estándar de ROS para unidades de medición inercial del tipo \file{sensor\_msgs/Imu}\protect\footnotemark.
+
+El lector podría preguntarse por qué de no se eligió publicar el mensaje con el tipo estándar desde el microcontrolador directamente y ahorrarse la existencia de este nodo. La respuesta es que los mensajes estandares de ROS en general no resultan adecuados para dispositivos con poca memoria RAM y buses de transmisión como los que se encuentran típicamente en un microcontrolador. El uso de mensajes especiales diseñados específicamente para este fin, permitieron lograr un aumento en la frecuencia del mensaje y a su vez, la publicación de otros mensajes en simultáneo sin saturar el bus.
+
+\footnotetext{\url{http://docs.ros.org/kinetic/api/sensor_msgs/html/msg/Imu.html}}
 
 \subsection{Odometría basada en encoders}
 
@@ -90,4 +113,3 @@ Esta interfaz involucró la migración de la librería rosserial, mencionada en 
 \subsection{Configuración del paquete ros\_localization}
 
 \subsection{Configuración del paquete de navegación de ROS}
- 

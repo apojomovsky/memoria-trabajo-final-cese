@@ -11,7 +11,7 @@ Típicamente denominado ROS, es un framework de robótica de código abierto, el
 
 ROS ofrece un variado set de herramientas que facilitan las tareas del roboticista en tareas tales como paso de mensajes, computación distribuida e implementación de algoritmos para aplicaciones robóticas.
 
-\subsection{Organización de archivos}
+\subsection{Organización de archivos}\label{sec:organizacionArchivos}
 
 Es adecuado considerar a ROS como algo más que un framework de desarrollo y referirnos a el como un meta-sistema-operativo, ya que ofrece no solo herramientas y librerías sino también funciones similares a las de un sistema operativo. Entre ellas, podemos citar su abstracción del hardware, manejo de paquetes y un completo \textit{toolchain} de compilación. Así también, tal como en un sistema operativo ``real'', los archivos que componen ROS se encuentran organizados en el disco duro de una manera particular, la cual se expresa en la figura \ref{fig:rosSistemaDeArchivos}.
 
@@ -117,7 +117,68 @@ En la figura \ref{fig:navigationStack} se puede apreciar como se encuentra organ
 
 Los mapas global y local son utilizados por los planeadores global y local, respectivamente. El planeador global se encarga de generar un plan para ir de un punto a otro del mapa homónimo. Por otro lado, el local se encarga de controlar los distintos actuadores del robot, por ejemplo las ruedas, para llevar a cabo el plan global pero a la vez que esquiva los obstaculos cercanos que puedan aparecer, incluso si los mismos no se encontrasen registrados en el mapa global. Esto resulta especialmente útil a la hora de esquivar obstáculos nuevos, hasta el momento desconocidos.
 
-\section{iRobot Roomba 500}
+\newpage
+
+\section{Conceptos de robótica móvil}
+
+En esta sección se introduce a algunos conceptos de robótica móvil que resultan de especial importancia para la comprensión en detalle del trabajo expuesto en los siguientes capítulos.
+
+\subsection{Cinemática de un robot de tracción diferencial}
+
+Este tipo de tracción se caracteriza por disponer de dos ruedas situadas sobre el mismo eje horizontal con la particularidad de poder ser comandadas individualmente, es decir, el sentido y velocidad de giro de cada una es independiente de la otra.
+
+Las ventajas de este tipo de movimiento que lo hacen especialmente útil para aplicaciones como las del presente trabajo son las siguientes:
+
+\begin{itemize}
+    \item Los cálculos matemáticos requeridos para describirlo son sencillos de calcular y en consecuencia, de aplicar.
+    \item Hace posible realizar giros de 360 grados alrededor del eje vertical.
+    \item Es la opción elegida por los fabricantes para bases móviles comerciales de bajo costo, como el Roomba 500 descripto en la sección \ref{sec:roomba}.
+\end{itemize}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.8]{./Figures/diff_drive.png}
+    \caption{Descripción de la trayectoria de un robot de tracción diferencial con rueda ``loca'' o \textit{caster}.}
+    \label{fig:diffdrive}
+\end{figure}
+
+Como se muestra en la figura \ref{fig:diffdrive}, es posible controlar la trayectoria descripta por el robot en un plano $(X,Y)$ mediante la manipulación de las velocidad lineal $v$ y angular $w$ del conjunto\citep{BOOK:3}. En un sistema de tracción diferencial, las ecuaciones que describen la velocidad lineal $v$ y angular $w$ son las siguientes:
+
+\begin{equation}
+    \label{eq:diffDriveLinear}
+    v = \frac{1}{2} \frac{V_i + V_d}{V_i - V_d}
+\end{equation}
+
+\begin{equation}
+    \label{eq:diffDriveAngular}
+    w = \frac{V_i - V_d}{l}
+\end{equation}
+
+donde $V_i$ y $V_d$ representan las velocidades de desplazamiento lineal de las ruedas izquierda y derecha, respectivamente y $l$ es la distancia entre ambas ruedas sobre el eje de giro.
+
+Se generan tres casos particulares dignos de mención:
+\begin{itemize}
+    \item Si $V_i = V_d$, se tendrá un movimiento lineal en línea recta por lo que la velocidad angular $w$ será nula.
+    \item Si $V_i = - V_d$, entonces solo habrá velocidad angular $w$ y la velocidad lineal $v$ del conjunto será nula.
+    \item Si $V_i = 0$, entonces se tendrá una rotación en sentido anti-horario alrededor de la rueda izquierda con un radio de giro $l$. Se verá el mismo efecto para $V_d = 0$, esta vez con rotación en sentido horario.
+\end{itemize}
+
+\subsection{Odometría basada en encoders}
+
+La odometría es el estudio de la estimación de la posición de robots con ruedas durante la navegación, para la cual se utiliza información sobre la rotación de las ruedas que permiten estimar cambios en la posición de la base móvil en el tiempo, como se muestra en la figura \ref{fig:navigation}.
+
+Este modelo supone que el desplazamiento de las ruedas es traducible al desplazamiento real del robot. Sin embargo, en la práctica esto no es necesariamente cierto debido a la presencia de distintos tipos de errores tales como ruedas desiguales, medidas inexactas o el mismo resbalamiento de las ruedas en la superficie\citep{PAPER:2}. Estos motivos son los causantes de un error acumulativo no acotado que hacen que este método solo resulte apto para estimaciones en intérvalos de distancia pequeños.
+
+Resulta necesario enriquecer esta estimación mediante su fusión con otras fuentes de información diferentes, tales como las que proveen las unidades de medición inercial, odometría visual mediante cámaras, sensores de profundidad, etc a modo de obtener una estimación final mas precisa. En este trabajo se aborda el proceso de fusión de varios de los sensores mencionados, y permite además, agregar otras fuentes de información con relativa facilidad.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.8]{./Figures/navigation.png}
+    \caption{Trayectoria real descripta por un robot de tracción diferencial.}
+    \label{fig:navigation}
+\end{figure}
+
+\section{iRobot Roomba 500}\label{sec:roomba}
 
 El Roomba es un robot de limpieza fabricado y comercializado por la compañía iRobot. El primer modelo salió al mercado en el año 2002 y ha recibido siete actualizaciones desde entonces. En cada iteración, se han mejorado aspectos tanto de diseño como funcionalidad y esto le ha permitido mantenerse como el robot de limpieza con mas unidades vendidas en el mundo.
 
@@ -228,10 +289,10 @@ Las configuraciones típicas de una IMU continenen un acelerómetro, un giroscop
 
 \footnotetext{\url{http://skiras.blogspot.com/2012/10/4copter-conceptos-i-ejes-giros-y-fuerzas.html}}
 
-\subsection{Sensor MPU6050}
+\subsection{Sensor MPU6050}\label{sec:mpu6050}
 
 El dispositivo MPU-6050 mostrado en la figura \ref{fig:mpu6050}, combina en el mismo chip un giroscopio de 3 ejes con un acelerómetro también de 3 ejes. Mediante lo que el fabricante denomina \textit{Digital Motion Processor} o DMP, esta IMU es capaz de procesar algoritmos de fusión de datos de 6 ejes, usualmente ejecutados en un microcontrolador o DSP mediante un filtro de Kalman o similar. Si bien el chip no incluye un magnetómetro, sí ofrece una interfaz I2C que posibilita conectarla a un magnetómetro externo, de este modo el DMP puede aprovechar la información de campo magnético en en sus algoritmos de fusión para generar resultados más precisos.
-    
+
 \begin{figure}[ht]
     \centering
     \includegraphics[scale=0.5]{./Figures/mpu6050.jpg}
