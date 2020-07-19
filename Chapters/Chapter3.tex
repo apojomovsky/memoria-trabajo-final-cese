@@ -115,59 +115,43 @@ Está formada dos tareas que en conjunto funcionan como \textit{proxy} entre la 
   \item \textbf{Envío de comandos a actuadores}: realiza el despacho de comandos a los distintos actuadores disponibles en base a las órdenes recibidas desde ROS. Si bien esta tarea puede considerarse de carácter asíncrono, se implementó en la misma un mecanismo de \textit{watchdog} para evitar que un posible fallo en la comunicación con ROS ponga en peligro la integridad del usuario y del robot. Para esto, la tarea verifica cada 100 ms la existencia de un comando de velocidad nuevo. En su ausencia, envía una orden para detener el robot.
 \end{itemize}
 
-Se escribió una biblioteca en lenguaje C++ llamada "Roomba600", que ofrece una interfaz simplificada para la interacción del microcontrolador con el Roomba. Está implementada sobre la capa de abstracción STM32CubeHAL ofrecida por el fabricante ST, que permite el manejo de puertos serie UART con mecanismos de control asíncronos aptos para RTOS.
+Se escribió una biblioteca en lenguaje C++ bajo el nombre de ``Roomba600'' que ofrece una interfaz simplificada para la interacción del microcontrolador con el Roomba. Está implementada sobre la capa de abstracción STM32CubeHAL ofrecida por el fabricante ST, que permite el manejo de puertos serie UART con mecanismos de control asíncronos aptos para RTOS.
 
-El protocolo Open Interface permite la interacción con todos los sensores y actuadores disponibles en el robot Roomba. Sin embargo, los requerimientos del presente proyecto se limitan al control de velocidad de ruedas y lectura de encoders, por lo que en la librería presentada se implementan las funcionalidades mencionadas, dejando los demás métodos pendientes para un trabajo futuro. En el algoritmo \ref{cod:Roomba600} se muestra la interfaz de la clase Roomba600 con los métodos actualmente implementados.
-
-
-\begin{lstlisting}[label=cod:Roomba600,caption=Interfaz de la clase Roomba600 que implementa una parte de la Open Interface.\protect\footnotemark]
+El protocolo Open Interface permite la interacción con todos los sensores y actuadores disponibles en el robot Roomba. Sin embargo, los requerimientos del presente proyecto se limitan al control de velocidad de ruedas y lectura de encoders, por lo que en la librería presentada se implementan solamente las interfaces para dichas funciones, dejando los demás métodos pendientes de implementación para un trabajo futuro. En el código \ref{cod:Roomba600} se muestra la interfaz de la clase Roomba600 con los métodos actualmente implementados.
 
 
+\begin{lstlisting}[label=cod:Roomba600,caption=Interfaz de la clase Roomba600 que implementa el protocolo Open Interface.\protect\footnotemark]
 class Roomba600 {
 public:
 	/// @brief Constructs Roomba600 object with given parameters
 	/// @param _uart pointer to the STM32CubeHAL UART handler
 	/// @param _brcPort pointer to the STM32CubeHAL BRC port
 	/// @param _brcPin pointer to the STM32CubeHAL BRC pin
-	create2(UART_HandleTypeDef *_uart, GPIO_TypeDef *_brcPort,
+	Roomba600(UART_HandleTypeDef *_uart, GPIO_TypeDef *_brcPort,
       uint16_t _brcPin);
-
-  /// Destructor
-	~create2();
-
-	/// @brief Initializes communication.
+	/// @brief Initializes data stream.
 	void start();
-
 	/// @brief Resets communication.
 	void reset();
-
 	/// @brief Stops robot and data stream.
 	void stop();
-
 	/// @brief Switches to safe mode.
 	void goSafeMode();
-
 	/// @brief Switches to full mode (be careful).
 	void goFullMode();
-
 	/// @brief Switches to passive mode.
 	void goPassiveMode();
-
-	/// @brief Starts a clean mission.
-	void clean();
-
-	/// @brief Starts a clean mission.
-	void drive(int16_t velocity, int16_t radius);
-
-	/// @brief Starts a clean mission.
+  /// @brief Sets independent velocity set-points for each wheel in m/s.
+  /// Relies on internal PID loop from the Roomba.
 	void driveVelocity(int16_t leftVel, int16_t rightVel);
-
-	/// @brief Starts a clean mission.
-	void drivePWM(int16_t rightPWM, int16_t leftPWM);
-
+	/// @brief Sets independent PWM values to each wheel.
+  void drivePWM(int16_t leftPWM, int16_t rightPWM);
+	/// @brief Pauses the stream of sensor data reads.
+	void pauseStream();
+	/// @brief Resumes the stream of sensor data reads.
+	void resumeSteam();
 	/// @brief Retrieves left encoder value.
 	uint16_t readLeftEncoder();
-
 	/// @brief Retrieves right encoder value.
   uint16_t readRightEncoder();
 }
@@ -184,6 +168,31 @@ Esta interfaz involucró la migración de la biblioteca rosserial, mencionada en
   \item \textbf{Suscriptor de ROS} recibe los mensajes y solicitudes de servicios que fueron enviados desde ROS al microcontrolador y llama a las funciones de \textit{callback} requeridas para cada uno de ellos.
   \item \textbf{Publicador de ROS} despacha los mensajes y solicitudes de servicios que salen del microcontrolador.
 \end{itemize}
+
+Para la migración de la biblioteca rosserial fué necesario implementar una clase cuyas interfaces sean compatibles con la definición mostrada en el código \ref{cod:stm32hardware}.
+
+\begin{lstlisting}[label=cod:stm32hardware, caption=Interfaz de la clase STM32Hardware requerida por la biblioteca rosserial.\protect\footnotemark]
+
+class STM32Hardware {
+  public:
+	  /// @brief Constructs STM32Hardware object with given parameter
+	  /// @param huart_ pointer to the STM32CubeHAL UART handler
+    STM32Hardware(UART_HandleTypeDef *huart_);
+	  /// @brief Initializes comunication.
+    void init();
+	  /// @brief Reads from input buffer.
+    int read();
+	  /// @brief Writes data of a given length.
+	  /// @param data pointer to bytes array.
+	  /// @param length number of bytes to transmit.
+    void write(uint8_t* data, int length);
+	  /// @brief Returns time elapsed since startup in milliseconds.
+    unsigned long time();
+};
+
+\end{lstlisting}
+
+\footnotetext{Clase STM32Hardware implementada en el proyecto \url{https://github.com/apojomovsky/lubobot/blob/master/firmware/proyecto_unificado/ros_lib/STM32Hardware.h}}
 
 \section{Implementación de software}
 
@@ -221,15 +230,33 @@ El microcontrolador publica los mensajes a una frecuencia por defecto de 20 hz, 
 
 \subsection{Configuración del paquete ros\_localization}
 
-
-
 \subsection{Configuración del paquete de navegación de ROS}
 
-\section{Documentación en formato Wiki}
+\section{Herramientas ofrecidas al usuario}
 
-Se ofrece en conjunto con el repositorio Git\protect\footnotemark[2], una sección aparte dedicada exclusivamente a la documentación del robot. Para este fin se utilizó la funcionalidad de \textit{Wiki} ofrecida por la plataforma Github.
+De acuerdo a los objetivos del presente trabajo, el desarrollo del robot móvil Lubobot está acompañado de una serie de herramientas y documentos con los que se pretende facilitar el proceso de adopción de la plataforma por nuevos usuarios.
 
-\footnotetext[2]{Repositorio principal del proyecto Lubobot \url{https://github.com/apojomovsky/lubobot}}
+\subsection{Entorno de desarrollo encapsulado}
+
+La instalación de un entorno de desarrollo compatible con un proyecto puede tornarse una tarea muy frustrante para el usuario si no se tomen los los necesarios. Casos como el del uso de un sistema operativo total o parcialmente incompatible, diferencias de versiones de las bibliotecas requeridas e instaladas, etc. son solo algunos de problemas con los que el usuario promedio podría encontrarse.
+
+Con la intención de simplificar al máximo el proceso de instalación de dependencias, se provee de un entorno de desarrollo encapsulado utilizando la tecnología de \textit{containers} mediante la plataforma Docker\protect\footnotemark. Esta utilizad permite la generación de entornos de trabajo aislados del sistema operativo \textit{host} mediante el uso de un archivo especial denominado Dockerfile, en el que se detalla una lista de acciones a seguir para generar el entorno de trabajo. En el presente trabajo, se incluyen los siguientes archivos:
+
+\begin{itemize}
+  \item \textbf{Dockerfile}: continene las definiciones para generar el entorno de trabajo con todas las dependencias necesarias para la ejecución del software del robot en ROS.
+  \item \textbf{build\_docker.sh}: \textit{script} encargado de generar el entorno de desarrollo, solo es necesario ejecutarlo una única vez.
+  \item \textbf{run\_docker.sh}: \textit{script} encargado de lanzar el entorno de desarrollo. El usuario deberá llamarlo cada vez que desee arrancar el sistema.
+\end{itemize}
+
+\footnotetext{Página web del proyecto Docker \url{https://www.docker.com}}
+
+Se proveen instrucciones específicas sobre como utilizar y expandir la configuración inicial propuesta de esta herramienta en la Wiki del proyecto.
+
+\subsection{Documentación en formato Wiki}
+
+Se ofrece en conjunto con el repositorio Git\protect\footnotemark, una sección aparte dedicada exclusivamente a la documentación del robot. Para este fin se utilizó la funcionalidad de \textit{Wiki} ofrecida por la plataforma Github.
+
+\footnotetext{Repositorio principal del proyecto Lubobot \url{https://github.com/apojomovsky/lubobot}}
 
 
 En la figura \ref{fig:wiki} se muestra la página principal de la \textit{Wiki} en su primera iteración, donde se realiza una breve presentación del proyecto, seguido de \textit{links} de interés con tutoriales y especificaciones técnicas.
@@ -237,11 +264,11 @@ En la figura \ref{fig:wiki} se muestra la página principal de la \textit{Wiki} 
 \begin{figure}[ht]
   \centering
   \includegraphics[scale=0.4]{./Figures/wiki.png}
-  \caption{Página principal de la \textit{wiki} de LuboBot.\protect\footnotemark[3]}
+  \caption{Página principal de la \textit{wiki} de LuboBot.\protect\footnotemark}
   \label{fig:wiki}
 \end{figure}
 
-\footnotetext[3]{Wiki del proyecto Lubobot \url{https://github.com/apojomovsky/lubobot/wiki}}
+\footnotetext{Wiki del proyecto Lubobot \url{https://github.com/apojomovsky/lubobot/wiki}}
 
 Se decidió utilizar este formato de documentación en favor de incluir todo en el archivo \file{README.md} por una suma de motivos entre los que se destacan:
 
