@@ -107,20 +107,50 @@ Como se describió en la sección \ref{sec:organizacionArchivos}, se considera u
 
 \subsection{Nodo re-publicador de IMU ``lubo\_imu\_relay''}
 
-Este nodo se encuentra suscripto a los mensajes del tipo \file{lubo\_imu}, compuesto por las lecturas crudas de orientación y aceleración angular provenientes del microcontrolador. El programa se encarga de procesarlos a medida que llegan, agregandoles información de tiempo y secuencia y luego los republica en el formato de mensaje estándar de ROS para unidades de medición inercial\protect\footnotemark.
+Se encuentra suscripto a los mensajes del tipo \file{lubo\_imu}, compuesto por las lecturas crudas de orientación y aceleración angular provenientes del microcontrolador. El programa se encarga de procesarlos a medida que llegan, agregandoles información de tiempo y secuencia y luego los republica en el formato de mensaje estándar de ROS para unidades de medición inercial\protect\footnotemark.
 
-Cabe preguntarse por qué de no evitar este nodo y publicar  mensajes con el tipo estándar directamente desde el microcontrolador. Hay un par de motivos específicos que son válidos no solo para este mensaje en particular, sino para la mayoría de los mensajes intercambiados con el microcontrolador:
+Cabe preguntarse por qué de no evitar este nodo y publicar mensajes con el tipo estándar directamente desde el microcontrolador. Hay un par de motivos específicos que son válidos no solo para este mensaje en particular, sino también para la gran mayoría de los mensajes intercambiados con el microcontrolador:
 \begin{itemize}
   \item los mensajes estandar de ROS poseen un \textit{footprint} en memoria poco adecuado para dispositivos con poca memoria RAM.
   \item el bus UART utilizado para la comunicación con el microcontrolador ofrece un ancho de banda ajustado que se satura rápidamente con mensajes del tipo estándar.
 \end{itemize}
 
-\footnotetext{Imagen tomada de \url{http://docs.ros.org/kinetic/api/sensor_msgs/html/msg/Imu.html}}
+\footnotetext{Definición de mensaje estándar de ROS para Imu \url{http://docs.ros.org/kinetic/api/sensor_msgs/html/msg/Imu.html}}
 
-\subsection{Odometría basada en encoders}
+\subsection{Nodo publicador de odometría ``lubo\_odom\_node''}
 
-\subsection{Matriz de covarianza}
+Está suscripto a los mensajes del tipo \file{lubo\_encoders} que provienen del microcontrolador. El mensaje se compone de las lecturas de los encoders izquierdo y derecho de la base Roomba. Cabe mencionar que las lecturas de ambos encoders deben tomarse en simultaneo para el correcto cálculo de la odometría, es por esto que el mensaje utilizado incluye ambas lecturas.
+
+El microcontrolador publica los mensajes a una frecuencia por defecto de 20 hz, pero este y otros parámetros son también configurables desde la estación de control en \textit{runtime}. Esto se logra gracias al mecanismo de configuración \file{rosparam}, que ahorra la necesidad de recompilar el código cada vez que es necesario actualizar parámetros.
 
 \subsection{Configuración del paquete ros\_localization}
 
+
+
 \subsection{Configuración del paquete de navegación de ROS}
+
+\section{Documentación en formato Wiki}
+
+Se ofrece en conjunto con el repositorio Git\protect\footnotemark[2], una sección aparte dedicada exclusivamente a la documentación del robot. Para este fin se utilizó la funcionalidad de \textit{Wiki} ofrecida por la plataforma Github.
+
+\footnotetext[2]{Repositorio principal del proyecto Lubobot \url{https://github.com/apojomovsky/lubobot}}
+
+
+En la figura \ref{fig:wiki} se muestra la página principal de la \textit{Wiki} en su primera iteración, donde se realiza una breve presentación del proyecto, seguido de \textit{links} de interés con tutoriales y especificaciones técnicas.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.4]{./Figures/wiki.png}
+  \caption{Página principal de la \textit{wiki} de LuboBot.\protect\footnotemark[3]}
+  \label{fig:wiki}
+\end{figure}
+
+\footnotetext[3]{Wiki del proyecto Lubobot \url{https://github.com/apojomovsky/lubobot/wiki}}
+
+Se decidió utilizar este formato de documentación en favor de incluir todo en el archivo \file{README.md} por una suma de motivos entre los que se destacan:
+
+\begin{itemize}
+  \item organización de archivos en un sub-repositorio proveído de manera automática por Github, con historial de cambios separado del repositorio principal.
+  \item estructura de archivos múltiples organizados en forma de árbol, que no solo facilitan la búsqueda de información por parte del usuario sino que también facilita las tareas de mantenimiento.
+  \item generación automática de índice en forma de \textit{sidebar} en el sitio que facilita la navegación entre las páginas que componen el sitio.
+\end{itemize}
