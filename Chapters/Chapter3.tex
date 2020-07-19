@@ -1,6 +1,42 @@
 % !TeX root = ./../memoria.tex
 \chapter{Diseño e implementación}
 
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% parámetros para configurar el formato del código en los entornos lstlisting
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  %escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  %extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  %frame=single,	                % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=[ANSI]C,                % the language of the code
+  %otherkeywords={*,...},           % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  title=\lstname,                  % show the filename of files included with \lstinputlisting; also try caption instead of title
+  morecomment=[s]{/*}{*/}
+}
+
 \label{Capitulo3}
 
 En este capítulo se exponen las decisiones de diseño tomadas para la elaboración del robot propuesto. Se detallan las dimensiones de las piezas que constituyen el chasis, su esquema de conexiones eléctricas y finalmente la implementación del software y el firmware embebido.
@@ -72,12 +108,72 @@ Debido a la necesidad de atender rutinas naturaleza tanto síncrona como asíncr
 
 \subsection{Interfaz Roomba-microcontrolador}
 
-Este conjunto de tareas cumplen la función de \textit{proxy} entre la base móvil Roomba y el resto del sistema. El microcontrolador se ocupa de la serialición y des-serialización de los paquetes intercambiados con el robot mediante el protocolo Open Interface, detallado en la sección \ref{sec:openInterface}. Las tareas responsables del manejo de esta función se describen en el apartado siguiente.
+Está formada dos tareas que en conjunto funcionan como \textit{proxy} entre la base móvil Roomba y el resto del sistema. El microcontrolador se ocupa de la serialición y des-serialización de los paquetes intercambiados con el robot mediante el protocolo Open Interface Las tareas responsables del manejo de esta función se describen en el apartado siguiente.
 
 \begin{itemize}
   \item \textbf{Solicitud de lectura de sensores}: realiza la lectura de cada uno de los dos encoders disponibles de manera periódica cada 100 ms, actualizando las variables internas de estado en cada iteración con el valor actualizado.
   \item \textbf{Envío de comandos a actuadores}: realiza el despacho de comandos a los distintos actuadores disponibles en base a las órdenes recibidas desde ROS. Si bien esta tarea puede considerarse de carácter asíncrono, se implementó en la misma un mecanismo de \textit{watchdog} para evitar que un posible fallo en la comunicación con ROS ponga en peligro la integridad del usuario y del robot. Para esto, la tarea verifica cada 100 ms la existencia de un comando de velocidad nuevo. En su ausencia, envía una orden para detener el robot.
 \end{itemize}
+
+Se escribió una biblioteca en lenguaje C++ llamada "Roomba600", que ofrece una interfaz simplificada para la interacción del microcontrolador con el Roomba. Está implementada sobre la capa de abstracción STM32CubeHAL ofrecida por el fabricante ST, que permite el manejo de puertos serie UART con mecanismos de control asíncronos aptos para RTOS.
+
+El protocolo Open Interface permite la interacción con todos los sensores y actuadores disponibles en el robot Roomba. Sin embargo, los requerimientos del presente proyecto se limitan al control de velocidad de ruedas y lectura de encoders, por lo que en la librería presentada se implementan las funcionalidades mencionadas, dejando los demás métodos pendientes para un trabajo futuro. En el algoritmo \ref{cod:Roomba600} se muestra la interfaz de la clase Roomba600 con los métodos actualmente implementados.
+
+
+\begin{lstlisting}[label=cod:Roomba600,caption=Interfaz de la clase Roomba600 que implementa una parte de la Open Interface.\protect\footnotemark]
+
+
+class Roomba600 {
+public:
+	/// @brief Constructs Roomba600 object with given parameters
+	/// @param _uart pointer to the STM32CubeHAL UART handler
+	/// @param _brcPort pointer to the STM32CubeHAL BRC port
+	/// @param _brcPin pointer to the STM32CubeHAL BRC pin
+	create2(UART_HandleTypeDef *_uart, GPIO_TypeDef *_brcPort,
+      uint16_t _brcPin);
+
+  /// Destructor
+	~create2();
+
+	/// @brief Initializes communication.
+	void start();
+
+	/// @brief Resets communication.
+	void reset();
+
+	/// @brief Stops robot and data stream.
+	void stop();
+
+	/// @brief Switches to safe mode.
+	void goSafeMode();
+
+	/// @brief Switches to full mode (be careful).
+	void goFullMode();
+
+	/// @brief Switches to passive mode.
+	void goPassiveMode();
+
+	/// @brief Starts a clean mission.
+	void clean();
+
+	/// @brief Starts a clean mission.
+	void drive(int16_t velocity, int16_t radius);
+
+	/// @brief Starts a clean mission.
+	void driveVelocity(int16_t leftVel, int16_t rightVel);
+
+	/// @brief Starts a clean mission.
+	void drivePWM(int16_t rightPWM, int16_t leftPWM);
+
+	/// @brief Retrieves left encoder value.
+	uint16_t readLeftEncoder();
+
+	/// @brief Retrieves right encoder value.
+  uint16_t readRightEncoder();
+}
+\end{lstlisting}
+
+\footnotetext{Definición de la clase en el repositorio del proyecto \url{https://github.com/apojomovsky/lubobot/blob/master/firmware/proyecto_unificado/create_2/Inc/create2.h}}
 
 \subsection{Interfaz microcontrolador-ROS}
 
