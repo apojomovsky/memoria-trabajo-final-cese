@@ -180,6 +180,7 @@
 \RequirePackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
 \RequirePackage{xcolor}
 \RequirePackage{subcaption}
+\RequirePackage{amsmath}
 
 \addbibresource{references.bib} % The filename of the bibliography
 

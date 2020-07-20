@@ -118,7 +118,7 @@ En la figura \ref{fig:tf} se visualiza un robot con múltiples articulaciones. D
 
 \footnotetext{Imagen tomada de \url{http://wiki.ros.org/tf?action=AttachFile&do=get&target=frames2.png}}
 
-\subsection{Paquete de localización robot\_localization}
+\subsection{Paquete de localización robot\_localization}\label{sec:robotLocalization}
 
 El paquete robot\_localization es una colección de estimadores no lineales para robots en espacios 2D y 3D, aunque para el aclance de este trabajo solo se hace hincapié en entornos en dos dimensiones.
 
@@ -162,8 +162,6 @@ En la figura \ref{fig:navigationStack} se puede apreciar cómo se encuentra orga
 
 Los mapas global y local son utilizados por los planeadores global y local, respectivamente. El planeador global se encarga de generar un plan para ir de un punto a otro del mapa homónimo. Por otro lado, el local se encarga de controlar los distintos actuadores del robot, por ejemplo las ruedas, para llevar a cabo el plan global pero a la vez que esquiva los obstáculos cercanos que puedan aparecer, incluso si los mismos no se encontrasen registrados en el mapa global. Esto resulta especialmente útil a la hora de esquivar obstáculos nuevos, hasta el momento desconocidos.
 
-\newpage
-
 \section{Conceptos de robótica móvil}
 
 En esta sección se introduce a algunos conceptos de robótica móvil que resultan de especial importancia para la comprensión en detalle del trabajo expuesto en los siguientes capítulos.
@@ -187,7 +185,7 @@ Las ventajas de este tipo de movimiento que lo hacen especialmente útil para ap
     \label{fig:diffdrive}
 \end{figure}
 
-Como se muestra en la figura \ref{fig:diffdrive}, es posible controlar la trayectoria descripta por el robot en un plano $(X,Y)$ mediante la manipulación de las velocidad lineal $v$ y angular $w$ del conjunto \citep{BOOK:3}. En un sistema de tracción diferencial, las ecuaciones que describen la velocidad lineal $v$ y angular $w$ son las siguientes:
+Como se muestra en la figura \ref{fig:diffdrive}, es posible controlar la trayectoria descripta por el robot en un plano $(X,Y)$ mediante la manipulación de las velocidad lineal $v$ y angular $w$ del conjunto \citep{BOOK:3}. En un sistema de tracción diferencial, las fórmulas que describen la velocidad lineal $v$ y angular $w$ se muestran en la ecuacion \ref{eq:diffDriveLinear} y \ref{eq:diffDriveAngular}, respectivamente.
 
 \begin{equation}
     \label{eq:diffDriveLinear}

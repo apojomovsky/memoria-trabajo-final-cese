@@ -21,7 +21,7 @@
   %frame=single,	                % adds a frame around the code
   keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
   keywordstyle=\color{blue},       % keyword style
-  language=[ANSI]C,                % the language of the code
+  language=C++,                % the language of the code
   %otherkeywords={*,...},           % if you want to add more keywords to the set
   numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
   numbersep=5pt,                   % how far the line-numbers are from the code
@@ -230,7 +230,109 @@ El microcontrolador publica los mensajes a una frecuencia por defecto de 20 hz, 
 
 \subsection{Configuración del paquete ros\_localization}
 
+Así como se describió en la subsección \ref{sec:robotLocalization}, este paquete permite fusionar un número arbitrario de sensores dentro de su estimador. Existen varias formas de configurar este paquete, pero la que resultó mas ordenada y legible fué a criterio del autor, la de utilizar un archivo de configuración del tipo YAML, el cual es configurable para cargarse al servidor de parámetros de ROS al iniciar la ejecución.
+
+Como parte de la configuración del paquete es necesario definir una matriz de booleanos para cada una de las fuentes de información o sensores con los que se alimenta el estimador. Los campos a definir son los siguientes:
+
+\[
+  \begin{bmatrix}
+    x     & y      & z    \\
+    roll  & pitch  & yaw  \\
+    x'    & y'     & z'   \\
+    roll' & pitch' & yaw' \\
+    x''   & y''    & z''
+  \end{bmatrix}
+\]
+
+\newpage
+
+\newcommand\YAMLcolonstyle{\color{green}\mdseries}
+\newcommand\YAMLkeystyle{\color{black}\bfseries}
+\newcommand\YAMLvaluestyle{\color{blue}\mdseries}
+
+\makeatletter
+
+% here is a macro expanding to the name of the language
+% (handy if you decide to change it further down the road)
+\newcommand\language@yaml{yaml}
+
+\expandafter\expandafter\expandafter\lstdefinelanguage
+\expandafter{\language@yaml}
+{
+keywords={true,false,null,y,n},
+keywordstyle=\color{darkgray}\bfseries,
+basicstyle=\YAMLkeystyle,                                 % assuming a key comes first
+sensitive=false,
+comment=[l]{\#},
+morecomment=[s]{/*}{*/},
+commentstyle=\color{mygreen}\ttfamily,
+stringstyle=\YAMLvaluestyle\ttfamily,
+moredelim=[l][\color{orange}]{\&},
+moredelim=[l][\color{magenta}]{*},
+moredelim=**[il][\YAMLcolonstyle{:}\YAMLvaluestyle]{:},   % switch to value style at :
+morestring=[b]',
+morestring=[b]",
+literate =    {---}{{\ProcessThreeDashes}}3
+{>}{{\textcolor{red}\textgreater}}1
+{|}{{\textcolor{red}\textbar}}1
+{\ -\ }{{\mdseries\ -\ }}3,
+}
+
+% switch to key style at EOL
+\lst@AddToHook{EveryLine}{\ifx\lst@language\language@yaml\YAMLkeystyle\fi}
+\makeatother
+
+\newcommand\ProcessThreeDashes{\llap{\color{cyan}\mdseries-{-}-}}
+
+\begin{lstlisting}[language=yaml, label=cod:rosLocalization, caption=Interfaz de la clase STM32Hardware requerida por la biblioteca rosserial.\protect\footnotemark]
+
+# Odometry configuration
+odom_frame: odom
+base_link_frame: base_link
+
+# Input topic name for odometry
+odom0: /odom
+
+# For the odometry source, we only consider vx, vy and vyaw
+odom0_config: [false, false, false,
+               false, false, false,
+               true,  true,  false,
+               false, false, true,
+               false, false, false]
+
+odom0_queue_size: 2
+odom0_nodelay: false
+odom0_differential: false
+odom0_relative: false
+odom0_pose_rejection_threshold: 5
+odom0_twist_rejection_threshold: 1
+
+# IMU configuration
+
+# Input topic name for IMU
+imu0: /imu/data_raw
+
+# For the IMU source, we only consider yaw, vyaw and ax
+imu0_config: [false, false, false,
+              false, false, true,
+              false, false, false,
+              false, false, true,
+              true, false, false]
+
+imu0_nodelay: false
+imu0_differential: false
+imu0_relative: true
+imu0_queue_size: 5
+imu0_pose_rejection_threshold: 0.8
+imu0_twist_rejection_threshold: 0.8
+imu0_linear_acceleration_rejection_threshold: 0.8
+imu0_remove_gravitational_acceleration: true
+
+\end{lstlisting}
+
 \subsection{Configuración del paquete de navegación de ROS}
+
+% TODO
 
 \section{Herramientas ofrecidas al usuario}
 
