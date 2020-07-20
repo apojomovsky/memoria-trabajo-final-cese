@@ -122,7 +122,7 @@ En la figura \ref{fig:tf} se visualiza un robot con múltiples articulaciones. D
 
 El paquete robot\_localization es una colección de estimadores no lineales para robots en espacios 2D y 3D, aunque para el aclance de este trabajo solo se hace hincapié en entornos en dos dimensiones.
 
-Cada uno de estos estimadores permite fusionar un número arbitrario de sensores (IMUs, fuentes de odometría, sistemas de localización interna, receptores GPS, etc.) a su salida genera un vector de 15 dimensiones con el estado del robot ($x$, $y$, $z$, $roll$, $pitch$, $yaw$, $x'$, $y'$, $z'$, $roll'$, $pitch'$, $yaw'$, $x''$, $y''$, $z''$).
+Cada uno de estos estimadores permite fusionar un número arbitrario de sensores (IMUs, fuentes de odometría, sistemas de localización interna, receptores GPS, etc.) a su salida genera un vector de 15 dimensiones con el estado del robot ($x$, $y$, $z$, $roll$, $pitch$, $yaw$, $\dot{x}$, $\dot{y}$, $\dot{z}$, $\dot{roll}$, $\dot{pitch}$, $\dot{yaw}$, $\ddot{x}$, $\ddot{y}$, $\ddot{z}$).
 
 Todos los estimadores de estados controlados por este paquete aceptan mediciones provenientes de cualquier sensor de pose siempre y cuando los mismos publiquen en alguno de los tres tipos de mensaje compatibles que se citan a continuación:
 
@@ -136,6 +136,18 @@ Todos los estimadores de estados controlados por este paquete aceptan mediciones
 Para este trabajo se hace uso de los dos primeros tipos de mensajes citados en la lista.
 
 En base a estas mediciones, los estimadores publican los valores de estado filtrados de posición, orientación y velocidades lineal y angular mediante un mensaje del tipo \file{nav\_msgs/Odometry} y opcionalmente, valores de aceleración (no utilizadas en el presente trabajo).
+
+El sotware permite a los usuarios decidir cuál de los campos de información proveidos por los sensores van a ser tomados en cuenta para la fusión en el estimador. Por este motivo, como parte de la configuración del paquete es necesario definir una matriz de booleanos para cada una de las fuentes de información o sensores para informar al estimador cuáles son los campos a tener en cuenta. A continuación se muestra la matrix completa de variables requerida para la configuración de cada una de las fuentes:
+
+\[
+    \begin{bmatrix}
+        x          & y           & z         \\
+        roll       & pitch       & yaw       \\
+        \dot{x}    & \dot{y}     & \dot{z}   \\
+        \dot{roll} & \dot{pitch} & \dot{yaw} \\
+        \ddot{x}   & \ddot{y}    & \ddot{z}
+    \end{bmatrix}
+\]
 
 
 \subsection{Paquete de navegación ros\_navigation\_stack}

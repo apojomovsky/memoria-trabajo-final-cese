@@ -230,19 +230,14 @@ El microcontrolador publica los mensajes a una frecuencia por defecto de 20 hz, 
 
 \subsection{Configuración del paquete ros\_localization}
 
-Así como se describió en la subsección \ref{sec:robotLocalization}, este paquete permite fusionar un número arbitrario de sensores dentro de su estimador. Existen varias formas de configurar este paquete, pero la que resultó mas ordenada y legible fué a criterio del autor, la de utilizar un archivo de configuración del tipo YAML, el cual es configurable para cargarse al servidor de parámetros de ROS al iniciar la ejecución.
+Así como se describió en la subsección \ref{sec:robotLocalization}, es necesario definir una matriz de booleanos para cada uno de los sensores o fuentes de información que consume el estimador. Para el presente trabajo, se utilizaron las mediciones provistas por dos fuentes distintas:
 
-Como parte de la configuración del paquete es necesario definir una matriz de booleanos para cada una de las fuentes de información o sensores con los que se alimenta el estimador. Los campos a definir son los siguientes:
+\begin{itemize}
+  \item unidad de medición inercial.
+  \item odometría generada a partir encoders.
+\end{itemize}
 
-\[
-  \begin{bmatrix}
-    x     & y      & z    \\
-    roll  & pitch  & yaw  \\
-    x'    & y'     & z'   \\
-    roll' & pitch' & yaw' \\
-    x''   & y''    & z''
-  \end{bmatrix}
-\]
+Para la configuración del paquete se utilizó un archivo del tipo YAML que se carga de manerara automática al servidor de parámetros de ROS al inicio de cada ejecución. Las partes mas importantes de este archivo residen en la configuración de campos a ser tomados en cuenta por el estimador para cada una de las fuentes de información. Una versión reducida de esta configuración se muestra en el bloque de código \ref{cod:rosLocalization}.
 
 \newpage
 
@@ -300,13 +295,6 @@ odom0_config: [false, false, false,
                false, false, true,
                false, false, false]
 
-odom0_queue_size: 2
-odom0_nodelay: false
-odom0_differential: false
-odom0_relative: false
-odom0_pose_rejection_threshold: 5
-odom0_twist_rejection_threshold: 1
-
 # IMU configuration
 
 # Input topic name for IMU
@@ -319,20 +307,12 @@ imu0_config: [false, false, false,
               false, false, true,
               true, false, false]
 
-imu0_nodelay: false
-imu0_differential: false
-imu0_relative: true
-imu0_queue_size: 5
-imu0_pose_rejection_threshold: 0.8
-imu0_twist_rejection_threshold: 0.8
-imu0_linear_acceleration_rejection_threshold: 0.8
-imu0_remove_gravitational_acceleration: true
-
 \end{lstlisting}
 
-\subsection{Configuración del paquete de navegación de ROS}
+\footnotetext{Archivo de configuración YAML completo \url{https://github.com/apojomovsky/lubobot/blob/master/lubobot/config/ekf.yaml}}
 
 % TODO
+% \subsection{Configuración del paquete de navegación de ROS}
 
 \section{Herramientas ofrecidas al usuario}
 
