@@ -71,6 +71,7 @@ La herramienta RViz (o ROS Visualization tool) es la herramienta oficial de visu
     \label{fig:rviz}
 \end{figure}
 
+
 \subsection{Formato universal de descripción de robots URDF}
 
 El formato universal de descripción de robots o \textit{Universal Robot Description System}, comúnmente referido como URDF es un formato estándar para representación de modelos conformados por múltiples piezas conectadas entre sí, como es el caso de brazos robóticos o líneas de ensamblaje. El mismo es ampliamente utilizado dentro del ecosistema de ROS, plataforma donde vio su origen aunque al día de hoy su uso se ha extendido a herramientas fuera del mismo como MATLAB, que permite importar archivos URDF directamente a su \textit{toolbox} de robótica.
@@ -90,6 +91,52 @@ Además de la definición del protocolo de serialización en si mismo, rosserial
     \caption{Interacción entre ROS y rosserial que se ejecutan en un microcontrolador.}
     \label{fig:rosserial}
 \end{figure}
+
+\subsection{Transformación de coordenadas con TF}
+
+Dentro del campo de la robótica resulta indispensable trabajar con múltiples sistemas de referencia tanto dentro del mismo robot (a la hora de representar el estado de sus articulaciones) así como para representar su estado en su universo de acción o mundo, como puede ser un mapa. Con la finalidad de y simplificar este tipo de cálculos ROS incorpora el paquete llamado TF.
+
+Esta biblioteca fue diseñada para proveer una manera estándar para mantener el registro de los \textit{coordinate frames} o marcos de coordenadas y de realizar las transformaciones entre si mismas en todo el robot, de modo a que los usuarios puedan consumir la información de manera ordenada y sin la necesidad de ocuparse de generar las transformaciones en forma manual \citep{PAPER:3}.
+
+TF puede operar de forma transparente en sistemas distribuidos, muy típicos en el entorno ROS. Esto significa que toda la información sobre los marcos de coordenadas de un robot se encuentran disponibles para todos los componentes de un sistema ROS en cualquiera de las computadoras que componen el sistema.
+
+En la figura \ref{fig:tf} se visualiza un robot con múltiples articulaciones. Dado que la pose de estas se encuentra sujeta a cambios en el tiempo, también así lo hacen sus transformaciones. Por este motivo TF se encarga de monitorearlas en todo momento, lo que provee al robot la capacidad de responderse preguntas como las siguientes:
+
+\begin{itemize}
+    \item ¿a dónde se encontraba el \textit{frame} ``cabeza'' con respecto al \textit{frame} ``mundo'' hace cinco segundos?
+    \item ¿cuál es la pose del objeto sostenido en mi \textit{gripper} con respecto a mi base?
+    \item ¿cuál es la pose actual del \textit{frame} ``base'' en el \textit{frame} ``mapa''?
+\end{itemize}
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.8]{./Figures/tf.png}
+    \caption{Ejemplo de los \textit{frames} registrados con TF en el robot PR2, de la compañía Willow Garage.\protect\footnotemark}
+    \label{fig:tf}
+\end{figure}
+
+\footnotetext{Imagen tomada de \url{http://wiki.ros.org/tf?action=AttachFile&do=get&target=frames2.png}}
+
+\subsection{Paquete de localización robot\_localization}
+
+El paquete robot\_localization es una colección de estimadores no lineales para robots en espacios 2D y 3D, aunque para el aclance de este trabajo solo se hace hincapié en entornos en dos dimensiones.
+
+Cada uno de estos estimadores permite fusionar un número arbitrario de sensores (IMUs, fuentes de odometría, sistemas de localización interna, receptores GPS, etc.) a su salida genera un vector de 15 dimensiones con el estado del robot ($x$, $y$, $z$, $roll$, $pitch$, $yaw$, $x'$, $y'$, $z'$, $roll'$, $pitch'$, $yaw'$, $x''$, $y''$, $z''$).
+
+Todos los estimadores de estados controlados por este paquete aceptan mediciones provenientes de cualquier sensor de pose siempre y cuando los mismos publiquen en alguno de los tres tipos de mensaje compatibles que se citan a continuación:
+
+\begin{itemize}
+    \item \textbf{nav\_msgs/Odometry}: posición y orientación, y velocidades lineal y angular.
+    \item \textbf{sensor\_msgs/Imu}: orientación, velocidad angular y aceleración lineal.
+    \item \textbf{geometry\_msgs/PoseWithCovarianceStamped}: posición y orientación.
+    \item \textbf{geometry\_msgs/TwistWithCovarianceStamped}: velocidad lineal y angular.
+\end{itemize}
+
+Para este trabajo se hace uso de los dos primeros tipos de mensajes citados en la lista.
+
+En base a estas mediciones, los estimadores publican los valores de estado filtrados de posición, orientación y velocidades lineal y angular mediante un mensaje del tipo \file{nav\_msgs/Odometry} y opcionalmente, valores de aceleración (no utilizadas en el presente trabajo).
+
 
 \subsection{Paquete de navegación ros\_navigation\_stack}
 
