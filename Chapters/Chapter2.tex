@@ -27,9 +27,9 @@ Es adecuado considerar a ROS como algo más que un framework de desarrollo y ref
 A continuación se detalla en qué consiste cada uno de los bloques que componen la organización de archivos:
 \begin{itemize}
     \item \textbf{Paquetes}: los paquetes de ROS representan la unidad básica de software en la plataforma. Contienen uno o más programas de ROS (nodos), bibliotecas, archivos de configuración, etc, que son organizados como una unidad coherente.
-    \item \textbf{Manifiesto del paquete}: está representado por un archivo único dentro del paquete y el mismo contiene información sobre el mismo tal como el nombre, autor, tipo de licencia, dependencias, banderas de compilación, etc. El archivo \file{package.xml} encontrado en la raíz del paquete es su propio manifiesto.
+    \item \textbf{Manifiesto del paquete}: está representado por un archivo único dentro del paquete que contiene información sobre este tales como el nombre, autor, tipo de licencia, dependencias, banderas de compilación, etc. El archivo \file{package.xml} encontrado en la raíz del paquete es su propio manifiesto.
     \item \textbf{Metapaquete}: hace referencia a uno o más paquetes usualmente relacionados entre sí, pero sin estar necesariamente acoplados fuertemente unos con otros. El software provisto con este proyecto es un metapaquete.
-    \item \textbf{Manifiesto del metapaquete}: similar al manifiesto del paquete, con la diferencia que el mismo puede incluir dependencias a de tiempo de ejecución hacia otros paquetes.
+    \item \textbf{Manifiesto del metapaquete}: similar al manifiesto del paquete, con la diferencia que este puede incluir dependencias a de tiempo de ejecución hacia otros paquetes.
     \item \textbf{Mensajes}: representados con la extensión \file{.msg}, son los tipos de datos utilizados por ROS internamente para comunicar los distintos procesos entre sí. El usuario puede definir tipos de mensajes personalizados con campos adaptados a sus necesidades en del directorio \file{msg} dentro del paquete.
     \item  \textbf{Servicios}: representados con la extensión \file{.srv}, representan interacciones del tipo solicitud/respuesta entre distintos procesos. Los formatos tanto para solicitud como para respuesta pueden definirse en el directorio \file{srv} dentro del paquete.
     \item \textbf{Repositorios}: la gran mayoría de los paquetes de ROS son mantenidos utilizando un sistema de control de versiones (SCV) tales como Git, Mercurial o SVN. Es común encontrar metapaquetes definidos dentro de un mismo único repositorio. Este es el caso para el repositorio provisto en este trabajo.
@@ -74,7 +74,7 @@ La herramienta RViz (o ROS Visualization tool) es la herramienta oficial de visu
 
 \subsection{Formato universal de descripción de robots URDF}
 
-El formato universal de descripción de robots o \textit{Universal Robot Description System}, comúnmente referido como URDF es un formato estándar para representación de modelos conformados por múltiples piezas conectadas entre sí, como es el caso de brazos robóticos o líneas de ensamblaje. El mismo es ampliamente utilizado dentro del ecosistema de ROS, plataforma donde vio su origen aunque al día de hoy su uso se ha extendido a herramientas fuera del mismo como MATLAB, que permite importar archivos URDF directamente a su \textit{toolbox} de robótica.
+El formato universal de descripción de robots o \textit{Universal Robot Description System}, comúnmente referido como URDF es un formato estándar para representación de modelos conformados por múltiples piezas conectadas entre sí, como es el caso de brazos robóticos o líneas de ensamblaje. Este es ampliamente utilizado dentro del ecosistema de ROS, plataforma donde vio su origen aunque al día de hoy su uso se ha extendido a herramientas externas como MATLAB, que permite importar archivos URDF directamente a su \textit{toolbox} de robótica.
 
 \subsection{Biblioteca rosserial}\label{sec:rosserial}
 
@@ -150,7 +150,7 @@ El sotware permite a los usuarios decidir cuál de los campos de información pr
 \]
 
 
-\subsection{Paquete de navegación ros\_navigation\_stack}
+\subsection{Paquete de navegación ros\_navigation\_stack}\label{sec:rosNavigation}
 
 El paquete de navegación de ROS, usualmente referido como \textit{navigation stack}, es un set de algoritmos que hace uso de los sensores y las fuentes de odometría disponibles para controlar al robot es decir, le permiten moverse de un punto conocido a otro del mapa a la vez que mantiene una estimación de su posición en el espacio a cada instante.
 
@@ -222,7 +222,7 @@ Se generan tres casos particulares dignos de mención:
 
 La odometría es el estudio de la estimación de la posición de robots con ruedas durante la navegación, para la que se utiliza información sobre la rotación de las ruedas que permiten estimar cambios en la posición de la base móvil en el tiempo, como se muestra en la figura \ref{fig:navigation}.
 
-Este modelo supone que el desplazamiento de las ruedas es traducible al desplazamiento real del robot. Sin embargo, en la práctica esto no es necesariamente cierto debido a la presencia de distintos tipos de errores tales como ruedas desiguales, medidas inexactas o el mismo resbalamiento de las ruedas en la superficie \citep{PAPER:2}. Estos motivos son los causantes de un error acumulativo no acotado que hacen que este método solo resulte apto para estimaciones en intérvalos de distancia pequeños.
+Este modelo supone que el desplazamiento de las ruedas es traducible al desplazamiento real del robot. Sin embargo, en la práctica esto no es necesariamente cierto debido a la presencia de distintos tipos de errores tales como ruedas desiguales, medidas inexactas o el resbalamiento de las ruedas en la superficie \citep{PAPER:2}. Estos motivos son los causantes de un error acumulativo no acotado que hacen que este método solo resulte apto para estimaciones en intérvalos de distancia pequeños.
 
 Resulta necesario enriquecer esta estimación mediante su fusión con otras fuentes de información diferentes, tales como las que proveen las unidades de medición inercial, odometría visual mediante cámaras, sensores de profundidad, etc a modo de obtener una estimación final mas precisa. En este trabajo se aborda el proceso de fusión de varios de los sensores mencionados, y permite además, agregar otras fuentes de información con relativa facilidad.
 
@@ -299,7 +299,7 @@ Es una familia de placas de desarrollo elaboradas por la compañía ST. Entre su
     \item biblioteca del tipo HAL con variados ejemplos de código
 \end{itemize}
 
-Con el fin de garantizar la escalabilidad del sistema, para este proyecto se optó por una de las placas mas avanzadas de esta familia, denominada NUCLEO-F746ZG y mostrada en la figura \ref{fig:stm32nucleo}. La misma provee un microcontrolador ARM Cortex-M7 con FPU de doble precisión, 320 kB de RAM, así como 1 MB de Flash. Ofrece además conexión Ethernet y una amplia cantidad de GPIOs.
+Con el fin de garantizar la escalabilidad del sistema, para este proyecto se optó por una de las placas mas avanzadas de esta familia, denominada NUCLEO-F746ZG y mostrada en la figura \ref{fig:stm32nucleo}. Esta provee un microcontrolador ARM Cortex-M7 con FPU de doble precisión, 320 kB de RAM, así como 1 MB de Flash. Ofrece además conexión Ethernet y una amplia cantidad de GPIOs.
 
 \begin{figure}[ht]
     \centering
@@ -314,11 +314,11 @@ Con el fin de garantizar la escalabilidad del sistema, para este proyecto se opt
 
 El Kinect para Xbox 360 o simplemente Kinect, es un dispositivo de captura de movimiento diseñado por la empresa Microsoft que utiliza tecnología desarrollada por la empresa israelita PrimeSense.
 
-Cuenta con una cámara que captura imágenes en formato RGB, un \textit{array} de micrófonos, así como un sensor de profundidad. Si bien existen otras características que hacen a este dispositivo aún mas interesante, vale la pena detenerse en este último y explicar en qué consiste, puesto que se hace uso extensivo del mismo en la generación de mapas del robot propuesto.
+Cuenta con una cámara que captura imágenes en formato RGB, un \textit{array} de micrófonos, así como un sensor de profundidad. Si bien existen otras características extra que podrían mencionarse, vale la pena detenerse en esta última y explicar en qué consiste, puesto que se la utilizó de manera extensiva en el trabajo propuesto para la generación de mapas del robot.
 
 \subsection{Imagen de profundidad}
 
-El sensor de profundidad del Kinect consiste en un proyector de nube de puntos infrarrojos combinado con un sensor CMOS monocromático, similar al de una cámara fotográfica. Funcionando en combinación, estos dos elementos son capaces de captar la información necesaria para que un ASIC genere con ella una imagen de profundidad o \textit{Depth map}, que consiste en un mapa de bits con información sobre la distancia relativa entre el sensor y los objetos capturados por el mismo. En la figura \ref{fig:depthMap} se puede apreciar una imagen de profundidad generada mediante el sensor Kinect en el que se distingue claramente la silueta de una persona en un entorno con diferentes objetos. Las distintas tonalidades de grises visualizadas son una representación de la distancia del objeto al sensor, por lo que para objetos cercanos veremos píxeles de color gris mas claro mientras que para objetos lejanos se verán mas oscuros.
+El sensor de profundidad del Kinect consiste en un proyector de nube de puntos infrarrojos combinado con un sensor CMOS monocromático, similar al de una cámara fotográfica. Funcionando en combinación, estos dos elementos son capaces de captar la información necesaria para que un ASIC genere con ella una imagen de profundidad o \textit{Depth map}, que consiste en un mapa de bits con información sobre la distancia relativa entre el sensor y los objetos detectados. En la figura \ref{fig:depthMap} se puede apreciar una imagen de profundidad generada mediante el sensor Kinect en el que se distingue claramente la silueta de una persona en un entorno con diferentes objetos. Las distintas tonalidades de grises visualizadas son una representación de la distancia del objeto al sensor, por lo que para objetos cercanos veremos píxeles de color gris mas claro mientras que para objetos lejanos se verán mas oscuros.
 
 \begin{figure}[ht]
     \centering

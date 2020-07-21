@@ -46,7 +46,7 @@ En este capítulo se exponen las decisiones de diseño tomadas para la elaboraci
 En esta sección se describe la estructura física del robot y se explican los criterios utilizados tanto para el dimensionamiento de piezas como para su disposición.
 
 \subsection{Disposición en niveles}
-Tal como se menciona en la sección \ref{sec:turtlebot}, el diseño propuesto toma como referencia a la base móvil \textit{open source} Turtlebot 2. Por este motivo, Lubobot también se compone de una base móvil cilindrica de tracción diferencial y la misma funciona como soporte para una estructura escalable en "niveles", gracias a lo que el usuario puede agregar nuevos componentes sin dificultad, según los requisitos particulares de su aplicación. En la figura \ref{fig:lubobotURDF} y \ref{fig:lubobotReal} muestran respectivamente, una representación en 3D de la estructura física del robot y una fotografía del montaje real del robot.
+Tal como se menciona en la sección \ref{sec:turtlebot}, el diseño propuesto toma como referencia a la base móvil \textit{open source} Turtlebot 2. Por este motivo, Lubobot también se compone de una base móvil cilindrica de tracción diferencial la cual funciona como soporte para una estructura escalable en "niveles", gracias a lo que el usuario puede agregar nuevos componentes sin dificultad, según los requisitos particulares de su aplicación. En la figura \ref{fig:lubobotURDF} y \ref{fig:lubobotReal} muestran respectivamente, una representación en 3D de la estructura física del robot y una fotografía del montaje real del robot.
 
 \begin{figure}[ht]
   \centering
@@ -112,7 +112,7 @@ Está formada dos tareas que en conjunto funcionan como \textit{proxy} entre la 
 
 \begin{itemize}
   \item \textbf{Solicitud de lectura de sensores}: realiza la lectura de cada uno de los dos encoders disponibles de manera periódica cada 100 ms, actualizando las variables internas de estado en cada iteración con el valor actualizado.
-  \item \textbf{Envío de comandos a actuadores}: realiza el despacho de comandos a los distintos actuadores disponibles en base a las órdenes recibidas desde ROS. Si bien esta tarea puede considerarse de carácter asíncrono, se implementó en la misma un mecanismo de \textit{watchdog} para evitar que un posible fallo en la comunicación con ROS ponga en peligro la integridad del usuario y del robot. Para esto, la tarea verifica cada 100 ms la existencia de un comando de velocidad nuevo. En su ausencia, envía una orden para detener el robot.
+  \item \textbf{Envío de comandos a actuadores}: realiza el despacho de comandos a los distintos actuadores disponibles en base a las órdenes recibidas desde ROS. Si bien esta tarea puede considerarse de carácter asíncrono, se implementó sobre esta un mecanismo de \textit{watchdog} para evitar que un posible fallo en la comunicación con ROS ponga en peligro la integridad del usuario y del robot. Para esto, la tarea verifica cada 100 ms la existencia de un comando de velocidad nuevo. En su ausencia, envía una orden para detener el robot.
 \end{itemize}
 
 Se escribió una biblioteca en lenguaje C++ bajo el nombre de ``Roomba600'' que ofrece una interfaz simplificada para la interacción del microcontrolador con el Roomba. Está implementada sobre la capa de abstracción STM32CubeHAL ofrecida por el fabricante ST, que permite el manejo de puertos serie UART con mecanismos de control asíncronos aptos para RTOS.
