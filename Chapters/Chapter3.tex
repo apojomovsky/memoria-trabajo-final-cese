@@ -279,7 +279,7 @@ literate =    {---}{{\ProcessThreeDashes}}3
 
 \newcommand\ProcessThreeDashes{\llap{\color{cyan}\mdseries-{-}-}}
 
-\begin{lstlisting}[language=yaml, label=cod:rosLocalization, caption=Interfaz de la clase STM32Hardware requerida por la biblioteca rosserial.\protect\footnotemark]
+\begin{lstlisting}[language=yaml, label=cod:rosLocalization, caption=Configuraciones del filtro proveído por el paquete ros\_localization .\protect\footnotemark]
 
 # Odometry configuration
 odom_frame: odom
@@ -300,7 +300,7 @@ odom0_config: [false, false, false,
 # Input topic name for IMU
 imu0: /imu/data_raw
 
-# For the IMU source, we only consider yaw, vyaw and ax
+# For the IMU source we consider only yaw, vyaw and ax
 imu0_config: [false, false, false,
               false, false, true,
               false, false, false,
