@@ -1,15 +1,25 @@
 % !TeX root = ./../memoria.tex
 % Chapter Template
 
-\chapter{Ensayos y Resultados} % Main chapter title
+\chapter{Ensayos y resultados} % Main chapter title
 
-\label{Chapter4} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+\label{Capitulo4}
 
-%----------------------------------------------------------------------------------------
-%	SECTION 1
-%----------------------------------------------------------------------------------------
+\section{Pruebas unitarias en el robot}
 
-\section{Pruebas funcionales del hardware}
-\label{sec:pruebasHW}
+En esta sección se describen las pruebas funcionales ejecutadas sobre cada uno de los módulos que componen el robot de manera aislada. Esto permitió encontrar problemas puntuales y reducir las fuentes de error para las pruebas de integración que le siguieron.
 
-La idea de esta sección es explicar cómo se hicieron los ensayos, qué resultados se obtuvieron y analizarlos.
+\subsection{Validación de conexión bidireccional ROS-microcontrolador}
+\subsection{Validación de frenado de emergencia}
+\subsection{Validación de control de velocidad}
+\subsection{Validación de lectura de encoders}
+\subsection{Validación de cálculo de odometría con encoders}
+\subsection{Validación de lecturas crudas de IMU en RViz}
+\subsection{Validación de lecturas filtradas de IMU en RViz}
+\section{Pruebas unitarias con estimadores}
+\subsection{Validación de estimador de pose con filtro Madwick}
+\subsection{Validación de estimador de odometría con encoders + IMU}
+\section{Pruebas de integración en campo}
+\subsection{Generación de mapa con gmapping}
+\subsection{Localización en mapa con amcl}
+\subsection{Navegación en mapa con move\_base}
