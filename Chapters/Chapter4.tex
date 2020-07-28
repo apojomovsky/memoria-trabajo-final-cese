@@ -21,7 +21,7 @@ Envío de comandos de: conexión, desconexión.
     \centering
     \includegraphics[scale=0.6]{./Figures/comm_test2.png}
     \caption{Diagrama de secuencias ejecutadas durante el test de comunicación entre el microcontrolador y el Roomba.}
-    \label{fig:rviz}
+    \label{fig:secMicroRoomba}
 \end{figure}
 
 \subsection{Validación de conexión bidireccional microcontrolador-ROS}
@@ -32,7 +32,7 @@ Descripción de la conexión con ROS usando un mensaje de "ping" con una doble c
     \centering
     \includegraphics[scale=0.6]{./Figures/comm_test1.png}
     \caption{Diagrama de secuencias ejecutadas durante el test entre el microcontrolador y una PC con ROS.}
-    \label{fig:rviz}
+    \label{fig:secMicroROS}
 \end{figure}
 
 \subsection{Validación de frenado de emergencia}
@@ -45,7 +45,7 @@ El Roomba funciona de una manera tal que si este recibe un comando de velocidad,
     \item En caso que no haya ningún mensaje, la tarea envía la orden de detener el robot.
 \end{itemize}
 
-\subsection{Validación de desplazamiento efectivo de la base}
+\subsection{Validación de desplazamiento real de la base}
 
 El Roomba implementa su propio sistema de control interno para llevar sus ruedas hasta el \textit{set point} requerido por los comandos de velocdad. En visto que esta funcionalidad es crítica para el sistema, se desarrolló un caso de prueba especial consistente en lo siguiente:
 
@@ -65,18 +65,7 @@ Dado que es posible obtener las lecturas crudas de los encoders del robot, se re
     \item se calculó el desplazamiento estimado mediante la fórmula $nTicks * 2 * PI * R / ticksPorVuelta$.
 \end{itemize}
 
-\subsection{Validación de cálculo de odometría con encoders}
-
-Esta prueba tuvo como objetivo validar el correcto funcionamiento del programa \file{lubo\_odom\_node}, el cual consume las lecturas de encoders y realiza con estas una estimación de la posición y orientación del robot en un plano $(X,Y)$.
-
-Para la validación de esta característica se ejecutó la prueba descrita a continuación:
-
-\begin{itemize}
-    \item mediante un script de Python conectado a ROS se envió un comando de velocidad, el cual establece la velocidad de ambas ruedas a 0.1 m/s por una duración de 10 s es decir, el equivalente a un desplazamiento de 1 m.
-    \item se realizó la
-\end{itemize}
-
-\subsection{Validación de lecturas crudas de IMU en RViz}
+\subsection{Validación de lecturas crudas de IMU}
 
 Esta prueba consistió en graficar las lecturas de los 6 ejes con respecto al tiempo respecto a cuatro movimientos generados de forma manual por el autor.
 
@@ -99,6 +88,17 @@ En el gráfico del acelerómetro se puede apreciar el vector de aceleración de 
 \section{Pruebas unitarias en la PC}
 
 En esta sección se describen las pruebas realizadas sobre los resultados arrojados por los componentes de software ejecutados en una PC. Estos se utilizan para procesar los datos crudos arrojados por los sensores y generar información en un formato aprovechable por ROS.
+
+\subsection{Validación de cálculo de odometría con encoders}
+
+Esta prueba tuvo como objetivo validar el correcto funcionamiento del programa \file{lubo\_odom\_node}, el cual consume las lecturas de encoders y realiza con estas una estimación de la posición y orientación del robot en un plano $(X,Y)$.
+
+Para la validación de esta característica se ejecutó la prueba descrita a continuación:
+
+\begin{itemize}
+    \item mediante un script de Python conectado a ROS se envió un comando de velocidad, el cual establece la velocidad de ambas ruedas a 0.1 m/s por una duración de 10 s es decir, el equivalente a un desplazamiento de 1 m.
+    \item se realizó la
+\end{itemize}
 
 \subsection{Validación de estimador de pose con filtro Madwick para IMU}
 
@@ -141,7 +141,6 @@ La prueba se realizó de manera idéntica para tres puntos elegidos en el mapa. 
 \end{enumerate}
 
 % TODO: Agregar los tres screenshots
-
 
 \subsection{Navegación en mapa con move\_base}
 
