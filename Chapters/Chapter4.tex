@@ -45,7 +45,7 @@ El Roomba funciona de una manera tal que si este recibe un comando de velocidad,
     \item En caso que no haya ningún mensaje, la tarea envía la orden de detener el robot.
 \end{itemize}
 
-\subsection{Validación de desplazamiento real de la base}
+\subsection{Validación de desplazamiento efectivo del robot}
 
 El Roomba implementa su propio sistema de control interno para llevar sus ruedas hasta el \textit{set point} requerido por los comandos de velocdad. En visto que esta funcionalidad es crítica para el sistema, se desarrolló un caso de prueba especial consistente en lo siguiente:
 
@@ -54,6 +54,22 @@ El Roomba implementa su propio sistema de control interno para llevar sus ruedas
     \item mediante una cinta métrica se compararon los valores esperados con el desplazamiento lineal real.
     \item el mismo procedimiento se llevó a cabo con velocidad lineal negativa.
 \end{itemize}
+
+\begin{table}
+    \centering
+    \caption[Desplazamiento robot]{Resultados de validación de desplazamiento efectivo del robot}
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Movimiento} & \textbf{Desplazamiento} & \textbf{Desplazamiento} & \textbf{Error} \\
+                            & \textbf{deseado}        & \textbf{obtenido}       &                \\
+        \midrule
+        Lineal positivo 1 m & 1 m                     & 0.97                    & 3 \%           \\
+        Lineal negativo 1 m & -1 m                    & -0.91                   & 9~             \\
+        \bottomrule
+        \hline
+    \end{tabular}
+    \label{tab:desplazamientoRobot}
+\end{table}
 
 \subsection{Validación de lectura de encoders}
 
@@ -146,7 +162,7 @@ La prueba se realizó de manera idéntica para tres puntos elegidos en el mapa. 
 
 Así como se describe en la sección \ref{sec:move_base}, move\_base provee la funcionalidad necesaria para mover un robot en un mapa provisto, para lo cual la herramienta se encarga de calcular una ruta de navegación desde el punto en que el robot se encuentra al momento de enviarse la orden y otro punto cualquiera del mapa.
 
-Esta prueba consistió en indicar a la herramienta que deseabamos mover el robot de un punto a otro en el mapa. Para el envío puntos  
+Esta prueba consistió en indicar a la herramienta que deseabamos mover el robot de un punto a otro en el mapa. Para el envío puntos
 Para que esta prueba pueda realizarse fue necesario cumplir con ciertos requisitos previos:
 
 \begin{enumerate}

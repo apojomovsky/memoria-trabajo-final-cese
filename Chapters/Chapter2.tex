@@ -273,19 +273,21 @@ En la figura \ref{fig:roombaPinout} y la tabla \ref{tab:Pines} se exponen respec
     \centering
     \caption{Referencia de pines en conector Mini-DIN hembra.}
     \label{tab:Pines}
-    \begin{tabular}{rll}
+    \begin{tabular}{ccl}
         \toprule
-        \multicolumn{1}{l}{Pin} & Nombre & Descripción                                  \\
+        \textbf{Pin} & \textbf{Nombre} & \textbf{Descripción}                         \\
         \midrule
-        1                       & Vpwr   & Positivo directo de la batería (no regulado) \\
-        2                       & Vpwr   & Positivo directo de la batería (no regulado) \\
-        3                       & RXD    & 0 - 5 VCC Entrada serie                      \\
-        4                       & TXD    & 0 - 5 VCC Salida serie                       \\
-        5                       & BRC    & Cambio de \textit{baud-rate}                 \\
-        6                       & GND    & Tierra del robot                             \\
-        7                       & GND    & Tierra del robot                             \\
+        1            & Vpwr            & Positivo directo de la batería (no regulado) \\
+        2            & Vpwr            & Positivo directo de la batería (no regulado) \\
+        3            & RXD             & 0 - 5 VCC Entrada serie                      \\
+        4            & TXD             & 0 - 5 VCC Salida serie                       \\
+        5            & BRC             & Cambio de \textit{baud-rate}                 \\
+        6            & GND             & Tierra del robot                             \\
+        7            & GND             & Tierra del robot                             \\
         \bottomrule
+        \hline
     \end{tabular}
+    \label{tab:distribucionPines}
 \end{table}
 
 \section{Placa de desarrollo STM32-NUCLEO}
