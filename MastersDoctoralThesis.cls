@@ -181,6 +181,7 @@
 \RequirePackage{xcolor}
 \RequirePackage{subcaption}
 \RequirePackage{amsmath}
+\RequirePackage{multirow}
 
 \addbibresource{references.bib} % The filename of the bibliography
 

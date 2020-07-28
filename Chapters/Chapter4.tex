@@ -47,12 +47,11 @@ El Roomba funciona de una manera tal que si este recibe un comando de velocidad,
 
 \subsection{Validación de desplazamiento efectivo del robot}
 
-El Roomba implementa su propio sistema de control interno para llevar sus ruedas hasta el \textit{set point} requerido por los comandos de velocdad. En visto que esta funcionalidad es crítica para el sistema, se desarrolló un caso de prueba especial consistente en lo siguiente:
+El Roomba implementa su propio sistema de control interno para llevar sus ruedas hasta el \textit{set point} requerido por los comandos de velocdad. En visto que esta funcionalidad es crítica para el sistema, se desarrolló un caso de prueba especial para velocidades tanto positivas como negativas el cual se describe a continuación:
 
 \begin{itemize}
     \item mediante un script de Python conectado a ROS se envió un comando, el cual establece la velocidad de ambas ruedas a 0.1 m/s por una duración de 10 s es decir, el equivalente a un desplazamiento lineal de 1 m.
     \item mediante una cinta métrica se compararon los valores esperados con el desplazamiento lineal real.
-    \item el mismo procedimiento se llevó a cabo con velocidad lineal negativa.
 \end{itemize}
 
 \begin{table}
@@ -60,16 +59,20 @@ El Roomba implementa su propio sistema de control interno para llevar sus ruedas
     \caption[Desplazamiento robot]{Resultados de validación de desplazamiento efectivo del robot}
     \begin{tabular}{lccc}
         \toprule
-        \textbf{Movimiento} & \textbf{Desplazamiento} & \textbf{Desplazamiento} & \textbf{Error} \\
-                            & \textbf{deseado}        & \textbf{obtenido}       &                \\
+        \textbf{Movimiento} & \textbf{Desplazamiento} & \textbf{Desplazamiento} & \textbf{Error}     \\
+                            & \textbf{esperado}       & \textbf{obtenido}       & \textbf{calculado} \\
         \midrule
-        Lineal positivo 1 m & 1 m                     & 0.97                    & 3 \%           \\
-        Lineal negativo 1 m & -1 m                    & -0.91                   & 9~             \\
+        Lineal positivo 1 m & 1,0 m                   & 0,98 m                  & 2 \%               \\
+        Lineal negativo 1 m & -1,0 m                  & -0,96 m                 & 4 \%               \\
         \bottomrule
         \hline
     \end{tabular}
     \label{tab:desplazamientoRobot}
 \end{table}
+
+Un análisis cualitativo de los resultados expuestos en la tabla \ref{tab:desplazamientoRobot} evidencia que el sistema de control de velocidades interno del Roomba asume que la masa del robot es constante y no toma en cuenta el peso del hardware agregado. Como consecuencia los comandos para mover el robot muestran un porcentaje de error importante.
+
+Como medida paliativa se decidió no utilizar el robot en modo reversa para las tareas de mapeo de modo a reducir el error acumulativo.
 
 \subsection{Validación de lectura de encoders}
 
@@ -78,9 +81,30 @@ Dado que es posible obtener las lecturas crudas de los encoders del robot, se re
 \begin{itemize}
     \item mediante un script de Python conectado a ROS se envió un comando de velocidad, el cual establece la velocidad de ambas ruedas a 0.1 m/s por una duración de 10 s es decir, el equivalente a un desplazamiento de 1 m.
     \item mediante los encoders se obtuvo la cantidad de \textit{ticks} o cuentas ocurridas durante dicho periodo.
-    \item se calculó el desplazamiento estimado mediante la fórmula $nTicks * 2 * PI * R / ticksPorVuelta$.
+    \item se calculó el desplazamiento estimado mediante la siguiente fórmula obtenida a partir del documento de especificaciones del fabricante \citep{PAPER:5}:
+          \begin{equation}
+              Disancia = nTicks / 4498,9125
+          \end{equation}
+
 \end{itemize}
 
+\begin{table}
+    \centering
+    \caption[Lectura de encoders]{Resultados de validación de lectura de encoders}
+    \begin{tabular}{lcccccc}
+        \toprule
+        \multirow{2}{*}{\textbf{Movimiento}} & \multicolumn{2}{l}{\textbf{Ticks esperados}} & \multicolumn{2}{l}{\textbf{Ticks obtenidos}} & \multicolumn{2}{l}{\textbf{Error calculado}}                                                 \\
+                                             & \textbf{Izq.}                                & \textbf{Der.}                                & \textbf{Izq.}                                & \textbf{Der.} & \textbf{Izq.} & \textbf{Der.} \\
+        \midrule
+        Lineal positivo 1 m                  & 2250                                         & 2250                                         & 2201                                         & 2137          & 2,22 \%       & 5,28 \%       \\
+        Lineal negativo 1 m                  & 2250                                         & 2250                                         & 2194                                         & 2103          & 2,55 \%       & 6,99 \%       \\
+        \bottomrule
+        \hline
+    \end{tabular}
+    \label{tab:lecturaEncoders}
+\end{table}
+
+Los resultados obtenidos de esta prueba se exponen en la tabla \ref{tab:lecturaEncoders} muestran similitudes con los de la tabla \ref{tab:desplazamientoRobot} de la prueba anterior. Sin embargo, esta última prueba añade un componente de información extra que permite
 \subsection{Validación de lecturas crudas de IMU}
 
 Esta prueba consistió en graficar las lecturas de los 6 ejes con respecto al tiempo respecto a cuatro movimientos generados de forma manual por el autor.
