@@ -17,14 +17,21 @@ Descripción del setup del microcontrolador usando 2 conexiones UART simultaneas
 
 Envío de comandos de: conexión, desconexión.
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.6]{./Figures/comm_test2.png}
+    \caption{Diagrama de secuencias ejecutadas durante el test de comunicación entre el microcontrolador y el Roomba.}
+    \label{fig:rviz}
+\end{figure}
+
 \subsection{Validación de conexión bidireccional microcontrolador-ROS}
 
-Descripción de la conexión con ROS usando un mensaje de "hola mundo" con una doble confirmación. Pequeño diagrama explicando el método.
+Descripción de la conexión con ROS usando un mensaje de "ping" con una doble confirmación. Pequeño diagrama explicando el método.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[scale=0.6]{./Figures/comm_test1.png}
-    \caption{Diagrama de secuencias ejecutadas durante el test.}
+    \caption{Diagrama de secuencias ejecutadas durante el test entre el microcontrolador y una PC con ROS.}
     \label{fig:rviz}
 \end{figure}
 
@@ -89,9 +96,9 @@ En el gráfico del acelerómetro se puede apreciar el vector de aceleración de 
     \item Durante el movimiento 2, el giroscopio mientras que el acelerómetro.
 \end{itemize}
 
-\section{Pruebas unitarias con estimadores}
+\section{Pruebas unitarias en la PC}
 
-En esta sección se describen las pruebas realizadas sobre los resultados arrojados por los estimadores, es decir, piezas de software que ayudan a estimar una medición con mayor precisión a la arrojada por el sensor en bruto.
+En esta sección se describen las pruebas realizadas sobre los resultados arrojados por los componentes de software ejecutados en una PC. Estos se utilizan para procesar los datos crudos arrojados por los sensores y generar información en un formato aprovechable por ROS.
 
 \subsection{Validación de estimador de pose con filtro Madwick para IMU}
 
