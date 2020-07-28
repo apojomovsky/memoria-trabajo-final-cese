@@ -21,6 +21,13 @@ Envío de comandos de: conexión, desconexión.
 
 Descripción de la conexión con ROS usando un mensaje de "hola mundo" con una doble confirmación. Pequeño diagrama explicando el método.
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.6]{./Figures/comm_test1.png}
+    \caption{Diagrama de secuencias ejecutadas durante el test.}
+    \label{fig:rviz}
+\end{figure}
+
 \subsection{Validación de frenado de emergencia}
 
 El Roomba funciona de una manera tal que si este recibe un comando de velocidad, el mismo será aplicado al robot por un tiempo indefinido. De modo a prevenir riesgos, se implementó en el controlador un sistema de frenado de emergencia que responde a los siguientes pasos:

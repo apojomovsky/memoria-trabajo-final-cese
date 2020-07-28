@@ -1,35 +1,44 @@
 % !TeX root = ./../memoria.tex
-% Chapter Template
 
-\chapter{Conclusiones} % Main chapter title
+\chapter{Conclusiones}
 
-\label{Chapter5} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+\label{Capitulo5}
 
+En este capítulo se mencionan los aspectos más releventes del trabajo realizado, se analizan los resultados obtenidos y se identifican los pasos a seguir para una siguiente iteración del proyecto.
 
-%----------------------------------------------------------------------------------------
+\section{Conclusiones generales}
 
-%----------------------------------------------------------------------------------------
-%	SECTION 1
-%----------------------------------------------------------------------------------------
+En este trabajo se completó el desarrollo e implementación de un prototipo de robot autónomo así como la documentación requerida para su adopción por parte de estudiantes de grado universitario.
 
-\section{Conclusiones generales }
+Se implementó de manera satisfactoria el prototipo mecánico basado en un robot de limpieza Roomba 500, así como el firmware requerido para comunicarse con el mismo mediante protocolo Open Interface. Así también, se provee una capa de comunicación con el framework de robótica ROS y un conjunto de paquetes listos para conectarse al robot desde una computadora.
 
-La idea de esta sección es resaltar cuáles son los principales aportes del trabajo realizado y cómo se podría continuar. Debe ser especialmente breve y concisa. Es buena idea usar un listado para enumerar los logros obtenidos.
-
-Algunas preguntas que pueden servir para completar este capítulo:
+El trabajo ha cumplido satisfactoriamente los puntos principales planteados en la planificación:
 
 \begin{itemize}
-\item ¿Cuál es el grado de cumplimiento de los requerimientos?
-\item ¿Cuán fielmente se puedo seguir la planificación original (cronograma incluido)?
-\item ¿Se manifestó algunos de los riesgos identificados en la planificación? ¿Fue efectivo el plan de mitigación? ¿Se debió aplicar alguna otra acción no contemplada previamente?
-\item Si se debieron hacer modificaciones a lo planificado ¿Cuáles fueron las causas y los efectos?
-\item ¿Qué técnicas resultaron útiles para el desarrollo del proyecto y cuáles no tanto?
+    \item migración de la biblioteca rosserial e i2clib al HAL del microcontrolador.
+    \item implementación de un algoritmo para generar la odometría del robot en base a las lecturas de los encoders.
+    \item configuración de los paquetes necesarios para permitir la navegacion del robot con ROS dentro de la residencia del autor.
+    \item implementación funcional del robot propuesto.
+    \item redacción de una Wiki hosteada en Github con instrucciones para terceros sobre como fabricar un nuevo robot así como para utilizar el software provisto.
 \end{itemize}
 
+Asimismo, ciertos objetivos planteados inicialmente debieron ser modificados por diversos motivos tales como complejidad excesiva o problemas de rendimiento. Se describen a continuación algunos de ellos:
 
-%----------------------------------------------------------------------------------------
-%	SECTION 2
-%----------------------------------------------------------------------------------------
+\begin{itemize}
+    \item la utilización del sistema operativo NuttX para la implementación del firmware. Este se terminó reemplazando con FreeRTOS debido a que este último se encuentra oficialmente soportado por el fabricante ST, motivo que facilitó de manera considerable la tarea de la implementación del firmware.
+    \item la utilización de mensajes estándares de ROS a nivel del microcontrolador. Estos debieron ser reemplazados por unos diseñados específicamente para la tarea.
+\end{itemize}
+
 \section{Próximos pasos}
 
-Acá se indica cómo se podría continuar el trabajo más adelante.
+\subsection{Hardware}
+
+La gran mayoría de los objetivos propuestos pudieron cumplirse, aún así, a nivel de hardware se identificaron algunos espacios de mejora donde podría generarse un beneficio para el usuario final tal como utilizar el protocolo TDP para la comunicación de rosserial con ROS en vez del actual UART sobre USB.
+
+\subsection{Software}
+
+El cambio de UART a TCP permitiría, entre otros beneficios, el de contar con un ancho de banda mayor y latencias menores a los actuales, lo que haría posible la utilización de mensajes nativos de ROS en el microcontrolador, que originalmente debieron ser reemplazados por la necesidad de limitar el ancho de banda.
+
+\subsection{Documentación}
+
+Como se mencionó anteriormente, a este trabajo lo acompaña una wiki, la cual se encuentra hosteada en Github junto al código del robot. Con respecto a la documentación se plantea agregar mas tutoriales a la Wiki donde se aborden temas sobre cómo utilizar otros paquetes populares del ecosistema ROS en el robot.
