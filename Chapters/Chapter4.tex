@@ -104,26 +104,49 @@ Dado que es posible obtener las lecturas crudas de los encoders del robot, se re
     \label{tab:lecturaEncoders}
 \end{table}
 
-Los resultados obtenidos de esta prueba se exponen en la tabla \ref{tab:lecturaEncoders} muestran similitudes con los de la tabla \ref{tab:desplazamientoRobot} de la prueba anterior. Sin embargo, esta última prueba añade un componente de información extra que permite
-\subsection{Validación de lecturas crudas de IMU}
+Los resultados expuestos en la tabla \ref{tab:lecturaEncoders} muestran ciertas similitudes con los resultados de la prueba anterior en el sentido que el robot reporta un movimiento mas ``corto'' que el que le fue comandado. Dado que el número de \textit{ticks} de la rueda izquierda es mayor que el de la derecha, es correcto asumir que el robot describió un movimiento curvilíneo con radio de giro hacia la derecha, lo que pudo comprobarse por el autor al observar la posición del robot al final de la prueba.
 
-Esta prueba consistió en graficar las lecturas de los 6 ejes con respecto al tiempo respecto a cuatro movimientos generados de forma manual por el autor.
+\subsection{Validación de lecturas crudas de la IMU}
 
-Para esta prueba se partió de un estado inicial con la IMU quieta, con el plano definido por sus ejes $(X,Y)$ en posición normal al vector de aceleración de la gravedad (que apunta al centro de la tierra).Para todas las pruebas se utilizó la convención de la mano derecha tanto para la definición de ejes ordenados como los sentidos de giro.
+Esta prueba consistió en graficar las lecturas de las seis variables registradas por el sensor durante a una secuencia de tres movimientos a los que fue sometido.
 
-\begin{enumerate}
-    \item Movimiento de aproximadamente 90 grados positivos alrededor del eje $Z$ y posterior retorno a la posición inicial.
-    \item Movimiento de aproximadamente 90 grados positivos alrededor del eje $Y$ y posterior retorno a la posición inicial.
-    \item Movimiento de aproximadamente 90 grados positivos alrededor del eje $X$. y posterior retorno a la posición inicial.
-\end{enumerate}
+Para esta prueba se partió de un estado inicial con la IMU quieta, con el plano definido por sus ejes $(X,Y)$ en posición normal al vector de aceleración de la gravedad (que apunta al centro de la tierra).Para todas las pruebas se utilizó la convención ``North-East-Down'' \protect\footnotemark que el sensor adopta por defecto.
 
-En el gráfico del acelerómetro se puede apreciar el vector de aceleración de la gravedad apuntando en la dirección negativa del eje Z en su posición inicial.
-% TODO
+\footnotetext{Coordenadas locales del plano tangente NED: \url{https://en.wikipedia.org/wiki/Local\_tangent\_plane\_coordinates}}
+
+Basado en las lecturas del acelerómetro de la figura \ref{fig:aceleracionLineal} se describen las observaciones realizadas:
+
 \begin{itemize}
-    \item Durante el movimiento 1, el giroscopio mientras que el acelerómetro.
-    \item Durante el movimiento 2, el giroscopio mientras que el acelerómetro.
-    \item Durante el movimiento 2, el giroscopio mientras que el acelerómetro.
+    \item en la primera columna se observa el vector de aceleración de la gravedad de aproximadamente 9,8 $m/s^2$ apuntando en la dirección negativa del eje $Z$.
+    \item en la segunda columna se observa el mismo vector de aceleración, esta vez transladado en dirección al eje $X$ negativo.
+    \item finalemente en la tercer columna se observa al vector transladado en dirección al eje $Y$ negativo.
 \end{itemize}
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.5]{./Figures/linear_acceleration.png}
+    \caption{Gráfico de aceleraciones lineales sobre cada uno de los ejes registrados durante las tres posiciones de prueba.}
+    \label{fig:aceleracionLineal}
+\end{figure}
+
+
+Basado en las lecturas del  de las figuras \ref{fig:velocidadAngular1} y \ref{fig:velocidadAngular2} se procede a describir el resultado de las observaciones realizadas:
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.5]{./Figures/angular_velocity_1.png}
+    \caption{Gráfico de velocidades angulares sobre cada uno de los ejes registrados durante el primer movimiento de prueba y la primer mitad del segundo.}
+    \label{fig:velocidadAngular1}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.5]{./Figures/angular_velocity_2.png}
+    \caption{Gráfico de velocidades angulares sobre cada uno de los ejes registrados durante la segunda mitad segundo movimiento de prueba y el tercero.}
+    \label{fig:velocidadAngular2}
+\end{figure}
+
 
 \section{Pruebas unitarias en la PC}
 
