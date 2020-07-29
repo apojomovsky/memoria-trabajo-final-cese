@@ -250,32 +250,80 @@ En esta sección se describen las pruebas funcionales ejecutadas sobre cada uno 
 Esta prueba consistió en la generación de un mapa del tipo \textit{occupancy grid} o mapa de ocupación, el cual consiste en una representación similar a la de un plano en dos dimensiones como los utilizados en arquitectura. Los puntos en negro representan una sección ``ocupada'' mientras que los píxeles blancos representan un área libre.
 
 
-Para que el resultado obtenido a partir de este procedimiento sea lo suficientemente preciso como para ser usado para la posterior localización del robot fue necesario que la fuente de odometría sea muy precisa, motivo por el cual resultó necesario el uso de la fuente de odometría filtrada con información de la IMU. En las figuras se puede comparar el resultado obtenido a partir de las dos fuentes de odometría distintas.
+Para que el resultado obtenido a partir de este procedimiento sea lo suficientemente preciso como para utilizarse en la tarea de localizar al robot fue necesario que la fuente de odometría sea muy precisa, motivo por el cual resultó indispensable el uso de la fuente de odometría filtrada con información de la IMU.
+
+En las figuras \ref{fig:mapaFeo} se puede apreciar el mapa obtenido a partir de la odometría de encoders ``pura''. Este primer mapa resulta totalmente inutilizable para tareas de navegacion puesto que no refleja la morfología real del recinto. Por el contrario, el mapa de la figura \ref{fig:mapaLindo} se generó utilizando la fuente de odometría filtrada con IMU. Aún con sus detalles, este último mapa resultó suficiente para las tareas de localización y navegación del robot.
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=1.0]{./Figures/mapa_feo.png}
+    \caption{Mapa obtenido utilizando odometría de encoders ``pura''.}
+    \label{fig:mapaFeo}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=1.2]{./Figures/mapa_lindo.png}
+    \caption{Mapa obtenido utilizando odometría filtrada.}
+    \label{fig:mapaLindo}
+\end{figure}
+
 
 %TODO: agregar imagenes de 1) Mapa horrible sin ekf 2) mapita decente con ekf.
 
 \subsection{Localización en mapa con amcl}
 
-Tal como se describió en la sección \ref{sec:amcl}, amcl es un paquete para ROS que provee al robot la capacidad de encontrar su posición y orientación de un mapa previamente provisto. Esta prueba consistió en la utilización de un mapa generado de la sala de estar del departamento del autor. Este fue provisto a la herramienta amcl mediante el servidor de parámetros de ROS y luego se procedió a teleoperar el robot mediante un \textit{joystick} inalámbrico.
-
-La prueba se realizó de manera idéntica para tres puntos elegidos en el mapa. El procedimiento utilizado para cada uno de estos puntos fue el siguiente:
+Tal como se describió en la sección \ref{sec:amcl}, amcl es un paquete para ROS que provee al robot la capacidad de encontrar su posición y orientación de un mapa previamente provisto. Esta prueba consistió en la utilización del mapa generado de la sala de estar del departamento del autor. Este fue provisto a la herramienta amcl mediante el servidor de parámetros de ROS y luego se procedió a teleoperar el robot mediante un \textit{joystick} inalámbrico. El procedimiento utilizado fue el siguiente:
 
 \begin{enumerate}
+    \item se colocó el robot en una pose aleatoria en el mapa como se muestra en la figura \ref{fig:sinLocalizar}.
     \item por medio del \textit{joystick} se hizo girar al robot en círculos en sentido horario hasta completar dos vueltas completas de 360 grados a una velocidad angular aproximada de 0,5 rad/s.
     \item se aplicó el mismo procedimiento para un giro en sentido anti-horario.
-    \item se guardó una captura de pantalla de la localización del robot en RViz.
 \end{enumerate}
 
-% TODO: Agregar los tres screenshots
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.4]{./Figures/sin_localizar.png}
+    \caption{Captura de pantalla de RViz con el robot aún sin localizarse. Las flechas rojas muestran las posibles poses del robot en el mapa.}
+    \label{fig:sinLocalizar}
+\end{figure}
+
+El resultado final se puede apreciar en la figura \ref{fig:robotLocalizado}. En esta imagen, tanto la posición en $X$ e $Y$ del robot con respecto al mapa han sido estimados y así también su orientación respecto al eje $Z$.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.4]{./Figures/robot_localizado.png}
+    \caption{Captura de pantalla de RViz con el robot localizado. En este momento las flechas rojas han convergido hacia una misma región donde se estima que se encuentra el robot.}
+    \label{fig:robotLocalizado}
+\end{figure}
 
 \subsection{Navegación en mapa con move\_base}
 
-Así como se describe en la sección \ref{sec:move_base}, move\_base provee la funcionalidad necesaria para mover un robot en un mapa provisto, para lo cual la herramienta se encarga de calcular una ruta de navegación desde el punto en que el robot se encuentra al momento de enviarse la orden y otro punto cualquiera del mapa.
+Así como se describe en la sección \ref{sec:move_base}, move\_base provee la funcionalidad necesaria para mover al robot dentro del mapa provisto, para lo cual la herramienta se encarga de calcular una ruta de navegación desde el punto en que el robot se encuentra al momento de enviarse la orden y otro punto cualquiera del mapa.
 
-Esta prueba consistió en indicar a la herramienta que deseabamos mover el robot de un punto a otro en el mapa. Para el envío puntos
-Para que esta prueba pueda realizarse fue necesario cumplir con ciertos requisitos previos:
+Esta prueba consistió en indicar a la herramienta que deseabamos mover el robot de un punto a otro en el mapa. Para esto fue necesario cumplir con ciertos requisitos previos:
 
 \begin{enumerate}
     \item un mapa estático debió ser provisto al servidor de mapas de ROS.
     \item el robot debió encontrarse previamente localizado en el mapa.
 \end{enumerate}
+
+El envío de consigna se realiza mediante la herramienta RViz, en la cual se representa mediante un vector de color verde en el mapa. Su punto de origen representa la posición deseada mientras que su dirección representa la orientación final del robot. En las figuras \ref{fig:comandoNavegación} y \ref{fig:robotEnSetpoint} se puede apreciar al robot en su punto de inicio al momento de recibir la orden de navegación y al robot ya en su punto de destino, respectivamente.
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.35]{./Figures/comando_navegacion.png}
+    \caption{Captura de pantalla de RViz con el robot localizado al momento de recibir una orden de navegación.}
+    \label{fig:comandoNavegación}
+\end{figure}
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.35]{./Figures/robot_en_setpoint.png}
+    \caption{Captura de pantalla de RViz con el robot en su punto de consigna.}
+    \label{fig:robotEnSetpoint}
+\end{figure}
