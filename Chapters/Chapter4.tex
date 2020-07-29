@@ -118,32 +118,41 @@ Basado en las lecturas del acelerómetro de la figura \ref{fig:aceleracionLineal
 
 \begin{itemize}
     \item en la primera columna se observa el vector de aceleración de la gravedad de aproximadamente 9,8 $m/s^2$ apuntando en la dirección negativa del eje $Z$.
-    \item en la segunda columna se observa el mismo vector de aceleración, esta vez transladado en dirección al eje $X$ negativo.
+    \item en la segunda columna se observa el mismo vector de aceleración, esta vez transladado en dirección del eje $X$ negativo.
     \item finalemente en la tercer columna se observa al vector transladado en dirección al eje $Y$ negativo.
 \end{itemize}
 
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.5]{./Figures/linear_acceleration.png}
+    \includegraphics[scale=0.4]{./Figures/linear_acceleration.png}
     \caption{Gráfico de aceleraciones lineales sobre cada uno de los ejes registrados durante las tres posiciones de prueba.}
     \label{fig:aceleracionLineal}
 \end{figure}
 
 
-Basado en las lecturas del  de las figuras \ref{fig:velocidadAngular1} y \ref{fig:velocidadAngular2} se procede a describir el resultado de las observaciones realizadas:
+Para las gráficas del el giroscopio se procedió de manera similar que con el acelerómetro. La diferencia en estas pruebas radica en que los valores medidos por el giroscopio son instantáneos, ya que los mismos corresponden a las velocidades angulares alrededor que aparecen alrededor de los ejes \textbf{durante} los movimientos efectuados, y desaparecen al dejar de mover la IMU. Por este motivo se presentan seis gráficas que fueron distribuidas en las figuras \ref{fig:velocidadAngular1} y \ref{fig:velocidadAngular2} de izquierda a derecha, donde se muestran los valores adoptados por los tres ejes del giroscopio durante los movimientos descriptos a continuación:
+
+\begin{enumerate}
+    \item giro alrededor del eje $Y$ en sentido antihorario.
+    \item giro alrededor del eje $Y$ en sentido horario.
+    \item giro alrededor del eje $X$ en sentido antihorario.
+    \item giro alrededor del eje $X$ en sentido horario.
+    \item giro alrededor del eje $Z$ en sentido antihorario.
+    \item giro alrededor del eje $Z$ en sentido horario.
+\end{enumerate}
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.5]{./Figures/angular_velocity_1.png}
-    \caption{Gráfico de velocidades angulares sobre cada uno de los ejes registrados durante el primer movimiento de prueba y la primer mitad del segundo.}
+    \includegraphics[scale=0.42]{./Figures/angular_velocity_1.png}
+    \caption{Gráfico de velocidades angulares durante los movimientos 1, 2 y 3.}
     \label{fig:velocidadAngular1}
 \end{figure}
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.5]{./Figures/angular_velocity_2.png}
-    \caption{Gráfico de velocidades angulares sobre cada uno de los ejes registrados durante la segunda mitad segundo movimiento de prueba y el tercero.}
+    \includegraphics[scale=0.42]{./Figures/angular_velocity_2.png}
+    \caption{Gráfico de velocidades angulares durante los movimientos 4, 5 y 6.}
     \label{fig:velocidadAngular2}
 \end{figure}
 
