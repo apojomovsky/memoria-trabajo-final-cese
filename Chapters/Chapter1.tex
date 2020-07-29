@@ -105,6 +105,7 @@ Asímismo, Robotino viene equipado de fábrica con una computadora tipo PC de gr
 
 El Pioneer 3-DX es un pequeño robot de tracción diferencial ideal para ser utilizado en entornos académicos ya sea en un laboratorio o en un salón de clases. Incorpora de fábrica cinco sensores del tipo SONAR al frente del robot como los que se pueden apreciar en la figura \ref{fig:robotPioneer}, encoders para las ruedas y un microcontrolador con firmware específico.
 
+Su amplia superficie de carga permite transportar hasta 8 Kg, por lo que es un buen candidato para añadir sensores y actuadores extra, tales como cámaras o manipuladores de tamaño adecuado.
 
 \begin{figure}[ht]
 	\centering
@@ -114,8 +115,6 @@ El Pioneer 3-DX es un pequeño robot de tracción diferencial ideal para ser uti
 \end{figure}
 
 \footnotetext{Imagen tomada de \url{https://static.generation-robots.com/6645-large_default/robot-mobile-pioneer-3-at.jpg}}
-
-Su amplia superficie de carga permite transportar hasta 8 Kg, por lo que es un buen candidato para añadir sensores y actuadores extra, tales como cámaras o manipuladores de tamaño adecuado.
 
 \section{Motivación}
 
@@ -139,7 +138,7 @@ El alcance del presente trabajo involucra el desarrollo del firmware para el mic
 
 Se incluye el desarrollo de software requerido para:
 \begin{itemize}
-	\item el paquete para ROS que brinda soporte básico para el robot propuesto "Lubobot", con sus sensores y actuadores.
+	\item el paquete para ROS que brinda soporte básico para el robot propuesto "LuboBot", con sus sensores y actuadores.
 	\item calcular la odometría del robot utilizando las lecturas de los encoders.
 	\item la descripción del robot en formato URDF (\textit{Unified Robot Description Format}), requerido para representar correctamente el robot en la herramienta RViz.
 	\item una imagen de Docker con todas las dependencias necesarias para utilizar el robot de manera encapsulada y sin la necesidad de modificar la configuración del sistema operativo del usuario.

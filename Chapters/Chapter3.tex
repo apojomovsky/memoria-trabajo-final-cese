@@ -46,25 +46,25 @@ En este capítulo se exponen las decisiones de diseño tomadas para la elaboraci
 En esta sección se describe la estructura física del robot y se explican los criterios utilizados tanto para el dimensionamiento de piezas como para su disposición.
 
 \subsection{Disposición en niveles}
-Tal como se menciona en la sección \ref{sec:turtlebot}, el diseño propuesto toma como referencia a la base móvil \textit{open source} Turtlebot 2. Por este motivo, Lubobot también se compone de una base móvil cilindrica de tracción diferencial la cual funciona como soporte para una estructura escalable en "niveles", gracias a lo que el usuario puede agregar nuevos componentes sin dificultad, según los requisitos particulares de su aplicación. En la figura \ref{fig:lubobotURDF} y \ref{fig:lubobotReal} muestran respectivamente, una representación en 3D de la estructura física del robot y una fotografía del montaje real del robot.
+Tal como se menciona en la sección \ref{sec:turtlebot}, el diseño propuesto toma como referencia a la base móvil \textit{open source} Turtlebot 2. Por este motivo, LuboBot también se compone de una base móvil cilíndrica de tracción diferencial que funciona como soporte para una estructura escalable en "niveles", gracias a lo que el usuario puede agregar nuevos componentes sin dificultad, según los requisitos particulares de su aplicación. En la figura \ref{fig:lubobotURDF} y \ref{fig:lubobotReal} muestran respectivamente una representación en 3D de la estructura física del robot y una fotografía de su montaje real.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[scale=0.5]{./Figures/lubobot_urdf.png}
-  \caption{Vista frontal del modelo URDF de Lubobot representado en RViz.}
+  \caption{Vista frontal del modelo URDF de LuboBot representado en RViz.}
   \label{fig:lubobotURDF}
 \end{figure}
 
 \begin{figure}[ht]
   \centering
   \includegraphics[scale=0.5]{./Figures/lubobot.png}
-  \caption{Fotografía frontal del montaje del robot Lubobot.}
+  \caption{Fotografía frontal del montaje del robot LuboBot.}
   \label{fig:lubobotReal}
 \end{figure}
 
 \newpage
 
-Sobre la base móvil se montaron cuatro varillas roscadas de 5 mm de diámetro y 80 mm de largo, de las cuales las dos frontales fueron fijadas a la agarradera o  \textit{handler} del Roomba, mientras que las dos traseras se fijaron directamente al chasis. Dicha disposición fué calculada en base a las áreas del robot que el autor determinó como seguras para su modificación, es decir que no representaban ningún riesgo al correcto funcionamiento de la base móvil.
+Sobre la base móvil se montaron cuatro varillas roscadas de 5 mm de diámetro y 80 mm de largo, de las cuales las dos frontales fueron fijadas a la agarradera o  \textit{handler} del Roomba, mientras que las dos traseras se fijaron directamente al chasis. Dicha disposición fue calculada en base a las áreas del robot que el autor determinó como seguras para su modificación, es decir que no representaban ningún riesgo al correcto funcionamiento de la base móvil.
 
 \subsection{Disposición de componentes}
 
@@ -73,7 +73,7 @@ Los diferentes componentes funcionales del robot fueron dispuestos en la configu
 \begin{itemize}
   \item Mantener bajo el centro de gravedad del conjunto.
   \item Maximizar el espacio libre en el nivel superior para futuros \textit{upgrades}.
-  \item Posicionar la IMU lo mas cerca posible del centro de rotación de la base y lo mas abajo posible.
+  \item Posicionar la IMU lo más cerca posible del centro de rotación de la base y lo más abajo posible.
   \item Posicionar el sensor Kinect a alrededor de 30 cm del suelo para incrementar su línea de visión.
   \item Mantener libre de obstrucciones el acceso al botón central del Roomba.
 \end{itemize}
@@ -87,7 +87,7 @@ Los diferentes componentes funcionales del robot fueron dispuestos en la configu
 
 \section{Diagrama en bloques de conexiones}
 
-En la figura \ref{fig:lubobotConexiones} se muestra el diagrama de conexiones entre los distintos componentes electronicos del sistema y se indica además, el protocolo utilizado para cada interacción. Se decidió dotar al robot de un \textit{router} wifi a bordo de modo a facilitar su conexión a una computadora externa, destinada como estación de control para el envío de misiones.
+En la figura \ref{fig:lubobotConexiones} se muestra el diagrama de conexiones entre los distintos componentes electrónicos del sistema y se indica además el protocolo utilizado para cada interacción. Se decidió dotar al robot de un \textit{router} Wifi a bordo a modo de facilitar su conexión a una computadora externa, destinada como estación de control para el envío de misiones.
 
 \begin{figure}[ht]
   \centering
@@ -100,24 +100,24 @@ En la figura \ref{fig:lubobotConexiones} se muestra el diagrama de conexiones en
 
 \section{Implementación de firmware}
 
-En esta sección se detallan las decisiones de diseño e implementación del firmware, encargado de la interconexión del robot Roomba y la Raspberry PI así como también de la lectura de sensores ajenos a la base móvil original como lo es la IMU.
+En esta sección se detallan las decisiones de diseño e implementación del firmware, encargado de la interconexión del robot Roomba y la Raspberry PI así como también de la lectura de sensores ajenos a la base móvil original como la IMU.
 
 \subsection{Distribución de tareas en FreeRTOS}
 
-Debido a la necesidad de atender rutinas naturaleza tanto síncrona como asíncrona en el firmware, se decidió utilizar un RTOS para su implementación. Las tareas involucradas se describen a continuación, agrupadas en base a su responsabilidad dentro del sistema.
+Debido a la necesidad de atender rutinas de naturaleza tanto síncrona como asíncrona en el firmware, se decidió utilizar un RTOS para su implementación. Las tareas involucradas se describen a continuación, agrupadas en base a su responsabilidad dentro del sistema.
 
 \subsection{Interfaz Roomba-microcontrolador}
 
-Está formada dos tareas que en conjunto funcionan como \textit{proxy} entre la base móvil Roomba y el resto del sistema. El microcontrolador se ocupa de la serialición y des-serialización de los paquetes intercambiados con el robot mediante el protocolo Open Interface Las tareas responsables del manejo de esta función se describen en el apartado siguiente.
+La interfaz Roomba-microcontrolador se conforma por dos tareas que en conjunto cumplen la función de \textit{proxy} entre la base móvil Roomba y el resto del sistema. El microcontrolador se ocupa de la serialización y des-serialización de los paquetes intercambiados con el robot mediante el protocolo Open Interface. Las tareas responsables del manejo de esta función se describen a continuación.
 
 \begin{itemize}
-  \item \textbf{Solicitud de lectura de sensores}: realiza la lectura de cada uno de los dos encoders disponibles de manera periódica cada 100 ms, actualizando las variables internas de estado en cada iteración con el valor actualizado.
-  \item \textbf{Envío de comandos a actuadores}: realiza el despacho de comandos a los distintos actuadores disponibles en base a las órdenes recibidas desde ROS. Si bien esta tarea puede considerarse de carácter asíncrono, se implementó sobre esta un mecanismo de \textit{watchdog} para evitar que un posible fallo en la comunicación con ROS ponga en peligro la integridad del usuario y del robot. Para esto, la tarea verifica cada 100 ms la existencia de un comando de velocidad nuevo. En su ausencia, envía una orden para detener el robot.
+  \item Solicitud de lectura de sensores: realiza la lectura de cada uno de los dos encoders disponibles de manera periódica cada 100 ms y actualiza las variables internas de estado en cada iteración con el valor actualizado.
+  \item Envío de comandos a actuadores: realiza el despacho de comandos a los distintos actuadores disponibles en base a las órdenes recibidas desde ROS. Si bien esta tarea puede considerarse de carácter asíncrono, se implementó sobre esta un mecanismo de \textit{watchdog} para evitar que un posible fallo en la comunicación con ROS ponga en peligro la integridad del usuario y del robot. Para esto, la tarea verifica cada 100 ms la existencia de un comando de velocidad nuevo. En su ausencia, envía una orden para detener el robot.
 \end{itemize}
 
 Se escribió una biblioteca en lenguaje C++ bajo el nombre de ``Roomba600'' que ofrece una interfaz simplificada para la interacción del microcontrolador con el Roomba. Está implementada sobre la capa de abstracción STM32CubeHAL ofrecida por el fabricante ST, que permite el manejo de puertos serie UART con mecanismos de control asíncronos aptos para RTOS.
 
-El protocolo Open Interface permite la interacción con todos los sensores y actuadores disponibles en el robot Roomba. Sin embargo, los requerimientos del presente proyecto se limitan al control de velocidad de ruedas y lectura de encoders, por lo que en la librería presentada se implementan solamente las interfaces para dichas funciones, dejando los demás métodos pendientes de implementación para un trabajo futuro. En el código \ref{cod:Roomba600} se muestra la interfaz de la clase Roomba600 con los métodos actualmente implementados.
+El protocolo Open Interface permite la interacción con todos los sensores y actuadores disponibles en el robot Roomba. Sin embargo, los requerimientos del presente proyecto se limitan al control de velocidad de ruedas y lectura de encoders, por lo que en la biblioteca presentada se implementan solamente las interfaces para dichas funciones y se dejan los demás métodos pendientes de implementación para un trabajo futuro. En el código \ref{cod:Roomba600} se muestra la interfaz de la clase Roomba600 con los métodos actualmente implementados.
 
 
 \begin{lstlisting}[label=cod:Roomba600,caption=Interfaz de la clase Roomba600 que implementa el protocolo Open Interface.\protect\footnotemark]
@@ -161,15 +161,15 @@ public:
 
 \subsection{Interfaz microcontrolador-ROS}
 
-Esta interfaz involucró la migración de la biblioteca rosserial, mencionada en la sección \ref{sec:rosserial}, que hace posible entablar una comunicación serial asíncrona entre el microcontrolador y el una computadora corriendo ROS mediante su protocolo de mensajes estándar.
+La interfaz entre el microcontrolador y ROS requirió de la migración de la biblioteca rosserial, mencionada en la sección \ref{sec:rosserial}. Esta librería hace posible entablar una comunicación serial asíncrona entre el microcontrolador y una computadora con ROS mediante un protocolo que utiliza los mensajes estándares de ROS. A nivel del microcontrolador se optó por implementar esta interfaz mediante tres tareas que se describen a continuación:
 
 \begin{itemize}
-  \item \textbf{Spin de ROS} esta tarea se encarga de llamar al método \file{spin} de la biblioteca rosserial manera periódica. Esta cumple la función de \textit{heartbeat} para la comunicación con la computadora, donde ambas partes se indican mutuamente si existen mensajes o servicios que transmitir.
-  \item \textbf{Suscriptor de ROS} recibe los mensajes y solicitudes de servicios que fueron enviados desde ROS al microcontrolador y llama a las funciones de \textit{callback} requeridas para cada uno de ellos.
-  \item \textbf{Publicador de ROS} despacha los mensajes y solicitudes de servicios que salen del microcontrolador.
+  \item Spin de ROS: esta tarea se encarga de llamar al método \file{spin} de la biblioteca rosserial de manera periódica. Cumple la función de \textit{heartbeat} para la comunicación con la computadora, por la que ambas partes se indican mutuamente si existen mensajes o servicios que transmitir.
+  \item Suscriptor de ROS: recibe los mensajes y solicitudes de servicios que fueron enviados desde ROS al microcontrolador y llama a las funciones de \textit{callback} requeridas para cada uno de ellos.
+  \item Publicador de ROS: despacha los mensajes y solicitudes de servicios que salen del microcontrolador.
 \end{itemize}
 
-Para la migración de la biblioteca rosserial fué necesario implementar una clase cuyas interfaces sean compatibles con la definición mostrada en el código \ref{cod:stm32hardware}.
+Para la migración de la biblioteca rosserial fue necesario implementar una clase cuyas interfaces fueran compatibles con la definición mostrada en el código \ref{cod:stm32hardware}.
 
 \begin{lstlisting}[label=cod:stm32hardware, caption=Interfaz de la clase STM32Hardware requerida por la biblioteca rosserial.\protect\footnotemark]
 
@@ -196,25 +196,25 @@ class STM32Hardware {
 
 \section{Implementación de software}
 
-En esta sección se entra en detalle sobre la organización del código y archivos que acompañan al robot propuesto en este trabajo.
+En esta sección se detalla la organización del código y archivos que acompañan al robot propuesto en este trabajo.
 
-\subsection{Metapaquete Lubobot para ROS}
+\subsection{Metapaquete LuboBot para ROS}
 
-En esta sección se explica la estructura del meta-paquete Lubobot, que contiene las herramientas mínimas necesarias para comandar, modificar e inspeccionar el robot con ROS.
+En esta sección se explica la estructura del meta-paquete LuboBot, que contiene las herramientas mínimas necesarias para comandar, modificar e inspeccionar el robot con ROS.
 
 Como se describió en la sección \ref{sec:organizacionArchivos}, se considera una buena práctica el utilizar un metapaquete para contener varios paquetes que estan relacionados entre sí. Siguiendo estas recomendaciones, el software que acompaña al robot propuesto se organiza de la siguiente manera:
 
 \begin{itemize}
-  \item \textbf{lubobot\_description} incluye los archivos de descripción del robot en formato URDF y los archivos de visualización para RViz.
-  \item \textbf{lubobot\_msgs} incluye los mensajes utilizados para intercambiar información entre el firmware y ros, a través de rosserial.
-  \item \textbf{lubobot\_drivers} incluye el código de fuente para los nodos o programas que monitorean los sensores del robot, así como los que envían comandos a los actuadores.
+  \item lubobot\_description: incluye los archivos de descripción del robot en formato URDF y los archivos de visualización para RViz.
+  \item lubobot\_msgs: incluye los mensajes utilizados para intercambiar información entre el firmware y ros, a través de rosserial.
+  \item lubobot\_drivers: incluye el código de fuente para los nodos o programas que monitorean los sensores del robot, así como los que envían comandos a los actuadores.
 \end{itemize}
 
 \subsection{Nodo re-publicador de IMU ``lubo\_imu\_relay''}
 
-Se encuentra suscripto a los mensajes del tipo \file{lubo\_imu}, compuesto por las lecturas crudas de orientación y aceleración angular provenientes del microcontrolador. El programa se encarga de procesarlos a medida que llegan, agregandoles información de tiempo y secuencia y luego los republica en el formato de mensaje estándar de ROS para unidades de medición inercial\protect\footnotemark.
+Se encuentra suscripto a los mensajes del tipo \file{lubo\_imu}, compuesto por las lecturas crudas de orientación y aceleración angular provenientes del microcontrolador. El programa se encarga de procesarlos a medida que llegan, agregándoles información de tiempo y secuencia y luego los republica en el formato de mensaje estándar de ROS para unidades de medición inercial\protect\footnotemark.
 
-Cabe preguntarse por qué de no evitar este nodo y publicar mensajes con el tipo estándar directamente desde el microcontrolador. Hay un par de motivos específicos que son válidos no solo para este mensaje en particular, sino también para la gran mayoría de los mensajes intercambiados con el microcontrolador:
+Cabe preguntarse por qué no evitar este nodo y publicar mensajes con el tipo estándar directamente desde el microcontrolador. Hay dos motivos específicos que son válidos no solo para este mensaje en particular, sino también para la gran mayoría de los mensajes intercambiados con el microcontrolador:
 \begin{itemize}
   \item los mensajes estandar de ROS poseen un \textit{footprint} en memoria poco adecuado para dispositivos con poca memoria RAM.
   \item el bus UART utilizado para la comunicación con el microcontrolador ofrece un ancho de banda ajustado que se satura rápidamente con mensajes del tipo estándar.
@@ -224,9 +224,9 @@ Cabe preguntarse por qué de no evitar este nodo y publicar mensajes con el tipo
 
 \subsection{Nodo publicador de odometría ``lubo\_odom\_node''}
 
-Está suscripto a los mensajes del tipo \file{lubo\_encoders} que provienen del microcontrolador. El mensaje se compone de las lecturas de los encoders izquierdo y derecho de la base Roomba. Cabe mencionar que las lecturas de ambos encoders deben tomarse en simultaneo para el correcto cálculo de la odometría, es por esto que el mensaje utilizado incluye ambas lecturas.
+Está suscripto a los mensajes del tipo \file{lubo\_encoders} que provienen del microcontrolador. El mensaje se compone de las lecturas de los encoders izquierdo y derecho de la base Roomba. Cabe mencionar que las lecturas de ambos encoders deben tomarse en simultáneo para el correcto cálculo de la odometría, es por esto que el mensaje utilizado incluye ambas lecturas.
 
-El microcontrolador publica los mensajes a una frecuencia por defecto de 20 hz, pero este y otros parámetros son también configurables desde la estación de control en \textit{runtime}. Esto se logra gracias al mecanismo de configuración \file{rosparam}, que ahorra la necesidad de recompilar el código cada vez que es necesario actualizar parámetros.
+El microcontrolador publica los mensajes a una frecuencia por defecto de 20 Hz, pero este y otros parámetros son también configurables desde la estación de control en \textit{runtime}. Esto se logra gracias al mecanismo de configuración \file{rosparam}, que ahorra la necesidad de recompilar el código cada vez que se deba actualizar algún parámetro.
 
 \subsection{Configuración del paquete ros\_localization}
 
@@ -237,7 +237,7 @@ Así como se describió en la subsección \ref{sec:robotLocalization}, es necesa
   \item odometría generada a partir encoders.
 \end{itemize}
 
-Para la configuración del paquete se utilizó un archivo del tipo YAML que se carga de manerara automática al servidor de parámetros de ROS al inicio de cada ejecución. Las partes mas importantes de este archivo residen en la configuración de campos a ser tomados en cuenta por el estimador para cada una de las fuentes de información. Una versión reducida de esta configuración se muestra en el bloque de código \ref{cod:rosLocalization}.
+Para la configuración del paquete se utilizó un archivo del tipo YAML que se carga de manera automática al servidor de parámetros de ROS al inicio de cada ejecución. Las partes más importantes de este archivo residen en la configuración de campos a ser tomados en cuenta por el estimador para cada una de las fuentes de información. Una versión reducida de esta configuración se muestra en el bloque de código \ref{cod:rosLocalization}.
 
 \newpage
 
@@ -312,18 +312,18 @@ imu0_config: [false, false, false,
 \footnotetext{Archivo de configuración YAML completo \url{https://github.com/apojomovsky/lubobot/blob/master/lubobot/config/ekf.yaml}}
 
 % TODO
-\subsection{Configuración del paquete move\_base}\label{sec:move_base}
-\subsection{Configuración del paquete amcl}\label{sec:amcl}
+% \subsection{Configuración del paquete move\_base}\label{sec:move_base}
+% \subsection{Configuración del paquete amcl}\label{sec:amcl}
 
 \section{Herramientas ofrecidas al usuario}
 
-De acuerdo a los objetivos del presente trabajo, el desarrollo del robot móvil Lubobot está acompañado de una serie de herramientas y documentos con los que se pretende facilitar el proceso de adopción de la plataforma por nuevos usuarios.
+De acuerdo a los objetivos del presente trabajo, el desarrollo del robot móvil LuboBot está acompañado de una serie de herramientas y documentos con los que se pretende facilitar el proceso de adopción de la plataforma por nuevos usuarios.
 
 \subsection{Entorno de desarrollo encapsulado}
 
-La instalación de un entorno de desarrollo compatible con un proyecto puede tornarse una tarea muy frustrante para el usuario si no se tomen los los necesarios. Casos como el del uso de un sistema operativo total o parcialmente incompatible, diferencias de versiones de las bibliotecas requeridas e instaladas, etc. son solo algunos de problemas con los que el usuario promedio podría encontrarse.
+La instalación de un entorno de desarrollo compatible con un proyecto puede tornarse una tarea muy frustrante para el usuario si no se toman los recaudos necesarios. Casos como el del uso de un sistema operativo total o parcialmente incompatible, diferencias de versiones de las bibliotecas requeridas e instaladas, son solo algunos de los problemas con los que el usuario promedio podría encontrarse.
 
-Con la intención de simplificar al máximo el proceso de instalación de dependencias, se provee de un entorno de desarrollo encapsulado utilizando la tecnología de \textit{containers} mediante la plataforma Docker\protect\footnotemark. Esta utilizad permite la generación de entornos de trabajo aislados del sistema operativo \textit{host} mediante el uso de un archivo especial denominado Dockerfile, en el que se detalla una lista de acciones a seguir para generar el entorno de trabajo. En el presente trabajo, se incluyen los siguientes archivos:
+Con la intención de simplificar al máximo el proceso de instalación de dependencias, se provee un entorno de desarrollo encapsulado utilizando la tecnología de \textit{containers} mediante la plataforma Docker\protect\footnotemark. Esta utilidad permite la generación de entornos de trabajo aislados del sistema operativo \textit{host} mediante el uso de un archivo especial denominado Dockerfile, en el que se detalla una lista de acciones a seguir para generar el entorno de trabajo. En el presente trabajo, se incluyen los siguientes archivos:
 
 \begin{itemize}
   \item \textbf{Dockerfile}: continene las definiciones para generar el entorno de trabajo con todas las dependencias necesarias para la ejecución del software del robot en ROS.
@@ -333,30 +333,32 @@ Con la intención de simplificar al máximo el proceso de instalación de depend
 
 \footnotetext{Página web del proyecto Docker \url{https://www.docker.com}}
 
-Se proveen instrucciones específicas sobre como utilizar y expandir la configuración inicial propuesta de esta herramienta en la Wiki del proyecto.
+Se proveen instrucciones específicas sobre cómo utilizar y expandir la configuración inicial propuesta de esta herramienta en la Wiki del proyecto.
 
 \subsection{Documentación en formato Wiki}
 
 Se ofrece en conjunto con el repositorio Git\protect\footnotemark, una sección aparte dedicada exclusivamente a la documentación del robot. Para este fin se utilizó la funcionalidad de \textit{Wiki} ofrecida por la plataforma Github.
 
-\footnotetext{Repositorio principal del proyecto Lubobot \url{https://github.com/apojomovsky/lubobot}}
+\footnotetext{Repositorio principal del proyecto LuboBot \url{https://github.com/apojomovsky/lubobot}}
 
 
-En la figura \ref{fig:wiki} se muestra la página principal de la \textit{Wiki} en su primera iteración, donde se realiza una breve presentación del proyecto, seguido de \textit{links} de interés con tutoriales y especificaciones técnicas.
-
-\begin{figure}[ht]
-  \centering
-  \includegraphics[scale=0.4]{./Figures/wiki.png}
-  \caption{Página principal de la \textit{wiki} de LuboBot.\protect\footnotemark}
-  \label{fig:wiki}
-\end{figure}
-
-\footnotetext{Wiki del proyecto Lubobot \url{https://github.com/apojomovsky/lubobot/wiki}}
+En la figura \ref{fig:wiki} se muestra la página principal de la Wiki en su primera iteración, donde se realiza una breve presentación del proyecto, seguida de \textit{links} de interés con tutoriales y especificaciones técnicas.
 
 Se decidió utilizar este formato de documentación en favor de incluir todo en el archivo \file{README.md} por una suma de motivos entre los que se destacan:
 
 \begin{itemize}
   \item organización de archivos en un sub-repositorio proveído de manera automática por Github, con historial de cambios separado del repositorio principal.
-  \item estructura de archivos múltiples organizados en forma de árbol, que no solo facilitan la búsqueda de información por parte del usuario sino que también facilita las tareas de mantenimiento.
-  \item generación automática de índice en forma de \textit{sidebar} en el sitio que facilita la navegación entre las páginas que componen el sitio.
+  \item estructura de archivos múltiples organizados en forma de árbol, que no solo facilitan la búsqueda de información por parte del usuario sino también las tareas de mantenimiento.
+  \item generación automática de índice en forma de \textit{sidebar} en el sitio que facilita la navegación entre las páginas que lo componen.
 \end{itemize}
+
+\newpage
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.5]{./Figures/wiki.png}
+  \caption{Página principal de la Wiki de LuboBot.\protect\footnotemark}
+  \label{fig:wiki}
+\end{figure}
+
+\footnotetext{Wiki del proyecto LuboBot \url{https://github.com/apojomovsky/lubobot/wiki}}

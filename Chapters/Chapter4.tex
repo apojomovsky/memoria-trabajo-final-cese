@@ -104,7 +104,7 @@ Dado que es posible obtener las lecturas crudas de los encoders del robot, se re
     \label{tab:lecturaEncoders}
 \end{table}
 
-Los resultados expuestos en la tabla \ref{tab:lecturaEncoders} muestran ciertas similitudes con los resultados de la prueba anterior en el sentido que el robot reporta un movimiento mas ``corto'' que el que le fue comandado. Dado que el número de \textit{ticks} de la rueda izquierda es mayor que el de la derecha, es correcto asumir que el robot describió un movimiento curvilíneo con radio de giro hacia la derecha, lo que pudo comprobarse por el autor al observar la posición del robot al final de la prueba.
+Los resultados expuestos en la tabla \ref{tab:lecturaEncoders} muestran ciertas similitudes con los resultados de la prueba anterior en el sentido que el robot reporta un movimiento más ``corto'' que el que le fue comandado. Dado que el número de \textit{ticks} de la rueda izquierda es mayor que el de la derecha, es correcto asumir que el robot describió un movimiento curvilíneo con radio de giro hacia la derecha, lo que pudo comprobarse por el autor al observar la posición del robot al final de la prueba.
 
 \subsection{Validación de lecturas crudas de la IMU}
 
@@ -274,7 +274,8 @@ En las figuras \ref{fig:mapaFeo} se puede apreciar el mapa obtenido a partir de 
 
 \subsection{Localización en mapa con amcl}
 
-Tal como se describió en la sección \ref{sec:amcl}, amcl es un paquete para ROS que provee al robot la capacidad de encontrar su posición y orientación de un mapa previamente provisto. Esta prueba consistió en la utilización del mapa generado de la sala de estar del departamento del autor. Este fue provisto a la herramienta amcl mediante el servidor de parámetros de ROS y luego se procedió a teleoperar el robot mediante un \textit{joystick} inalámbrico. El procedimiento utilizado fue el siguiente:
+% Tal como se describió en la sección \ref{sec:amcl}, amcl es un paquete para ROS que provee al robot la capacidad de encontrar su posición y orientación de un mapa previamente provisto. Esta prueba consistió en la utilización del mapa generado de la sala de estar del departamento del autor. Este fue provisto a la herramienta amcl mediante el servidor de parámetros de ROS y luego se procedió a teleoperar el robot mediante un \textit{joystick} inalámbrico. El procedimiento utilizado fue el siguiente:
+Amcl es un paquete para ROS que provee al robot la capacidad de encontrar su posición y orientación de un mapa previamente provisto. Esta prueba consistió en la utilización del mapa generado de la sala de estar del departamento del autor. Este fue provisto a la herramienta amcl mediante el servidor de parámetros de ROS y luego se procedió a teleoperar el robot mediante un \textit{joystick} inalámbrico. El procedimiento utilizado fue el siguiente:
 
 \begin{enumerate}
     \item se colocó el robot en una pose aleatoria en el mapa como se muestra en la figura \ref{fig:sinLocalizar}.
@@ -301,7 +302,8 @@ El resultado final se puede apreciar en la figura \ref{fig:robotLocalizado}. En 
 
 \subsection{Navegación en mapa con move\_base}
 
-Así como se describe en la sección \ref{sec:move_base}, move\_base provee la funcionalidad necesaria para mover al robot dentro del mapa provisto, para lo cual la herramienta se encarga de calcular una ruta de navegación desde el punto en que el robot se encuentra al momento de enviarse la orden y otro punto cualquiera del mapa.
+% Así como se describe en la sección \ref{sec:move_base}, move\_base provee la funcionalidad necesaria para mover al robot dentro del mapa provisto, para lo cual la herramienta se encarga de calcular una ruta de navegación desde el punto en que el robot se encuentra al momento de enviarse la orden y otro punto cualquiera del mapa.
+El paquete move\_base provee la funcionalidad necesaria para mover al robot dentro del mapa provisto, para lo cual la herramienta se encarga de calcular una ruta de navegación desde el punto en que el robot se encuentra al momento de enviarse la orden y otro punto cualquiera del mapa.
 
 Esta prueba consistió en indicar a la herramienta que deseabamos mover el robot de un punto a otro en el mapa. Para esto fue necesario cumplir con ciertos requisitos previos:
 
