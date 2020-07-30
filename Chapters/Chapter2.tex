@@ -13,7 +13,7 @@ ROS ofrece un variado \textit{set} de herramientas que facilitan las tareas del 
 
 \subsection{Organización de archivos}\label{sec:organizacionArchivos}
 
-Es adecuado considerar a ROS como algo más que un framework de desarrollo y referirnos a el como un ``meta sistema operativo'', ya que ofrece no solo herramientas y bibliotecas sino también funciones similares a las de un sistema operativo. Entre ellas, podemos citar su abstracción del hardware, el manejo de paquetes, además de un completo \textit{toolchain} de compilación. Así también, tal como en un sistema operativo ``real'', los archivos que componen ROS se encuentran organizados en el disco duro de una manera particular, como se indica en la figura \ref{fig:rosSistemaDeArchivos}.
+Es adecuado considerar a ROS como algo más que un framework de desarrollo y referirnos a el como un ``meta sistema operativo'', ya que ofrece no solo herramientas y bibliotecas sino también funciones similares a las de un sistema operativo. Entre ellas, podemos citar su abstracción del hardware, el manejo de paquetes, además de un completo \textit{toolchain} de compilación \citep{BOOK:2}. Así también, tal como en un sistema operativo ``real'', los archivos que componen ROS se encuentran organizados en el disco duro de una manera particular, como se indica en la figura \ref{fig:rosSistemaDeArchivos}.
 
 \begin{figure}[ht]
     \centering
@@ -26,17 +26,17 @@ Es adecuado considerar a ROS como algo más que un framework de desarrollo y ref
 \newpage
 A continuación se detalla en qué consiste cada uno de los bloques que componen la organización de archivos:
 \begin{itemize}
-    \item \textbf{Paquetes}: los paquetes de ROS representan la unidad básica de software en la plataforma. Contienen uno o más programas de ROS (nodos), bibliotecas, archivos de configuración, etc, que son organizados como una unidad coherente.
-    \item \textbf{Manifiesto del paquete}: está representado por un archivo único dentro del paquete que contiene información sobre este tales como el nombre, autor, tipo de licencia, dependencias, banderas de compilación, etc. El archivo \file{package.xml} encontrado en la raíz del paquete es su propio manifiesto.
-    \item \textbf{Metapaquete}: hace referencia a uno o más paquetes usualmente relacionados entre sí, pero sin estar necesariamente acoplados fuertemente unos con otros. El software provisto con este proyecto es un metapaquete.
-    \item \textbf{Manifiesto del metapaquete}: similar al manifiesto del paquete, con la diferencia que este puede incluir dependencias a de tiempo de ejecución hacia otros paquetes.
-    \item \textbf{Mensajes}: representados con la extensión \file{.msg}, son los tipos de datos utilizados por ROS internamente para comunicar los distintos procesos entre sí. El usuario puede definir tipos de mensajes personalizados con campos adaptados a sus necesidades en del directorio \file{msg} dentro del paquete.
-    \item  \textbf{Servicios}: representados con la extensión \file{.srv}, representan interacciones del tipo solicitud/respuesta entre distintos procesos. Los formatos tanto para solicitud como para respuesta pueden definirse en el directorio \file{srv} dentro del paquete.
-    \item \textbf{Repositorios}: la gran mayoría de los paquetes de ROS son mantenidos utilizando un sistema de control de versiones (SCV) tales como Git, Mercurial o SVN. Es común encontrar metapaquetes definidos dentro de un mismo único repositorio. Este es el caso para el repositorio provisto en este trabajo.
+    \item Paquetes: los paquetes de ROS representan la unidad básica de software en la plataforma. Contienen uno o más programas de ROS (nodos), bibliotecas, archivos de configuración, etc, que son organizados como una unidad coherente.
+    \item Manifiesto del paquete: está representado por un archivo único dentro del paquete que contiene información sobre este tales como el nombre, autor, tipo de licencia, dependencias, banderas de compilación, etc. El archivo \file{package.xml} encontrado en la raíz del paquete es su propio manifiesto.
+    \item Metapaquete: hace referencia a uno o más paquetes usualmente relacionados entre sí, pero sin estar necesariamente acoplados fuertemente unos con otros. El software provisto con este proyecto es un metapaquete.
+    \item Manifiesto del metapaquete: similar al manifiesto del paquete, con la diferencia que este puede incluir dependencias a de tiempo de ejecución hacia otros paquetes.
+    \item Mensajes: representados con la extensión \file{.msg}, son los tipos de datos utilizados por ROS internamente para comunicar los distintos procesos entre sí. El usuario puede definir tipos de mensajes personalizados con campos adaptados a sus necesidades en del directorio \file{msg} dentro del paquete.
+    \item Servicios: representados con la extensión \file{.srv}, representan interacciones del tipo solicitud/respuesta entre distintos procesos. Los formatos tanto para solicitud como para respuesta pueden definirse en el directorio \file{srv} dentro del paquete.
+    \item Repositorios: la gran mayoría de los paquetes de ROS son mantenidos utilizando un sistema de control de versiones (SCV) tales como Git, Mercurial o SVN. Es común encontrar metapaquetes definidos dentro de un mismo único repositorio. Este es el caso para el repositorio provisto en este trabajo.
 \end{itemize}
 
 \subsection{Arquitectura interna}
-ROS está construido sobre una arquitectura basada en grafos, esto significa que las tareas de cómputo son realizadas a través de una red de procesos llamados nodos. Esta red es denominada \textit{Computation Graph} o grafo de cómputo.
+ROS está construido sobre una arquitectura basada en grafos, esto significa que las tareas de cómputo son realizadas a través de una red de procesos llamados nodos. Esta red es denominada \textit{Computation Graph} o grafo de cómputo \citep{BOOK:1}.
 
 Los principales componentes de este grafo son los nodos, el \textit{master} o maestro, el \textit{parameter server} o servidor de parámetros, además de los mensajes, tópicos, servicios y \textit{bags} o bolsas. Cada uno de estos elementos contribuye al funcionamiento del \textit{Computation Graph} con una funcionalidad específica. Los elementos que lo componen, mostrados en la figura \ref{fig:computationGraph}, se describen a continuación:
 
@@ -96,7 +96,7 @@ Además de la definición del protocolo de serialización en si mismo, rosserial
 
 Dentro del campo de la robótica resulta indispensable trabajar con múltiples sistemas de referencia tanto dentro del mismo robot (a la hora de representar el estado de sus articulaciones) así como para representar su estado en su universo de acción o mundo, como puede ser un mapa. Con la finalidad de y simplificar este tipo de cálculos ROS incorpora el paquete llamado TF.
 
-Esta biblioteca fue diseñada para proveer una manera estándar para mantener el registro de los \textit{coordinate frames} o marcos de coordenadas y de realizar las transformaciones entre si mismas en todo el robot, de modo a que los usuarios puedan consumir la información de manera ordenada y sin la necesidad de ocuparse de generar las transformaciones en forma manual \citep{PAPER:3}.
+Esta biblioteca fue diseñada para proveer una manera estándar para mantener el registro de los \textit{coordinate frames} o marcos de coordenadas y de realizar las transformaciones entre si mismas en todo el robot, de manera tal que los usuarios puedan consumir la información de manera ordenada y sin la necesidad de ocuparse de generar las transformaciones en forma manual \citep{PAPER:3}.
 
 TF puede operar de forma transparente en sistemas distribuidos, muy típicos en el entorno ROS. Esto significa que toda la información sobre los marcos de coordenadas de un robot se encuentran disponibles para todos los componentes de un sistema ROS en cualquiera de las computadoras que componen el sistema.
 
@@ -112,7 +112,7 @@ En la figura \ref{fig:tf} se visualiza un robot con múltiples articulaciones. D
 \begin{figure}[ht]
     \centering
     \includegraphics[scale=0.8]{./Figures/tf.png}
-    \caption{Ejemplo de los \textit{frames} registrados con TF en el robot PR2, de la compañía Willow Garage.\protect\footnotemark}
+    \caption{Ejemplo de los \textit{frames} registrados con TF en el robot PR2, de la compañía Willow Garage\protect\footnotemark.}
     \label{fig:tf}
 \end{figure}
 
@@ -120,11 +120,11 @@ En la figura \ref{fig:tf} se visualiza un robot con múltiples articulaciones. D
 
 \subsection{Paquete de localización robot\_localization}\label{sec:robotLocalization}
 
-El paquete robot\_localization es una colección de estimadores no lineales para robots en espacios 2D y 3D, aunque para el aclance de este trabajo solo se hace hincapié en entornos en dos dimensiones.
+El paquete robot\_localization es una colección de estimadores no lineales para robots en espacios 2D y 3D, aunque para el alcance de este trabajo solo se hace hincapié en entornos en dos dimensiones.
 
 Cada uno de estos estimadores permite fusionar un número arbitrario de sensores (IMUs, fuentes de odometría, sistemas de localización interna, receptores GPS, etc.) a su salida genera un vector de 15 dimensiones con el estado del robot ($x$, $y$, $z$, $roll$, $pitch$, $yaw$, $\dot{x}$, $\dot{y}$, $\dot{z}$, $\dot{roll}$, $\dot{pitch}$, $\dot{yaw}$, $\ddot{x}$, $\ddot{y}$, $\ddot{z}$).
 
-Todos los estimadores de estados controlados por este paquete aceptan mediciones provenientes de cualquier sensor de pose siempre y cuando los mismos publiquen en alguno de los tres tipos de mensaje compatibles que se citan a continuación:
+Todos los estimadores de estados controlados por este paquete aceptan mediciones provenientes de cualquier sensor de pose siempre y cuando publiquen en alguno de los tres tipos de mensaje compatibles que se citan a continuación:
 
 \begin{itemize}
     \item \textbf{nav\_msgs/Odometry}: posición y orientación, y velocidades lineal y angular.
@@ -135,9 +135,9 @@ Todos los estimadores de estados controlados por este paquete aceptan mediciones
 
 Para este trabajo se hace uso de los dos primeros tipos de mensajes citados en la lista.
 
-En base a estas mediciones, los estimadores publican los valores de estado filtrados de posición, orientación y velocidades lineal y angular mediante un mensaje del tipo \file{nav\_msgs/Odometry} y opcionalmente, valores de aceleración (no utilizadas en el presente trabajo).
+En base a estas mediciones, los estimadores publican los valores de estado filtrados de posición, orientación y velocidades lineal y angular mediante un mensaje del tipo nav\_msgs/Odometry y opcionalmente, valores de aceleración (no utilizadas en el presente trabajo).
 
-El sotware permite a los usuarios decidir cuál de los campos de información proveidos por los sensores van a ser tomados en cuenta para la fusión en el estimador. Por este motivo, como parte de la configuración del paquete es necesario definir una matriz de booleanos para cada una de las fuentes de información o sensores para informar al estimador cuáles son los campos a tener en cuenta. A continuación se muestra la matrix completa de variables requerida para la configuración de cada una de las fuentes:
+El sotware permite a los usuarios decidir cuál de los campos de información proveidos por los sensores van a ser tomados en cuenta para la fusión en el estimador. Por este motivo, como parte de la configuración del paquete es necesario definir una matriz de booleanos para cada una de las fuentes de información o sensores para informar al estimador cuáles son los campos a tener en cuenta. A continuación se muestra la matriz completa de variables requerida para la configuración de cada una de las fuentes:
 
 \[
     \begin{bmatrix}
@@ -187,7 +187,7 @@ Las ventajas de este tipo de movimiento que lo hacen especialmente útil para ap
 \begin{itemize}
     \item los cálculos matemáticos requeridos para describirlo son sencillos de calcular y en consecuencia, de aplicar.
     \item hace posible realizar giros de 360 grados alrededor del eje vertical.
-    \item es la opción elegida por los fabricantes para bases móviles comerciales de bajo costo, como el Roomba 500 descripto en la sección \ref{sec:roomba}.
+    \item es la opción elegida por los fabricantes para bases móviles comerciales de bajo costo, como el Roomba 600 descripto en la sección \ref{sec:roomba}.
 \end{itemize}
 
 Como se muestra en la figura \ref{fig:diffDrive}, es posible controlar la trayectoria descripta por el robot en un plano $(X,Y)$ mediante la manipulación de las velocidad lineal $v$ y angular $w$ del conjunto \citep{BOOK:3}. En un sistema de tracción diferencial, las fórmulas que describen la velocidad lineal $v$ y angular $w$ se muestran en la ecuación \ref{eq:diffDriveLinear} y \ref{eq:diffDriveAngular}, respectivamente.
@@ -206,14 +206,14 @@ donde $V_i$ y $V_d$ representan las velocidades de desplazamiento lineal de las 
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.8]{./Figures/diff_drive.png}
+    \includegraphics[scale=0.9]{./Figures/diff_drive.png}
     \caption{Descripción de la trayectoria de un robot de tracción diferencial con rueda ``loca'' o \textit{caster}.}
     \label{fig:diffDrive}
 \end{figure}
 
 Se generan tres casos particulares dignos de mención:
 \begin{itemize}
-    \item si $V_i = V_d$, se tendrá un movimiento lineal en línea recta por lo que la velocidad angular $w$ será nula.
+    \item si $V_i = V_d$, se tendrá un movimiento en línea recta por lo que la velocidad angular $w$ será nula.
     \item si $V_i = - V_d$, entonces solo habrá velocidad angular $w$ y la velocidad lineal $v$ del conjunto será nula.
     \item si $V_i = 0$, entonces se tendrá una rotación en sentido anti-horario alrededor de la rueda izquierda con un radio de giro $l$. Se verá el mismo efecto para $V_d = 0$, esta vez con rotación en sentido horario.
 \end{itemize}
@@ -228,12 +228,12 @@ Resulta necesario enriquecer esta estimación mediante su fusión con otras fuen
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.8]{./Figures/navigation.png}
+    \includegraphics[scale=0.9]{./Figures/navigation.png}
     \caption{Trayectoria real descripta por un robot de tracción diferencial.}
     \label{fig:navigation}
 \end{figure}
 
-\section{iRobot Roomba 500}\label{sec:roomba}
+\section{iRobot Roomba 600}\label{sec:roomba}
 
 El Roomba es un robot de limpieza fabricado y comercializado por la compañía iRobot. El primer modelo salió al mercado en el año 2002 y ha recibido siete actualizaciones desde entonces. En cada iteración, se han mejorado aspectos tanto de diseño como funcionalidad y esto le ha permitido mantenerse como el robot de limpieza con más unidades vendidas en el mundo.
 
@@ -245,18 +245,16 @@ La base móvil utilizada para este trabajo consiste en un Roomba de la serie 500
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=2.5]{./Figures/roomba.png}
-    \caption{iRobot Roomba 500, utilizado como base móvil para este trabajo.\protect\footnotemark}
+    \includegraphics[scale=2.8]{./Figures/roomba.png}
+    \caption{iRobot Roomba 600, utilizado como base móvil para este trabajo\protect\footnotemark.}
     \label{fig:roomba}
 \end{figure}
 
 \footnotetext{Imagen tomada de \url{https://uncrate.com/assets_c/2009/04/roomba-560-stretched-thumb-960x640-3177.jpg}}
 
 \subsection{Roomba Open Interface}\label{sec:openInterface}
-Todos los Roomba lanzados a partir del año 2005 son compatibles con una interfaz de comunicación serial denominada Roomba Open Interface, a la que es posible acceder mediante la conexión a un puerto físico disponible en la placa madre del robot. Esto habilita al usuario a todo tipo de interacción con el hardware del robot, como consultar la lectura de cada uno de sus sensores o comandar sus actuadores. Este protocolo ha sido actualizado a la par de las sucesivas actualizaciones del Roomba para ofrecer nuevas funcionalidades o mejoras y en cada caso, se encuentra acompañado de un documento oficial por parte de iRobot en formato PDF\protect\footnotemark.
 
-\footnotetext{Especificación Open Interface: \url{https://cdn-shop.adafruit.com/datasheets/create_2_Open_Interface_Spec.pdf}}
-
+Todos los Roomba lanzados a partir del año 2005 son compatibles con una interfaz de comunicación serial denominada Roomba Open Interface, a la que es posible acceder mediante la conexión a un puerto físico disponible en la placa madre del robot. Esto habilita al usuario a todo tipo de interacción con el hardware del robot, como consultar la lectura de cada uno de sus sensores o comandar sus actuadores. Este protocolo ha sido actualizado a la par de las sucesivas actualizaciones del Roomba para ofrecer nuevas funcionalidades o mejoras y en cada caso, se encuentra acompañado de un documento oficial por parte de iRobot en formato PDF \citep{PAPER:5}.
 
 \subsection{Conexionado del robot por puerto serie}
 
@@ -290,6 +288,8 @@ En la figura \ref{fig:roombaPinout} y la tabla \ref{tab:Pines} se exponen respec
     \label{tab:distribucionPines}
 \end{table}
 
+\newpage
+
 \section{Placa de desarrollo STM32-NUCLEO}
 
 Es una familia de placas de desarrollo elaboradas por la compañía ST. Entre sus características principales se destacan:
@@ -306,7 +306,7 @@ Con el fin de garantizar la escalabilidad del sistema, para este proyecto se opt
 \begin{figure}[ht]
     \centering
     \includegraphics[scale=1.3]{./Figures/stm32nucleo.png}
-    \caption{Placa de desarrollo STM32 NUCLEO-F746ZG elegida para comandar el robot.\protect\footnotemark}
+    \caption{Placa de desarrollo STM32 NUCLEO-F746ZG elegida para comandar el robot\protect\footnotemark.}
     \label{fig:stm32nucleo}
 \end{figure}
 
@@ -325,7 +325,7 @@ El sensor de profundidad del Kinect consiste en un proyector de nube de puntos i
 \begin{figure}[ht]
     \centering
     \includegraphics[scale=2.5]{./Figures/depth_map.png}
-    \caption{\textit{Depth map} con la silueta de una persona.\protect\footnotemark}
+    \caption{\textit{Depth map} con la silueta de una persona\protect\footnotemark.}
     \label{fig:depthMap}
 \end{figure}
 
@@ -342,7 +342,7 @@ Las configuraciones típicas de una IMU continenen un acelerómetro, un giroscop
 \begin{figure}[ht]
     \centering
     \includegraphics[scale=2.0]{./Figures/imu.png}
-    \caption{Ejes de giros y fuerzas de un vehículo.\protect\footnotemark}
+    \caption{Ejes de giros y fuerzas de un vehículo\protect\footnotemark.}
     \label{fig:girosYFuerzas}
 \end{figure}
 
@@ -350,12 +350,14 @@ Las configuraciones típicas de una IMU continenen un acelerómetro, un giroscop
 
 \subsection{Sensor MPU6050}\label{sec:mpu6050}
 
-El dispositivo MPU-6050 mostrado en la figura \ref{fig:mpu6050} combina en el mismo chip un giroscopio de 3 ejes con un acelerómetro también de 3 ejes. Mediante lo que el fabricante denomina \textit{Digital Motion Processor} o DMP, esta IMU es capaz de procesar algoritmos de fusión de datos de 6 ejes, usualmente ejecutados en un microcontrolador o DSP mediante un filtro de Kalman o similar. Si bien el chip no incluye un magnetómetro, sí ofrece una interfaz I2C que posibilita conectarla a un magnetómetro externo, de este modo el DMP puede aprovechar la información de campo magnético en en sus algoritmos de fusión para generar resultados más precisos.
+El dispositivo MPU-6050 mostrado en la figura \ref{fig:mpu6050} combina en el mismo chip un giroscopio de 3 ejes con un acelerómetro también de 3 ejes. Mediante lo que el fabricante denomina \textit{Digital Motion Processor} o DMP, esta IMU es capaz de procesar algoritmos de fusión de datos de 6 ejes, usualmente ejecutados en un microcontrolador o DSP mediante un filtro de Kalman o similar. Para este trabajo se utilizó un filtro llamado Madgwick \citep{PAPER:4}.
+
+Si bien este chip no incluye un magnetómetro, ofrece una interfaz I2C que posibilita conectarla a un magnetómetro externo, de este modo el DMP puede aprovechar la información de campo magnético en para sus algoritmos de fusión y así generar resultados más precisos.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[scale=0.5]{./Figures/mpu6050.jpg}
-    \caption{Sensor MPU-6050 con sus ejes de giros y fuerzas.\protect\footnotemark}
+    \caption{Sensor MPU-6050 con sus ejes de giros y fuerzas\protect\footnotemark.}
     \label{fig:mpu6050}
 \end{figure}
 

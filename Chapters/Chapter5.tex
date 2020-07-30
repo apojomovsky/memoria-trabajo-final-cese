@@ -4,28 +4,28 @@
 
 \label{Capitulo5}
 
-En este capítulo se mencionan los aspectos más releventes del trabajo realizado, se analizan los resultados obtenidos y se identifican los pasos a seguir para una siguiente iteración del proyecto.
+En este capítulo se mencionan los aspectos más relevantes del trabajo realizado, se analizan los resultados obtenidos y se identifican los pasos a seguir para una siguiente iteración del proyecto.
 
 \section{Conclusiones generales}
 
 En este trabajo se completó el desarrollo e implementación de un prototipo de robot autónomo así como la documentación requerida para su adopción por parte de estudiantes de grado universitario.
 
-Se implementó de manera satisfactoria el prototipo mecánico basado en un robot de limpieza Roomba 500, así como el firmware requerido para comunicarse con el mismo mediante protocolo Open Interface. Así también, se provee una capa de comunicación con el framework de robótica ROS y un conjunto de paquetes listos para conectarse al robot desde una computadora.
+Se implementó de manera satisfactoria el prototipo mecánico de un robot autónomo, así como el firmware requerido para comunicarse con el mismo mediante protocolo Open Interface. Asimismo, se provee una capa de comunicación con el framework de robótica ROS y un conjunto de paquetes listos para conectarse al robot desde una computadora.
 
 El trabajo ha cumplido satisfactoriamente los puntos principales planteados en la planificación:
 
 \begin{itemize}
     \item migración de la biblioteca rosserial e i2clib al HAL del microcontrolador.
     \item implementación de un algoritmo para generar la odometría del robot en base a las lecturas de los encoders.
-    \item configuración de los paquetes necesarios para permitir la navegacion del robot con ROS dentro de la residencia del autor.
+    \item configuración de los paquetes necesarios para permitir la navegación del robot con ROS dentro de la residencia del autor.
     \item implementación funcional del robot propuesto.
-    \item redacción de una Wiki hosteada en Github con instrucciones para terceros sobre como fabricar un nuevo robot así como para utilizar el software provisto.
+    \item redacción de una Wiki hosteada en Github con instrucciones para terceros sobre cómo fabricar un nuevo robot así como para utilizar el software provisto.
 \end{itemize}
 
 Asimismo, ciertos objetivos planteados inicialmente debieron ser modificados por diversos motivos tales como complejidad excesiva o problemas de rendimiento. Se describen a continuación algunos de ellos:
 
 \begin{itemize}
-    \item la utilización del sistema operativo NuttX para la implementación del firmware. Este se terminó reemplazando con FreeRTOS debido a que este último se encuentra oficialmente soportado por el fabricante ST, motivo que facilitó de manera considerable la tarea de la implementación del firmware.
+    \item la utilización del sistema operativo NuttX para la implementación del firmware. Finalmente se reemplazó con FreeRTOS debido a que este último se encuentra oficialmente soportado por el fabricante ST, motivo que facilitó de manera considerable la tarea de la implementación del firmware.
     \item la utilización de mensajes estándares de ROS a nivel del microcontrolador. Estos debieron ser reemplazados por unos diseñados específicamente para la tarea.
 \end{itemize}
 
@@ -47,4 +47,4 @@ El cambio de UART a TCP permitiría, entre otros beneficios, el de contar con un
 
 \subsection{Documentación}
 
-Como se mencionó anteriormente, a este trabajo lo acompaña una wiki, la cual se encuentra hosteada en Github junto al código del robot. Con respecto a la documentación se plantea la posiblidad de agregar más tutoriales a la Wiki donde se aborden cómo utilizar otros paquetes populares del ecosistema ROS en el robot.
+Como se mencionó anteriormente, a este trabajo lo acompaña una Wiki, que se encuentra hosteada en Github junto al código del robot. Con respecto a la documentación se plantea la posiblidad de agregar más tutoriales a la Wiki donde se aborde cómo utilizar otros paquetes populares del ecosistema ROS en el robot.

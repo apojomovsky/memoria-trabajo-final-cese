@@ -46,7 +46,7 @@ Muchas de las consideraciones de diseño del robot propuesto en este trabajo fue
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=1.5]{./Figures/turtlebot.png}
-	\caption{Vista frontal del Turtlebot 2 con un sensor Kinect acoplado.\protect\footnotemark}
+	\caption{Vista frontal del Turtlebot 2 con un sensor Kinect acoplado\protect\footnotemark.}
 	\label{fig:robotTurtlebot}
 \end{figure}
 
@@ -63,7 +63,7 @@ Posee una capacidad de carga de hasta 20 kg, lo que lo hace apto para cargar una
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=1.6]{./Figures/jackal.png}
-	\caption{Vista frontal de la plataforma robótica Jackal con una batería de sensores instalados por el usuario.\protect\footnotemark}
+	\caption{Vista frontal de la plataforma robótica Jackal con una batería de sensores instalados por el usuario\protect\footnotemark.}
 	\label{fig:robotJackal}
 \end{figure}
 
@@ -78,7 +78,7 @@ El Freight 100 incluye un sensor del tipo LIDaR 2D, que se puede apreciar en la 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=1.0]{./Figures/freight.png}
-	\caption{Vista frontal de la plataforma robótica Fetch Freight donde se puede apreciar su sensor integrado del tipo LIDaR.\protect\footnotemark}
+	\caption{Vista frontal de la plataforma robótica Fetch Freight donde se puede apreciar su sensor integrado del tipo LIDaR\protect\footnotemark.}
 	\label{fig:robotFreight}
 \end{figure}
 
@@ -94,7 +94,7 @@ Asímismo, Robotino viene equipado de fábrica con una computadora tipo PC de gr
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=1.4]{./Figures/robotino.png}
-	\caption{Vista frontal del Robot FESTO Robotino con un sensor externo acoplado.\protect\footnotemark}
+	\caption{Vista frontal del Robot FESTO Robotino con un sensor externo acoplado\protect\footnotemark.}
 	\label{fig:robotRobotino}
 \end{figure}
 
@@ -110,7 +110,7 @@ Su amplia superficie de carga permite transportar hasta 8 Kg, por lo que es un b
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=1.]{./Figures/pioneer.png}
-	\caption{Vista frontal del Robot Pioneer donde se aprecian sus cinco sensores SONAR.\protect\footnotemark}
+	\caption{Vista frontal del Robot Pioneer donde se aprecian sus cinco sensores SONAR\protect\footnotemark.}
 	\label{fig:robotPioneer}
 \end{figure}
 
@@ -131,7 +131,7 @@ En este trabajo se propone una plataforma de código abierto y con componentes d
 
 El alcance del presente trabajo involucra el desarrollo del firmware para el microcontrolador encargado de:
 \begin{itemize}
-	\item intermediar la comunicación entre la plataforma robótica ``Roomba 500'' y el framework de robótica ROS (\textit{Robot Operating System}).
+	\item intermediar la comunicación entre la plataforma robótica ``Roomba 600'' y el framework de robótica ROS (\textit{Robot Operating System}).
 	\item realizar la interfaz entre la unidad de medición inercial MPU6050 con ROS.
 	\item implementar el \textit{port} de la biblioteca rosserial para ser utilizada con FreeRTOS y STM32Cube HAL en el lenguaje de programación C++.
 \end{itemize}
@@ -142,12 +142,12 @@ Se incluye el desarrollo de software requerido para:
 	\item calcular la odometría del robot utilizando las lecturas de los encoders.
 	\item la descripción del robot en formato URDF (\textit{Unified Robot Description Format}), requerido para representar correctamente el robot en la herramienta RViz.
 	\item una imagen de Docker con todas las dependencias necesarias para utilizar el robot de manera encapsulada y sin la necesidad de modificar la configuración del sistema operativo del usuario.
-	\item una seccion extra en el repositorio oficial en GitHub con una Wiki con la documentación básica necesaria para iniciarse en el uso de la plataforma.
+	\item una sección extra en el repositorio oficial en GitHub con una Wiki con la documentación básica necesaria para iniciarse en el uso de la plataforma.
 \end{itemize}
 
 No se incluye con el presente trabajo:
 \begin{itemize}
-	\item ningún algoritmo de navegación local ni global
-	\item el código requerido para la conexión al microcontrolador mediante Ethernet
-	\item el diseño de una placa electrónica dedicada
+	\item ningún algoritmo de navegación local ni global.
+	\item el código requerido para la conexión al microcontrolador mediante Ethernet.
+	\item el diseño de una placa electrónica dedicada.
 \end{itemize}

@@ -8,12 +8,12 @@
 En este capítulo se detallan las pruebas que fueron realizadas sobre los distintos módulos de hardware y software que componen al robot así como los resultados de las pruebas de campo que se llevaron a cabo.
 
 \section{Pruebas unitarias en el robot}
-
+que le siguieron
 En esta sección se describen las pruebas funcionales ejecutadas sobre cada uno de los módulos que componen el robot de manera aislada. Esto permitió encontrar problemas puntuales y reducir las fuentes de error para las pruebas de integración que le siguieron.
 
 \subsection{Validación de conexión bidireccional Roomba-microcontrolador}
 
-Descripción del setup del microcontrolador usando 2 conexiones UART simultaneas.
+Descripción del setup del microcontrolador usando 2 conexiones UART simultáneas.
 
 Envío de comandos de: conexión, desconexión.
 
@@ -26,7 +26,7 @@ Envío de comandos de: conexión, desconexión.
 
 \subsection{Validación de conexión bidireccional microcontrolador-ROS}
 
-Descripción de la conexión con ROS usando un mensaje de ``ping'' con una doble confirmación. Pequeño diagrama explicando el método.
+Descripción de la conexión con ROS usando un mensaje de ``ping'' con una doble confirmación. En el diagrama de la figura \ref{fig:secMicroROS} se muestra la secuencia de acciones llevadas a cabo para la prueba.
 
 \begin{figure}[ht]
     \centering
@@ -37,24 +37,26 @@ Descripción de la conexión con ROS usando un mensaje de ``ping'' con una doble
 
 \subsection{Validación de frenado de emergencia}
 
-El Roomba funciona de una manera tal que si este recibe un comando de velocidad, el mismo será aplicado al robot por un tiempo indefinido. De modo a prevenir riesgos, se implementó en el controlador un sistema de frenado de emergencia que responde a los siguientes pasos:
+El Roomba funciona de una manera tal que si recibe un comando de velocidad, este se aplica al robot por tiempo indefinido. Con el fin de prevenir riesgos, se implementó en el controlador un sistema de frenado de emergencia que responde a los siguientes pasos:
 
 \begin{itemize}
     \item Se activa en cuanto se recibe un comando de velocidad distinto de cero.
-    \item Se activa una tarea periódica, ejecutada cada 500 ms en donde se comprueba la existencia de al menos un mensaje nuevo en el tópico \file{/cmd\_vel}.
+    \item Se activa una tarea periódica, ejecutada cada 500 ms en donde se comprueba la existencia de al menos un mensaje nuevo en el tópico /cmd\_vel.
     \item En caso que no haya ningún mensaje, la tarea envía la orden de detener el robot.
 \end{itemize}
 
 \subsection{Validación de desplazamiento efectivo del robot}
 
-El Roomba implementa su propio sistema de control interno para llevar sus ruedas hasta el \textit{set point} requerido por los comandos de velocdad. En visto que esta funcionalidad es crítica para el sistema, se desarrolló un caso de prueba especial para velocidades tanto positivas como negativas el cual se describe a continuación:
+El Roomba implementa su propio sistema de control interno para llevar sus ruedas hasta el \textit{set point} requerido por los comandos de velocidad. En vista de que esta funcionalidad resulta crítica para el sistema, se desarrolló un caso de prueba especial para velocidades tanto positivas como negativas que se describe a continuación:
 
 \begin{itemize}
-    \item mediante un script de Python conectado a ROS se envió un comando, el cual establece la velocidad de ambas ruedas a 0.1 m/s por una duración de 10 s es decir, el equivalente a un desplazamiento lineal de 1 m.
+    \item mediante un script de Python conectado a ROS se envió un comando que establece la velocidad de ambas ruedas a 0,1 m/s por una duración de 10 s es decir, el equivalente a un desplazamiento lineal de 1 m.
     \item mediante una cinta métrica se compararon los valores esperados con el desplazamiento lineal real.
 \end{itemize}
 
-\begin{table}
+Un análisis cualitativo de los resultados expuestos en la tabla \ref{tab:desplazamientoRobot} evidencia que el sistema de control de velocidades interno del Roomba asume que la masa del robot es constante y no toma en cuenta el peso del hardware agregado. Como consecuencia los comandos para mover el robot muestran un porcentaje de error importante.
+
+\begin{table}[!htbp]
     \centering
     \caption[Desplazamiento robot]{Resultados de validación de desplazamiento efectivo del robot}
     \begin{tabular}{lccc}
@@ -70,16 +72,14 @@ El Roomba implementa su propio sistema de control interno para llevar sus ruedas
     \label{tab:desplazamientoRobot}
 \end{table}
 
-Un análisis cualitativo de los resultados expuestos en la tabla \ref{tab:desplazamientoRobot} evidencia que el sistema de control de velocidades interno del Roomba asume que la masa del robot es constante y no toma en cuenta el peso del hardware agregado. Como consecuencia los comandos para mover el robot muestran un porcentaje de error importante.
-
-Como medida paliativa se decidió no utilizar el robot en modo reversa para las tareas de mapeo de modo a reducir el error acumulativo.
+Como medida paliativa se decidió no utilizar el robot en modo reversa para las tareas de mapeo de manera a reducir el error acumulativo.
 
 \subsection{Validación de lectura de encoders}
 
 Dado que es posible obtener las lecturas crudas de los encoders del robot, se realizó la comprobación siguiente de manera similar a la prueba anterior:
 
 \begin{itemize}
-    \item mediante un script de Python conectado a ROS se envió un comando de velocidad, el cual establece la velocidad de ambas ruedas a 0.1 m/s por una duración de 10 s es decir, el equivalente a un desplazamiento de 1 m.
+    \item mediante un script de Python conectado a ROS se envió un comando de velocidad que establece la velocidad de ambas ruedas a 0.1 m/s por una duración de 10 s es decir, el equivalente a un desplazamiento de 1 m.
     \item mediante los encoders se obtuvo la cantidad de \textit{ticks} o cuentas ocurridas durante dicho periodo.
     \item se calculó el desplazamiento estimado mediante la siguiente fórmula obtenida a partir del documento de especificaciones del fabricante \citep{PAPER:5}:
           \begin{equation}
@@ -88,7 +88,9 @@ Dado que es posible obtener las lecturas crudas de los encoders del robot, se re
 
 \end{itemize}
 
-\begin{table}
+Los resultados expuestos en la tabla \ref{tab:lecturaEncoders} muestran ciertas similitudes con los resultados de la prueba anterior en el sentido que el robot reporta un movimiento más ``corto'' que el que le fue comandado. Dado que el número de \textit{ticks} de la rueda izquierda es mayor que el de la derecha, es correcto asumir que el robot describió un movimiento curvilíneo con radio de giro hacia la derecha, lo que pudo comprobarse por el autor al observar la posición del robot al final de la prueba.
+
+\begin{table}[!htbp]
     \centering
     \caption[Lectura de encoders]{Resultados de validación de lectura de encoders}
     \begin{tabular}{lcccccc}
@@ -104,13 +106,11 @@ Dado que es posible obtener las lecturas crudas de los encoders del robot, se re
     \label{tab:lecturaEncoders}
 \end{table}
 
-Los resultados expuestos en la tabla \ref{tab:lecturaEncoders} muestran ciertas similitudes con los resultados de la prueba anterior en el sentido que el robot reporta un movimiento más ``corto'' que el que le fue comandado. Dado que el número de \textit{ticks} de la rueda izquierda es mayor que el de la derecha, es correcto asumir que el robot describió un movimiento curvilíneo con radio de giro hacia la derecha, lo que pudo comprobarse por el autor al observar la posición del robot al final de la prueba.
-
 \subsection{Validación de lecturas crudas de la IMU}
 
-Esta prueba consistió en graficar las lecturas de las seis variables registradas por el sensor durante a una secuencia de tres movimientos a los que fue sometido.
+Esta prueba consistió en graficar las lecturas de las seis variables registradas por el sensor durante una secuencia de tres movimientos a la que fue sometido.
 
-Para esta prueba se partió de un estado inicial con la IMU quieta, con el plano definido por sus ejes $(X,Y)$ en posición normal al vector de aceleración de la gravedad (que apunta al centro de la tierra).Para todas las pruebas se utilizó la convención ``North-East-Down'' \protect\footnotemark que el sensor adopta por defecto.
+Para esta prueba se partió de un estado inicial con la IMU quieta, con el plano definido por sus ejes $(X,Y)$ en posición normal al vector de aceleración de la gravedad (que apunta al centro de la Tierra). Para todas las pruebas se utilizó la convención ``North-East-Down'' \protect\footnotemark que el sensor adopta por defecto.
 
 \footnotetext{Coordenadas locales del plano tangente NED: \url{https://en.wikipedia.org/wiki/Local\_tangent\_plane\_coordinates}}
 
@@ -118,8 +118,8 @@ Basado en las lecturas del acelerómetro de la figura \ref{fig:aceleracionLineal
 
 \begin{itemize}
     \item en la primera columna se observa el vector de aceleración de la gravedad de aproximadamente 9,8 $m/s^2$ apuntando en la dirección negativa del eje $Z$.
-    \item en la segunda columna se observa el mismo vector de aceleración, esta vez transladado en dirección del eje $X$ negativo.
-    \item finalemente en la tercer columna se observa al vector transladado en dirección al eje $Y$ negativo.
+    \item en la segunda columna se observa el mismo vector de aceleración, esta vez trasladado en dirección del eje $X$ negativo.
+    \item finalemente en la tercera columna se observa al vector transladado en dirección al eje $Y$ negativo.
 \end{itemize}
 
 
@@ -131,7 +131,7 @@ Basado en las lecturas del acelerómetro de la figura \ref{fig:aceleracionLineal
 \end{figure}
 
 
-Para las gráficas del el giroscopio se procedió de manera similar que con el acelerómetro. La diferencia en estas pruebas radica en que los valores medidos por el giroscopio son instantáneos, ya que los mismos corresponden a las velocidades angulares alrededor que aparecen alrededor de los ejes \textbf{durante} los movimientos efectuados, y desaparecen al dejar de mover la IMU. Por este motivo se presentan seis gráficas que fueron distribuidas en las figuras \ref{fig:velocidadAngular1} y \ref{fig:velocidadAngular2} de izquierda a derecha, donde se muestran los valores adoptados por los tres ejes del giroscopio durante los movimientos descriptos a continuación:
+Para las gráficas del giroscopio se procedió con la misma metodología utilizada para el acelerómetro. La diferencia en estas pruebas radica en que los valores medidos por el giroscopio son instantáneos, ya que corresponden a velocidades angulares alrededor de los ejes durante los movimientos efectuados, y desaparecen al dejar de mover la IMU. Por este motivo se presentan seis gráficas que fueron distribuidas en las figuras \ref{fig:velocidadAngular1} y \ref{fig:velocidadAngular2} de izquierda a derecha, donde se muestran los valores adoptados por los tres ejes del giroscopio durante los movimientos descriptos a continuación:
 
 \begin{enumerate}
     \item giro alrededor del eje $Y$ en sentido antihorario.
@@ -163,9 +163,9 @@ En esta sección se describen las pruebas realizadas sobre los resultados arroja
 
 \subsection{Validación de cálculo de odometría con encoders}
 
-Esta prueba tuvo como objetivo validar el correcto funcionamiento del programa \file{lubo\_odom\_node}, el cual consume las lecturas de encoders y realiza con estas una estimación de la posición y orientación del robot en un plano $(X,Y)$.
+Esta prueba tuvo como objetivo validar el correcto funcionamiento del programa lubo\_odom\_node, que consume las lecturas de encoders y realiza con estas una estimación de la posición y orientación del robot en un plano $(X,Y)$.
 
-Para la validación de esta característica, la prueba realizó siguiendo los siguientes pasos:
+Para la validación de esta característica, la prueba se realizó siguiendo los siguientes pasos:
 \begin{enumerate}
     \item se marcó la pose inicial del robot en el suelo.
     \item se comandaó el robot con un \textit{joystick} a una velocidad aproximada de 0,1 $m/s$.
@@ -174,10 +174,10 @@ Para la validación de esta característica, la prueba realizó siguiendo los si
     \item se movió nuevamente el robot aproximadamente 1 $m$ hacia adelante.
     \item se midió la distancia lineal entre el punto de inicio y el punto final del robot.
     \item se obtuvieron las componentes en $X$ e $Y$ del vector de distancia trazado en el punto anterior.
-    \item se comparararon estas medidas con los valores calculados por la odometría, los cuales se exponen en la tabla \ref{tab:odometriaEncoders}.
+    \item se comparararon estas medidas con los valores arrojados por la odometría, y con esto se calculó el error. Esta información se expone en la tabla \ref{tab:odometriaEncoders}.
 \end{enumerate}
 
-\begin{table}
+\begin{table}[!htbp]
     \centering
     \caption[Odometria de encoders]{Resultados de validación de odometría de encoders}
     \begin{tabular}{lccc}
@@ -203,13 +203,11 @@ Para la validación de esta característica, la prueba realizó siguiendo los si
 
 \subsection{Validación de estimador de odometría con encoders + IMU}
 
-Gracias a la aplicación de un Filtro de Kalman Extendido por parte del paquete \file{robot\_localization}, fue posible combinar la información provista por el cálculo de odometría de encoders junto con el estimador de pose de la IMU.
+Gracias a la aplicación de un Filtro de Kalman Extendido por parte del paquete robot\_localization, fue posible combinar la información provista por el cálculo de odometría de encoders junto con el estimador de pose de la IMU.
 
-Esta pruebe consistió en comparar los resultados de la prueba de odometría de encoders pura del punto anterior con la estimación de odometria resultante de combinar este valor con la pose de la IMU. El procedimiento ejecutado para esta prueba es el mismo que se utilizó en el punto anterior, y los resultados se exponen en la tabla \ref{tab:odometriaFusion}.
+Este procedimiento consistió en comparar los resultados obtenidos con la prueba de odometría de encoders pura del punto anterior y la estimación de odometria resultante de combinar este valor con la pose de la IMU. El procedimiento ejecutado fue el mismo que se utilizó en el punto anterior y los resultados se exponen en la tabla \ref{tab:odometriaFusion}.
 
-Gracias a que ambos tests se encargan de reproducir el mismo escenario fue posible comparar ambos resultados y obtener el porcentaje de mejora ofrecido por la fusión de datos sobre el error absoluto. Los resultados de esta comparación se pueden apreciar en la tabla \ref{tab:comparacionOdom}.
-
-\begin{table}
+\begin{table}[!htbp]
     \centering
     \caption[Fusión de odometría con IMU]{Resultados de validación del estimador de odometría mediante la fusión de datos de encoders e IMU.}
     \begin{tabular}{lccc}
@@ -225,15 +223,20 @@ Gracias a que ambos tests se encargan de reproducir el mismo escenario fue posib
     \label{tab:odometriaFusion}
 \end{table}
 
-\begin{table}
+\newpage
+
+Gracias a que ambos tests se encargan de reproducir el mismo escenario fue posible comparar ambos resultados y obtener el porcentaje de mejora ofrecido por la fusión de datos sobre el error absoluto. Los resultados de esta comparación se pueden apreciar en la tabla \ref{tab:comparacionOdom}.
+
+\begin{table}[!htbp]
+    \centering
     \centering
     \caption[Comparacion de calculos de odometría]{Resultados obtenidos al comparar las lecturas arrojadas por la odometría de encoders ``pura'' y la odometría resultante de la fusión de encoders e IMU.}
     \begin{tabular}{lccc}
         \toprule
         \textbf{Variable}  & \textbf{Técnica 1} & \textbf{Técnica 2} & \textbf{Porcentaje de mejora} \\
         \midrule
-        Posición en $X$    & 1,04 m             & 1,01 m             & \textasciitilde300 \%                        \\
-        Posición en $Y$    & 0,8 m              & 0,98 m             & \textasciitilde1000 \%                       \\
+        Posición en $X$    & 1,04 m             & 1,01 m             & \textasciitilde300 \%         \\
+        Posición en $Y$    & 0,8 m              & 0,98 m             & \textasciitilde1000 \%        \\
         Orientación en $Z$ & -0,729 rad         & -0,786 rad         & \textasciitilde6000 \%        \\
         \bottomrule
     \end{tabular}
@@ -243,16 +246,16 @@ Gracias a que ambos tests se encargan de reproducir el mismo escenario fue posib
 
 \section{Pruebas de integración en campo}
 
-En esta sección se describen las pruebas funcionales ejecutadas sobre cada uno de los módulos que componen el robot de manera aislada. Esto permitió encontrar problemas puntuales y reducir las fuentes de error para las pruebas de integración que le siguieron.
+En esta sección se describen las pruebas funcionales ejecutadas sobre cada uno de los módulos que componen el robot de manera aislada. Esto permitió encontrar problemas puntuales y reducir las fuentes de error para las pruebas de integración.
 
 \subsection{Generación de mapa con gmapping}
 
-Esta prueba consistió en la generación de un mapa del tipo \textit{occupancy grid} o mapa de ocupación, el cual consiste en una representación similar a la de un plano en dos dimensiones como los utilizados en arquitectura. Los puntos en negro representan una sección ``ocupada'' mientras que los píxeles blancos representan un área libre.
+Esta prueba consistió en la generación de un mapa del tipo \textit{occupancy grid} o mapa de ocupación. Este mapa consiste en una representación similar a la de un plano en dos dimensiones como los utilizados en arquitectura. Los puntos en negro representan una sección ``ocupada'' mientras que los píxeles blancos representan un área libre.
 
 
-Para que el resultado obtenido a partir de este procedimiento sea lo suficientemente preciso como para utilizarse en la tarea de localizar al robot fue necesario que la fuente de odometría sea muy precisa, motivo por el cual resultó indispensable el uso de la fuente de odometría filtrada con información de la IMU.
+Para que el resultado obtenido a partir de este procedimiento fuera lo suficientemente preciso como para utilizarse en la tarea de localizar al robot fue necesario que la fuente de odometría fuera muy precisa, motivo por el que resultó indispensable el uso de la fuente de odometría filtrada con información de la IMU.
 
-En las figuras \ref{fig:mapaFeo} se puede apreciar el mapa obtenido a partir de la odometría de encoders ``pura''. Este primer mapa resulta totalmente inutilizable para tareas de navegacion puesto que no refleja la morfología real del recinto. Por el contrario, el mapa de la figura \ref{fig:mapaLindo} se generó utilizando la fuente de odometría filtrada con IMU. Aún con sus detalles, este último mapa resultó suficiente para las tareas de localización y navegación del robot.
+En las figuras \ref{fig:mapaFeo} se puede apreciar el mapa obtenido a partir de la odometría de encoders ``pura''. Este primer mapa resulta totalmente inutilizable para tareas de navegación puesto que no refleja la morfología real del recinto. Por el contrario, el mapa de la figura \ref{fig:mapaLindo} se generó utilizando la fuente de odometría filtrada con IMU. A pesar de sus restricciones, este último mapa resultó suficiente para las tareas de localización y navegación del robot.
 
 
 \begin{figure}[ht]
@@ -291,7 +294,7 @@ Amcl es un paquete para ROS que provee al robot la capacidad de encontrar su pos
     \label{fig:sinLocalizar}
 \end{figure}
 
-El resultado final se puede apreciar en la figura \ref{fig:robotLocalizado}. En esta imagen, tanto la posición en $X$ e $Y$ del robot con respecto al mapa han sido estimados y así también su orientación respecto al eje $Z$.
+El resultado final se puede apreciar en la figura \ref{fig:robotLocalizado}. En esta imagen, tanto la posición en $X$ e $Y$ del robot con respecto al mapa han sido estimadas y así también su orientación respecto al eje $Z$.
 
 \begin{figure}[ht]
     \centering
@@ -305,14 +308,14 @@ El resultado final se puede apreciar en la figura \ref{fig:robotLocalizado}. En 
 % Así como se describe en la sección \ref{sec:move_base}, move\_base provee la funcionalidad necesaria para mover al robot dentro del mapa provisto, para lo cual la herramienta se encarga de calcular una ruta de navegación desde el punto en que el robot se encuentra al momento de enviarse la orden y otro punto cualquiera del mapa.
 El paquete move\_base provee la funcionalidad necesaria para mover al robot dentro del mapa provisto, para lo cual la herramienta se encarga de calcular una ruta de navegación desde el punto en que el robot se encuentra al momento de enviarse la orden y otro punto cualquiera del mapa.
 
-Esta prueba consistió en indicar a la herramienta que deseabamos mover el robot de un punto a otro en el mapa. Para esto fue necesario cumplir con ciertos requisitos previos:
+Esta prueba consistió en indicar a la herramienta que deseábamos mover el robot de un punto a otro en el mapa. Para esto fue necesario cumplir con ciertos requisitos previos:
 
 \begin{enumerate}
     \item un mapa estático debió ser provisto al servidor de mapas de ROS.
     \item el robot debió encontrarse previamente localizado en el mapa.
 \end{enumerate}
 
-El envío de consigna se realiza mediante la herramienta RViz, en la cual se representa mediante un vector de color verde en el mapa. Su punto de origen representa la posición deseada mientras que su dirección representa la orientación final del robot. En las figuras \ref{fig:comandoNavegación} y \ref{fig:robotEnSetpoint} se puede apreciar al robot en su punto de inicio al momento de recibir la orden de navegación y al robot ya en su punto de destino, respectivamente.
+El envío de consigna se realiza mediante la herramienta RViz, que se representa mediante un vector de color verde en el mapa. Su punto de origen representa la posición deseada mientras que su dirección representa la orientación final del robot. En las figuras \ref{fig:comandoNavegación} y \ref{fig:robotEnSetpoint} se puede apreciar al robot en su punto de inicio al momento de recibir la orden de navegación y al robot ya en su punto de destino, respectivamente.
 
 
 \begin{figure}[ht]
