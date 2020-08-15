@@ -19,7 +19,7 @@ El trabajo ha cumplido satisfactoriamente los puntos principales planteados en l
     \item implementación de un algoritmo para generar la odometría del robot en base a las lecturas de los encoders.
     \item configuración de los paquetes necesarios para permitir la navegación del robot con ROS dentro de la residencia del autor.
     \item implementación funcional del robot propuesto.
-    \item redacción de una Wiki hosteada en Github con instrucciones para terceros sobre cómo fabricar un nuevo robot así como para utilizar el software provisto.
+    \item documentación en formato Wiki hosteada en Github con instrucciones para terceros sobre cómo fabricar un nuevo robot así como para utilizar el software provisto.
 \end{itemize}
 
 Asimismo, ciertos objetivos planteados inicialmente debieron ser modificados por diversos motivos tales como complejidad excesiva o problemas de rendimiento. Se describen a continuación algunos de ellos:
@@ -40,6 +40,10 @@ La gran mayoría de los objetivos propuestos pudieron cumplirse, aún así, se i
     \item reeplazar el sensor Kinect por un LIDaR 2D económico.
     \item reemplazar la IMU con una que ofrezca magnetómetro integrado.
 \end{itemize}
+
+\subsection{Firmware}
+
+Implementar el sistema de control en lazo cerrado para velocidad de ambas ruedas en el microcontrolador. Esto permitirá dejar de utilizar la implementación integrada en el Roomba que, si bien resulta suficiente para el robot sin carga, empieza a generar un error a medida que se aumenta la carga sobre el robot.
 
 \subsection{Software}
 

@@ -32,9 +32,15 @@ Cada uno de estos tipos plantea su propio conjunto de ventajas y desventajas, as
 
 \subsection{Robots con ruedas}
 
-TODO
+Los robots con ruedas representan la solución simple y eficiente para terrenos con superficies duras y donde haya una cantidad de obstáculos relativamente baja. A continuación se describen brevenente las características más significativas de los sistemas de locomoción más comunes en robots con ruedas.
 
-\newpage
+\begin{itemize}
+	\item Ackerman: es el utilizado en vehículos de cuatro ruedas convencionales, y se caracteriza por que la rueda delantera interior gira a un ángulo ligeramente superior a la exterior para eliminar el deslizamiento.
+	\item Omnidireccional u holonómico: permite desplazarse en cualquier dirección sin la necesidad de alcanzar previamente una orientación específica. Es decir, permite realizar movimientos en cualquiera de las componentes del plano $X, Y$, bien sean éstas traslacionales o rotacionales.
+	\item Direccionamiento direferencial: como su nombre lo indica, el direccionamiento viene dado por la diferencia de velocidades de las ruedas laterales. La tracción se consigue también con estas mismas ruedas. Adicionalmente, existen una o más ruedas para soporte.
+\end{itemize}
+
+Para el presente trabajo se hace uso de una base móvil con direccionamiento diferencial.
 
 \section{Estado del arte}
 
@@ -44,13 +50,13 @@ Existe una amplia gama de robots móviles con ruedas ofrecidos específicamente 
 
 TurtleBot constituye una familia de robots móviles para uso personal de bajo costo. Su uso se extiende tanto a la academia como a roboticistas aficionados en todo el mundo.
 
-Aunque su primera iteración vio la luz en 2010 con un conjunto de características bastante modestas, el lanzamiento de nuevas versiones le aseguró su lugar como dispositivo de referencia dentro de la plataforma ROS.
+Aunque su primera iteración vio la lporuz en 2010 con un conjunto de características bastante modestas, el lanzamiento de nuevas versiones le aseguró su lugar como dispositivo de referencia dentro de la plataforma ROS.
 
 Muchas de las consideraciones de diseño del robot propuesto en este trabajo fueron tomados de este modelo por lo que se espera que se encuentren similitudes entre ambos al observar la figura \ref{fig:robotTurtlebot}.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=1.5]{./Figures/turtlebot.png}
+	\includegraphics[scale=1.05]{./Figures/turtlebot.png}
 	\caption{Vista frontal del Turtlebot 2 con un sensor Kinect acoplado\protect\footnotemark.}
 	\label{fig:robotTurtlebot}
 \end{figure}
@@ -61,13 +67,11 @@ Muchas de las consideraciones de diseño del robot propuesto en este trabajo fue
 
 El Jackal es un robot móvil 4x4 apto para uso en exteriores. Su robustez lo hace la elección preferida de muchas universidades a la hora de implementar soluciones de campo, principalmente debido a su resistencia total al polvo y al agua de lluvia.
 
-\newpage
-
 Posee una capacidad de carga de hasta 20 kg, lo que lo hace apto para cargar una importante cantidad de sensores, actuadores y manipuladores, tal como el ejemplo mostrado en la figura \ref{fig:robotJackal}.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=1.4]{./Figures/jackal.png}
+	\includegraphics[scale=1.6]{./Figures/jackal.png}
 	\caption{Vista frontal de la plataforma robótica Jackal con una batería de sensores instalados por el usuario\protect\footnotemark.}
 	\label{fig:robotJackal}
 \end{figure}
@@ -80,16 +84,16 @@ Fetch Robotics ofrece con el Freight 100 Base una plataforma robótica para uso 
 
 El Freight 100 incluye un sensor del tipo LIDaR 2D, que se puede apreciar en la figura \ref{fig:robotFreight}, lo que lo hace adecuado para tareas de navegación. Además, al estar basado en un robot industrial de carga, la plataforma Freight 100 está diseñada para soportar hasta 100 kg de peso, característica que no solo se impone por un amplio margen respecto a sus competidores del segmento, sino que le posibilita cargar con un manipulador industrial en su parte superior.
 
+\newpage
+
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=0.9]{./Figures/freight.png}
+	\includegraphics[scale=1.1]{./Figures/freight.png}
 	\caption{Vista frontal de la plataforma robótica Fetch Freight donde se puede apreciar su sensor integrado del tipo LIDaR\protect\footnotemark.}
 	\label{fig:robotFreight}
 \end{figure}
 
 \footnotetext{Imagen tomada de \url{https://www.dymesich.com/wp-content/uploads/2019/06/freight-100-low.jpg}}
-
-\newpage
 
 \subsection{FESTO Robotino}
 
@@ -100,7 +104,7 @@ Asímismo, Robotino viene equipado de fábrica con una computadora tipo PC de gr
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=1.1]{./Figures/robotino.png}
+	\includegraphics[scale=1.5]{./Figures/robotino.png}
 	\caption{Vista frontal del Robot FESTO Robotino con un sensor externo acoplado\protect\footnotemark.}
 	\label{fig:robotRobotino}
 \end{figure}
@@ -116,7 +120,7 @@ Su amplia superficie de carga permite transportar hasta 8 Kg, por lo que es un b
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=0.8]{./Figures/pioneer.png}
+	\includegraphics[scale=1.1]{./Figures/pioneer.png}
 	\caption{Vista frontal del Robot Pioneer donde se aprecian sus cinco sensores SONAR\protect\footnotemark.}
 	\label{fig:robotPioneer}
 \end{figure}

@@ -249,25 +249,20 @@ Si bien este chip no incluye un magnetómetro, ofrece una interfaz I2C que posib
 \footnotetext{Imagen tomada de \url{https://protosupplies.com/wp-content/uploads/2019/03/MPU-6050-Accel-and-Gyro-Module-Axis-Orientation-3.jpg}}
 
 \subsection{Paquete generador de mapas GMapping}\label{sec:gmapping}
-% The ROS Gmapping package is a wrapper of the open source implementation of SLAM, called OpenSLAM (https://www.openslam.org/gmapping.html). The package contains a node called slam\_gmapping, which is the implementation of SLAM and helps to create a 2D occupancy grid map from the laser scan data and the mobile robot pose.
 
-% The basic hardware requirement for doing SLAM is a laser scanner which is horizontally mounted on the top of the robot, and the robot odometry data. In this robot, we have already satisfied these requirements. We can generate the 2D map of the environment, using the gmapping package through the following procedure.
+El paquete Gmapping para ROS es un \textit{wrapper} sobre la implementación de código abierto de la biblioteca de SLAM llamada OpenSLAM\protect\footnotemark. Este paquete ofrece un nodo llamado slam\_gmapping, que posibilita utilizar dentro del ecosistema ROS los algoritmos genéricos ofrecidos por la biblioteca. GMapping permite generar el mapa del recinto en donde se encuentra el robot y así también, estimar la pose del robot dentro de dicho mapa.
 
-% GMapping solves the Simultaneous Localization and Mapping (SLAM) problem. Unlike, say Karto, it employs a Particle Filter (PF), which is a technique for model-based estimation. In SLAM, we are estimating two things: the map and the robot's pose within this map. You can kind of think of each particle in the PF as a candidate solution to the problem. Together, the set of particles approximates the true probability distribution (see Importance Sampling). To clarify, I'm talking about the probability of the map and the robot's pose given the control inputs (e.g. motor encoder counts) and sensor readings (e.g. LiDAR). In addition, there's a motion model and a sensor model involved in the calculation of the probability distribution.
-
-El paquete Gmapping para ROS es un \textit{wrapper} sobre la implementación de código abierto de la biblioteca de SLAM llamada OpenSLAM\protect\footnotemark. Este paquete ofrece un nodo llamado slam\_gmapping, que posibilita utilizar dentro del ecosistema ROS los algoritmos genéricos ofrecidos por la biblioteca.
-
-GMapping permite generar el mapa del recinto en donde se encuentra el robot y así también, estimar la pose del robot dentro de dicho mapa.
+\footnotetext{\url{https://openslam-org.github.io/gmapping.html}}
 
 Para utilizar GMapping en un robot, es necesario que el mismo disponga de:
+
 \begin{itemize}
-    \item un sensor del tipo \textit{range-finder} 2D fijado a la base del robot.
+    \item un sensor del tipo \textit{rangefinder} 2D o equivalente, fijado a la base del robot.
     \item una fuente de odometría
 \end{itemize}
 
-Para el robot propuesto en este trabajo, se utilizó como range\-finder un sensor Kinect, que como se menciona en la sección \ref{sec:kinect}, genera una imagen en 3D. Por este motivo se debió utilizar un nodo especial de ROS llamado depthimage_to_laserscan\protect\footnotemark para convertir las lecturas en 3D a otras en 2D antes de poder proveérselas a GMapping.
+Para el robot propuesto en este trabajo, se utilizó como rangefinder un sensor Kinect que como se menciona en la sección \ref{sec:kinect}, genera una imagen en 3D. Dado que GMapping require de una imagen en 2D, para poder utilizar este sensor se debió utilizar un nodo especial de ROS llamado depthimage\_to\_laserscan\protect\footnotemark que se encarga de convertir las lecturas en 3D a su equivalente en 2D.
 
-\footnotetext{\url{https://openslam-org.github.io/gmapping.html}}
 \footnotetext{\url{http://wiki.ros.org/depthimage_to_laserscan}}
 
 \subsection{Paquete de localización robot\_localization}\label{sec:robotLocalization}
