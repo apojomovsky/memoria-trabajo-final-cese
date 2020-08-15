@@ -118,6 +118,158 @@ En la figura \ref{fig:tf} se visualiza un robot con múltiples articulaciones. D
 
 \footnotetext{Imagen tomada de \url{http://wiki.ros.org/tf?action=AttachFile&do=get&target=frames2.png}}
 
+\section{iRobot Roomba 600}\label{sec:roomba}
+
+El Roomba es un robot de limpieza fabricado y comercializado por la compañía iRobot. El primer modelo salió al mercado en el año 2002 y ha recibido siete actualizaciones desde entonces. En cada iteración, se han mejorado aspectos tanto de diseño como funcionalidad y esto le ha permitido mantenerse como el robot de limpieza con más unidades vendidas en el mundo.
+
+Todos los Roomba incluyen una serie de sensores táctiles, ópticos y acústicos que le permiten detectar obstáculos, residuos, así como escalones o desniveles en el piso.
+
+A nivel de locomoción, se catalogan como robots móviles con ruedas y utilizan el tipo de tracción diferencial, que consiste en dos ruedas motrices independientes que le permiten ejecutar giros de 360 grados. Esto es posible sin que el robot deba incurrir en desplazamiento lineal alguno como en el caso de los automóviles, por ejemplo.
+
+La base móvil utilizada para este trabajo consiste en un Roomba de la serie 500 como el mostrado en la figura \ref{fig:roomba}, que fue introducido al mercado en el año 2007 y se comercializó hasta el 2017. Actualmente es posible conseguir estos equipos en condicion de usado o remanufacturado a precios muy accesibles comparado al precio de un equipo más actual.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=2.8]{./Figures/roomba.png}
+    \caption{iRobot Roomba 600, utilizado como base móvil para este trabajo\protect\footnotemark.}
+    \label{fig:roomba}
+\end{figure}
+
+\footnotetext{Imagen tomada de \url{https://uncrate.com/assets_c/2009/04/roomba-560-stretched-thumb-960x640-3177.jpg}}
+
+\subsection{Roomba Open Interface}\label{sec:openInterface}
+
+Todos los Roomba lanzados a partir del año 2005 son compatibles con una interfaz de comunicación serial denominada Roomba Open Interface, a la que es posible acceder mediante la conexión a un puerto físico disponible en la placa madre del robot. Esto habilita al usuario a todo tipo de interacción con el hardware del robot, como consultar la lectura de cada uno de sus sensores o comandar sus actuadores. Este protocolo ha sido actualizado a la par de las sucesivas actualizaciones del Roomba para ofrecer nuevas funcionalidades o mejoras y en cada caso, se encuentra acompañado de un documento oficial por parte de iRobot en formato PDF \citep{PAPER:5}.
+
+\subsection{Conexionado del robot por puerto serie}
+
+En la figura \ref{fig:roombaPinout} y la tabla \ref{tab:Pines} se exponen respectivamente, la distribución de pines en el conector y su conexión correspondiente para entablar comunicación con el robot mediante el puerto Mini-DIN.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=.3]{./Figures/pinout.png}
+    \caption{Distribución de pines en el conector hembra Mini-DIN.}
+    \label{fig:roombaPinout}
+\end{figure}
+
+\begin{table}[h]
+    \centering
+    \caption{Referencia de pines en conector Mini-DIN hembra.}
+    \label{tab:Pines}
+    \begin{tabular}{ccl}
+        \toprule
+        \textbf{Pin} & \textbf{Nombre} & \textbf{Descripción}                         \\
+        \midrule
+        1            & Vpwr            & Positivo directo de la batería (no regulado) \\
+        2            & Vpwr            & Positivo directo de la batería (no regulado) \\
+        3            & RXD             & 0 - 5 VCC Entrada serie                      \\
+        4            & TXD             & 0 - 5 VCC Salida serie                       \\
+        5            & BRC             & Cambio de \textit{baud-rate}                 \\
+        6            & GND             & Tierra del robot                             \\
+        7            & GND             & Tierra del robot                             \\
+        \bottomrule
+        \hline
+    \end{tabular}
+    \label{tab:distribucionPines}
+\end{table}
+
+\newpage
+
+\section{Placa de desarrollo STM32-NUCLEO}
+
+Es una familia de placas de desarrollo elaboradas por la compañía ST. Entre sus características principales se destacan:
+
+\begin{itemize}
+    \item Bajo costo
+    \item Compatibilidad con \textit{shields} de Arduino
+    \item Programador/debugger ST-Link integrado
+    \item Biblioteca del tipo HAL con variados ejemplos de código
+\end{itemize}
+
+Con el fin de garantizar la escalabilidad del sistema, para este proyecto se optó por una de las placas más avanzadas de esta familia, denominada NUCLEO-F746ZG y mostrada en la figura \ref{fig:stm32nucleo}. Esta provee un microcontrolador ARM Cortex-M7 con FPU de doble precisión, 320 kB de RAM, así como 1 MB de Flash. Ofrece además conexión Ethernet y una amplia cantidad de GPIOs.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=1.3]{./Figures/stm32nucleo.png}
+    \caption{Placa de desarrollo STM32 NUCLEO-F746ZG elegida para comandar el robot\protect\footnotemark.}
+    \label{fig:stm32nucleo}
+\end{figure}
+
+\footnotetext{Imagen tomada de \url{https://www.carminenoviello.com/wp-content/uploads/2015/12/nucleo_144_large-2-660x330.jpg}}
+
+\section{Sensor Kinect 360}\label{sec:kinect}
+
+El Kinect para Xbox 360 o simplemente Kinect, es un dispositivo de captura de movimiento diseñado por la empresa Microsoft que utiliza tecnología desarrollada por la empresa israelita PrimeSense.
+
+Cuenta con una cámara que captura imágenes en formato RGB, un \textit{array} de micrófonos, así como un sensor de profundidad. Si bien existen otras características extra que podrían mencionarse, vale la pena detenerse en esta última y explicar en qué consiste, puesto que se la utilizó de manera extensiva en el trabajo propuesto para la generación de mapas del robot.
+
+\subsection{Imagen de profundidad}
+
+El sensor de profundidad del Kinect consiste en un proyector de nube de puntos infrarrojos combinado con un sensor CMOS monocromático, similar al de una cámara fotográfica. Funcionando en combinación, estos dos elementos son capaces de captar la información necesaria para que un ASIC genere con ella una imagen de profundidad o \textit{Depth map}, que consiste en un mapa de bits con información sobre la distancia relativa entre el sensor y los objetos detectados. En la figura \ref{fig:depthMap} se puede apreciar una imagen de profundidad generada mediante el sensor Kinect en el que se distingue claramente la silueta de una persona en un entorno con diferentes objetos. Las distintas tonalidades de grises visualizadas son una representación de la distancia del objeto al sensor, por lo que para objetos cercanos veremos píxeles de color gris más claro mientras que para objetos lejanos se verán más oscuros.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=2.5]{./Figures/depth_map.png}
+    \caption{\textit{Depth map} con la silueta de una persona\protect\footnotemark.}
+    \label{fig:depthMap}
+\end{figure}
+
+\footnotetext{Imagen tomada de \url{http://official-rtab-map-forum.67519.x6.nabble.com/file/n2510/before.png}}
+
+\section{Unidad de medición inercial}
+
+Una unidad de medición inercial o IMU por sus siglas en inglés, es un dispositivo electrónico capaz de medir y reportar la velocidad angular y en algunos casos, el campo magnético que rodea al cuerpo.
+
+Las IMU funcionan detectando la aceleración lineal mediante uno o más acelerómetros y la tasa de rotación usando uno o más giroscopios. Algunos de estos dispositivos incluyen también un magnetómetro que se utiliza comúnmente como una referencia de rumbo.
+
+Las configuraciones típicas de una IMU continenen un acelerómetro, un giroscopio y un magnetómetro para cada uno de los tres ejes de giros y fuerzas del vehículo: cabeceo, alabeo y guiñada, que se muestran en la figura \ref{fig:girosYFuerzas}. Para el caso particular del robot móvil propuesto en este trabajo, solo se hace uso de las aceleraciones angular en el eje Z y lineal en el eje X, respectivamente.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=2.0]{./Figures/imu.png}
+    \caption{Ejes de giros y fuerzas de un vehículo\protect\footnotemark.}
+    \label{fig:girosYFuerzas}
+\end{figure}
+
+\footnotetext{Imagen tomada de \url{http://skiras.blogspot.com/2012/10/4copter-conceptos-i-ejes-giros-y-fuerzas.html}}
+
+\subsection{Sensor MPU6050}\label{sec:mpu6050}
+
+El dispositivo MPU-6050 mostrado en la figura \ref{fig:mpu6050} combina en el mismo chip un giroscopio de 3 ejes con un acelerómetro también de 3 ejes. Mediante lo que el fabricante denomina \textit{Digital Motion Processor} o DMP, esta IMU es capaz de procesar algoritmos de fusión de datos de 6 ejes, usualmente ejecutados en un microcontrolador o DSP mediante un filtro de Kalman o similar. Para este trabajo se utilizó un filtro llamado Madgwick \citep{PAPER:4}.
+
+Si bien este chip no incluye un magnetómetro, ofrece una interfaz I2C que posibilita conectarla a un magnetómetro externo, de este modo el DMP puede aprovechar la información de campo magnético en para sus algoritmos de fusión y así generar resultados más precisos.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.5]{./Figures/mpu6050.jpg}
+    \caption{Sensor MPU-6050 con sus ejes de giros y fuerzas\protect\footnotemark.}
+    \label{fig:mpu6050}
+\end{figure}
+
+\footnotetext{Imagen tomada de \url{https://protosupplies.com/wp-content/uploads/2019/03/MPU-6050-Accel-and-Gyro-Module-Axis-Orientation-3.jpg}}
+
+\subsection{Paquete generador de mapas GMapping}\label{sec:gmapping}
+% The ROS Gmapping package is a wrapper of the open source implementation of SLAM, called OpenSLAM (https://www.openslam.org/gmapping.html). The package contains a node called slam\_gmapping, which is the implementation of SLAM and helps to create a 2D occupancy grid map from the laser scan data and the mobile robot pose.
+
+% The basic hardware requirement for doing SLAM is a laser scanner which is horizontally mounted on the top of the robot, and the robot odometry data. In this robot, we have already satisfied these requirements. We can generate the 2D map of the environment, using the gmapping package through the following procedure.
+
+% GMapping solves the Simultaneous Localization and Mapping (SLAM) problem. Unlike, say Karto, it employs a Particle Filter (PF), which is a technique for model-based estimation. In SLAM, we are estimating two things: the map and the robot's pose within this map. You can kind of think of each particle in the PF as a candidate solution to the problem. Together, the set of particles approximates the true probability distribution (see Importance Sampling). To clarify, I'm talking about the probability of the map and the robot's pose given the control inputs (e.g. motor encoder counts) and sensor readings (e.g. LiDAR). In addition, there's a motion model and a sensor model involved in the calculation of the probability distribution.
+
+El paquete Gmapping para ROS es un \textit{wrapper} sobre la implementación de código abierto de la biblioteca de SLAM llamada OpenSLAM\protect\footnotemark. Este paquete ofrece un nodo llamado slam\_gmapping, que posibilita utilizar dentro del ecosistema ROS los algoritmos genéricos ofrecidos por la biblioteca.
+
+GMapping permite generar el mapa del recinto en donde se encuentra el robot y así también, estimar la pose del robot dentro de dicho mapa.
+
+Para utilizar GMapping en un robot, es necesario que el mismo disponga de:
+\begin{itemize}
+    \item un sensor del tipo \textit{range-finder} 2D fijado a la base del robot.
+    \item una fuente de odometría
+\end{itemize}
+
+Para el robot propuesto en este trabajo, se utilizó como range\-finder un sensor Kinect, que como se menciona en la sección \ref{sec:kinect}, genera una imagen en 3D. Por este motivo se debió utilizar un nodo especial de ROS llamado depthimage_to_laserscan\protect\footnotemark para convertir las lecturas en 3D a otras en 2D antes de poder proveérselas a GMapping.
+
+\footnotetext{\url{https://openslam-org.github.io/gmapping.html}}
+\footnotetext{\url{http://wiki.ros.org/depthimage_to_laserscan}}
+
 \subsection{Paquete de localización robot\_localization}\label{sec:robotLocalization}
 
 El paquete robot\_localization es una colección de estimadores no lineales para robots en espacios 2D y 3D, aunque para el alcance de este trabajo solo se hace hincapié en entornos en dos dimensiones.
@@ -237,133 +389,3 @@ Resulta necesario enriquecer esta estimación mediante su fusión con otras fuen
     \caption{Trayectoria real descripta por un robot de tracción diferencial.}
     \label{fig:navigation}
 \end{figure}
-
-\section{iRobot Roomba 600}\label{sec:roomba}
-
-El Roomba es un robot de limpieza fabricado y comercializado por la compañía iRobot. El primer modelo salió al mercado en el año 2002 y ha recibido siete actualizaciones desde entonces. En cada iteración, se han mejorado aspectos tanto de diseño como funcionalidad y esto le ha permitido mantenerse como el robot de limpieza con más unidades vendidas en el mundo.
-
-Todos los Roomba incluyen una serie de sensores táctiles, ópticos y acústicos que le permiten detectar obstáculos, residuos, así como escalones o desniveles en el piso.
-
-A nivel de locomoción, se catalogan como robots móviles con ruedas y utilizan el tipo de tracción diferencial, que consiste en dos ruedas motrices independientes que le permiten ejecutar giros de 360 grados. Esto es posible sin que el robot deba incurrir en desplazamiento lineal alguno como en el caso de los automóviles, por ejemplo.
-
-La base móvil utilizada para este trabajo consiste en un Roomba de la serie 500 como el mostrado en la figura \ref{fig:roomba}, que fue introducido al mercado en el año 2007 y se comercializó hasta el 2017. Actualmente es posible conseguir estos equipos en condicion de usado o remanufacturado a precios muy accesibles comparado al precio de un equipo más actual.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[scale=2.8]{./Figures/roomba.png}
-    \caption{iRobot Roomba 600, utilizado como base móvil para este trabajo\protect\footnotemark.}
-    \label{fig:roomba}
-\end{figure}
-
-\footnotetext{Imagen tomada de \url{https://uncrate.com/assets_c/2009/04/roomba-560-stretched-thumb-960x640-3177.jpg}}
-
-\subsection{Roomba Open Interface}\label{sec:openInterface}
-
-Todos los Roomba lanzados a partir del año 2005 son compatibles con una interfaz de comunicación serial denominada Roomba Open Interface, a la que es posible acceder mediante la conexión a un puerto físico disponible en la placa madre del robot. Esto habilita al usuario a todo tipo de interacción con el hardware del robot, como consultar la lectura de cada uno de sus sensores o comandar sus actuadores. Este protocolo ha sido actualizado a la par de las sucesivas actualizaciones del Roomba para ofrecer nuevas funcionalidades o mejoras y en cada caso, se encuentra acompañado de un documento oficial por parte de iRobot en formato PDF \citep{PAPER:5}.
-
-\subsection{Conexionado del robot por puerto serie}
-
-En la figura \ref{fig:roombaPinout} y la tabla \ref{tab:Pines} se exponen respectivamente, la distribución de pines en el conector y su conexión correspondiente para entablar comunicación con el robot mediante el puerto Mini-DIN.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[scale=.3]{./Figures/pinout.png}
-    \caption{Distribución de pines en el conector hembra Mini-DIN.}
-    \label{fig:roombaPinout}
-\end{figure}
-
-\begin{table}[h]
-    \centering
-    \caption{Referencia de pines en conector Mini-DIN hembra.}
-    \label{tab:Pines}
-    \begin{tabular}{ccl}
-        \toprule
-        \textbf{Pin} & \textbf{Nombre} & \textbf{Descripción}                         \\
-        \midrule
-        1            & Vpwr            & Positivo directo de la batería (no regulado) \\
-        2            & Vpwr            & Positivo directo de la batería (no regulado) \\
-        3            & RXD             & 0 - 5 VCC Entrada serie                      \\
-        4            & TXD             & 0 - 5 VCC Salida serie                       \\
-        5            & BRC             & Cambio de \textit{baud-rate}                 \\
-        6            & GND             & Tierra del robot                             \\
-        7            & GND             & Tierra del robot                             \\
-        \bottomrule
-        \hline
-    \end{tabular}
-    \label{tab:distribucionPines}
-\end{table}
-
-\newpage
-
-\section{Placa de desarrollo STM32-NUCLEO}
-
-Es una familia de placas de desarrollo elaboradas por la compañía ST. Entre sus características principales se destacan:
-
-\begin{itemize}
-    \item Bajo costo
-    \item Compatibilidad con \textit{shields} de Arduino
-    \item Programador/debugger ST-Link integrado
-    \item Biblioteca del tipo HAL con variados ejemplos de código
-\end{itemize}
-
-Con el fin de garantizar la escalabilidad del sistema, para este proyecto se optó por una de las placas más avanzadas de esta familia, denominada NUCLEO-F746ZG y mostrada en la figura \ref{fig:stm32nucleo}. Esta provee un microcontrolador ARM Cortex-M7 con FPU de doble precisión, 320 kB de RAM, así como 1 MB de Flash. Ofrece además conexión Ethernet y una amplia cantidad de GPIOs.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[scale=1.3]{./Figures/stm32nucleo.png}
-    \caption{Placa de desarrollo STM32 NUCLEO-F746ZG elegida para comandar el robot\protect\footnotemark.}
-    \label{fig:stm32nucleo}
-\end{figure}
-
-\footnotetext{Imagen tomada de \url{https://www.carminenoviello.com/wp-content/uploads/2015/12/nucleo_144_large-2-660x330.jpg}}
-
-\section{Sensor Kinect 360}
-
-El Kinect para Xbox 360 o simplemente Kinect, es un dispositivo de captura de movimiento diseñado por la empresa Microsoft que utiliza tecnología desarrollada por la empresa israelita PrimeSense.
-
-Cuenta con una cámara que captura imágenes en formato RGB, un \textit{array} de micrófonos, así como un sensor de profundidad. Si bien existen otras características extra que podrían mencionarse, vale la pena detenerse en esta última y explicar en qué consiste, puesto que se la utilizó de manera extensiva en el trabajo propuesto para la generación de mapas del robot.
-
-\subsection{Imagen de profundidad}
-
-El sensor de profundidad del Kinect consiste en un proyector de nube de puntos infrarrojos combinado con un sensor CMOS monocromático, similar al de una cámara fotográfica. Funcionando en combinación, estos dos elementos son capaces de captar la información necesaria para que un ASIC genere con ella una imagen de profundidad o \textit{Depth map}, que consiste en un mapa de bits con información sobre la distancia relativa entre el sensor y los objetos detectados. En la figura \ref{fig:depthMap} se puede apreciar una imagen de profundidad generada mediante el sensor Kinect en el que se distingue claramente la silueta de una persona en un entorno con diferentes objetos. Las distintas tonalidades de grises visualizadas son una representación de la distancia del objeto al sensor, por lo que para objetos cercanos veremos píxeles de color gris más claro mientras que para objetos lejanos se verán más oscuros.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[scale=2.5]{./Figures/depth_map.png}
-    \caption{\textit{Depth map} con la silueta de una persona\protect\footnotemark.}
-    \label{fig:depthMap}
-\end{figure}
-
-\footnotetext{Imagen tomada de \url{http://official-rtab-map-forum.67519.x6.nabble.com/file/n2510/before.png}}
-
-\section{Unidad de medición inercial}
-
-Una unidad de medición inercial o IMU por sus siglas en inglés, es un dispositivo electrónico capaz de medir y reportar la velocidad angular y en algunos casos, el campo magnético que rodea al cuerpo.
-
-Las IMU funcionan detectando la aceleración lineal mediante uno o más acelerómetros y la tasa de rotación usando uno o más giroscopios. Algunos de estos dispositivos incluyen también un magnetómetro que se utiliza comúnmente como una referencia de rumbo.
-
-Las configuraciones típicas de una IMU continenen un acelerómetro, un giroscopio y un magnetómetro para cada uno de los tres ejes de giros y fuerzas del vehículo: cabeceo, alabeo y guiñada, que se muestran en la figura \ref{fig:girosYFuerzas}. Para el caso particular del robot móvil propuesto en este trabajo, solo se hace uso de las aceleraciones angular en el eje Z y lineal en el eje X, respectivamente.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[scale=2.0]{./Figures/imu.png}
-    \caption{Ejes de giros y fuerzas de un vehículo\protect\footnotemark.}
-    \label{fig:girosYFuerzas}
-\end{figure}
-
-\footnotetext{Imagen tomada de \url{http://skiras.blogspot.com/2012/10/4copter-conceptos-i-ejes-giros-y-fuerzas.html}}
-
-\subsection{Sensor MPU6050}\label{sec:mpu6050}
-
-El dispositivo MPU-6050 mostrado en la figura \ref{fig:mpu6050} combina en el mismo chip un giroscopio de 3 ejes con un acelerómetro también de 3 ejes. Mediante lo que el fabricante denomina \textit{Digital Motion Processor} o DMP, esta IMU es capaz de procesar algoritmos de fusión de datos de 6 ejes, usualmente ejecutados en un microcontrolador o DSP mediante un filtro de Kalman o similar. Para este trabajo se utilizó un filtro llamado Madgwick \citep{PAPER:4}.
-
-Si bien este chip no incluye un magnetómetro, ofrece una interfaz I2C que posibilita conectarla a un magnetómetro externo, de este modo el DMP puede aprovechar la información de campo magnético en para sus algoritmos de fusión y así generar resultados más precisos.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[scale=0.5]{./Figures/mpu6050.jpg}
-    \caption{Sensor MPU-6050 con sus ejes de giros y fuerzas\protect\footnotemark.}
-    \label{fig:mpu6050}
-\end{figure}
-
-\footnotetext{Imagen tomada de \url{https://protosupplies.com/wp-content/uploads/2019/03/MPU-6050-Accel-and-Gyro-Module-Axis-Orientation-3.jpg}}
