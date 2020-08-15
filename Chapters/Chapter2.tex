@@ -13,7 +13,7 @@ ROS ofrece un variado \textit{set} de herramientas que facilitan las tareas del 
 
 \subsection{Organización de archivos}\label{sec:organizacionArchivos}
 
-Es adecuado considerar a ROS como algo más que un framework de desarrollo y referirnos a el como un ``meta sistema operativo'', ya que ofrece no solo herramientas y bibliotecas sino también funciones similares a las de un sistema operativo. Entre ellas, podemos citar su abstracción del hardware, el manejo de paquetes, además de un completo \textit{toolchain} de compilación \citep{BOOK:2}. Así también, tal como en un sistema operativo ``real'', los archivos que componen ROS se encuentran organizados en el disco duro de una manera particular, como se indica en la figura \ref{fig:rosSistemaDeArchivos}.
+Es adecuado considerar a ROS como algo más que un framework de desarrollo y referirnos a el como un ``meta sistema operativo'', ya que ofrece no solo herramientas y bibliotecas sino también funciones similares a las de un sistema operativo. Entre ellas, podemos citar su abstracción del hardware, el manejo de paquetes, además de un completo \textit{toolchain} de compilación \citep{BOOK:2}. Así también, tal como en un sistema operativo ``real'', los archivos que componen ROS se encuentran organizados en el disco duro en un sistema de archivos o \textit{filesystem}, como se indica en la figura \ref{fig:rosSistemaDeArchivos}.
 
 \begin{figure}[ht]
     \centering
@@ -57,7 +57,7 @@ Los principales componentes de este grafo son los nodos, el \textit{master} o ma
     \item \textbf{Mensajes}: los nodos se comunican entre sí mediante mensajes, estructuras de datos cuyos campos pueden editarse y permiten ser enviados entre sí. Existen tipos de mensajes estándares (enteros, flotantes, booleanos, etc.) así como también es posible definir mensajes propios, adaptados a las necesidades de la aplicación.
     \item \textbf{Tópicos}: cada mensaje en ROS es transportado utilizando buses llamados tópicos. Cuando un nodo envía un mensaje a través de un tópico, se puede decir que el nodo está ``publicando un tópico''. Asimismo cuando un nodo recibe un mensaje a través de un tópico, se puede decir que el nodo está ``subscripto al tópico''. El nodo publicante y el suscriptor no tienen información sobre su mutua existencia, por lo que es posible que existan nodos que publiquen en tópicos sin suscriptores o viceversa, es decir nodos suscriptos a tópicos sin publicantes.
     \item \textbf{Servicios}: en determinadas aplicaciones, el mecanismo de publicador/suscriptor definido en el ítem anterior podría no ser adecuado. Por ejemplo, en ciertos casos es necesaria una interacción del tipo solicitud/respuesta. En dichas situaciones un nodo podría solicitar la ejecución de un procedimiento rápido por parte de otro nodo y el envío de una respuesta con el resultado de dicho cálculo.
-    \item \textbf{Logging}: ROS provee un sistema de registro o \textit{logging} denominado rosbag (bolsa), que se utiliza para almacenar información publicada en los tópicos activos, como por ejemplo la proveniente de un sensor que podría ser difícil de generar una y otra vez, pero que a su vez resulta necesaria para depurar determinados algoritmos. Un rosbag permitiría en este caso generar la información una única vez para luego reproducirla como si fuese una grabación las veces que resulte necesario.
+    \item \textbf{Logging}: ROS provee un sistema de registro o \textit{logging} denominado rosbag (bolsa), que se utiliza para almacenar información publicada en los tópicos activos, como por ejemplo la proveniente de un sensor que podría ser difícil de generar múltiples veces, pero que a su vez resulta necesaria para depurar determinados algoritmos. Un rosbag permitiría en este caso generar la información una única vez para luego reproducirla como si fuese una grabación las veces que resulte necesario.
 \end{itemize}
 
 \subsection{Herramienta RViz}
@@ -94,13 +94,13 @@ Además de la definición del protocolo de serialización en si mismo, rosserial
 
 \subsection{Transformación de coordenadas con TF}
 
-Dentro del campo de la robótica resulta indispensable trabajar con múltiples sistemas de referencia tanto dentro del mismo robot (a la hora de representar el estado de sus articulaciones) así como para representar su estado en su universo de acción o mundo, como puede ser un mapa. Con la finalidad de y simplificar este tipo de cálculos ROS incorpora el paquete llamado TF.
+Dentro del campo de la robótica resulta indispensable trabajar con múltiples sistemas de referencia tanto dentro del mismo robot (a la hora de representar el estado de sus articulaciones) así como para representar su estado en un mapa. Con la finalidad de simplificar este tipo de cálculos ROS incorpora el paquete llamado TF.
 
-Esta biblioteca fue diseñada para proveer una manera estándar para mantener el registro de los \textit{coordinate frames} o marcos de coordenadas y de realizar las transformaciones entre si mismas en todo el robot, de manera tal que los usuarios puedan consumir la información de manera ordenada y sin la necesidad de ocuparse de generar las transformaciones en forma manual \citep{PAPER:3}.
+Esta biblioteca fue diseñada para proveer una manera estándar para mantener el registro de los \textit{coordinate frames} o marcos de coordenadas y de realizar las transformaciones entre sí mismas en todo el robot, de manera tal que los usuarios puedan consumir la información de manera ordenada y sin la necesidad de ocuparse de generar las transformaciones en forma manual \citep{PAPER:3}.
 
 TF puede operar de forma transparente en sistemas distribuidos, muy típicos en el entorno ROS. Esto significa que toda la información sobre los marcos de coordenadas de un robot se encuentran disponibles para todos los componentes de un sistema ROS en cualquiera de las computadoras que componen el sistema.
 
-En la figura \ref{fig:tf} se visualiza un robot con múltiples articulaciones. Dado que la pose de estas se encuentra sujeta a cambios en el tiempo, también así lo hacen sus transformaciones. Por este motivo TF se encarga de monitorearlas en todo momento, lo que provee al robot la capacidad de responderse preguntas como las siguientes:
+En la figura \ref{fig:tf} se visualiza un robot con múltiples articulaciones. Dado que la pose de éstas se encuentra sujeta a cambios en el tiempo, también así lo hacen sus transformaciones. Por este motivo TF se encarga de monitorearlas en todo momento, lo que provee al robot la capacidad de responderse preguntas como las siguientes:
 
 \begin{itemize}
     \item ¿a dónde se encontraba el \textit{frame} ``cabeza'' con respecto al \textit{frame} ``mundo'' hace cinco segundos?
@@ -137,7 +137,7 @@ Para este trabajo se hace uso de los dos primeros tipos de mensajes citados en l
 
 En base a estas mediciones, los estimadores publican los valores de estado filtrados de posición, orientación y velocidades lineal y angular mediante un mensaje del tipo nav\_msgs/Odometry y opcionalmente, valores de aceleración (no utilizadas en el presente trabajo).
 
-El sotware permite a los usuarios decidir cuál de los campos de información proveidos por los sensores van a ser tomados en cuenta para la fusión en el estimador. Por este motivo, como parte de la configuración del paquete es necesario definir una matriz de booleanos para cada una de las fuentes de información o sensores para informar al estimador cuáles son los campos a tener en cuenta. A continuación se muestra la matriz completa de variables requerida para la configuración de cada una de las fuentes:
+El sotware permite a los usuarios decidir cuál de los campos de información proveídos por los sensores van a ser tomados en cuenta para la fusión en el estimador. Por este motivo, como parte de la configuración del paquete es necesario definir una matriz de booleanos para cada una de las fuentes de información o sensores para informar al estimador cuáles son los campos a tener en cuenta. A continuación se muestra la matriz completa de variables requerida para la configuración de cada una de las fuentes:
 
 \[
     \begin{bmatrix}
@@ -194,7 +194,7 @@ Como se muestra en la figura \ref{fig:diffDrive}, es posible controlar la trayec
 
 \begin{equation}
     \label{eq:diffDriveLinear}
-    v = \frac{1}{2} \frac{V_i + V_d}{V_i - V_d}
+    v = \frac{R}{2} (V_i + V_d)
 \end{equation}
 
 \begin{equation}
@@ -202,7 +202,12 @@ Como se muestra en la figura \ref{fig:diffDrive}, es posible controlar la trayec
     w = \frac{V_i - V_d}{l}
 \end{equation}
 
-donde $V_i$ y $V_d$ representan las velocidades de desplazamiento lineal de las ruedas izquierda y derecha, respectivamente y $l$ es la distancia entre ambas ruedas sobre el eje de giro.
+donde:
+\begin{itemize}
+    \item $V_i$ y $V_d$ representan las velocidades de desplazamiento lineal de las ruedas izquierda y derecha, respectivamente 
+    \item $R$ es el radio de las ruedas medido en $m$
+    \item $l$ es la distancia entre ambas ruedas sobre el eje de giro
+\end{itemize}
 
 \begin{figure}[ht]
     \centering

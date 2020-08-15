@@ -1,7 +1,7 @@
 % !TeX root = ./../memoria.tex
 % Chapter Template
 
-\chapter{Ensayos y resultados} % Main chapter title
+\chapter{Experimentos y resultados} % Main chapter title
 
 \label{Capitulo4}
 
@@ -47,7 +47,7 @@ El Roomba funciona de una manera tal que si recibe un comando de velocidad, este
 
 \subsection{Validación de desplazamiento efectivo del robot}
 
-El Roomba implementa su propio sistema de control interno para llevar sus ruedas hasta el \textit{set point} requerido por los comandos de velocidad. En vista de que esta funcionalidad resulta crítica para el sistema, se desarrolló un caso de prueba especial para velocidades tanto positivas como negativas que se describe a continuación:
+El Roomba implementa su propio sistema de control interno a lazo cerrado de los motores para llevar sus ruedas hasta el \textit{set point} requerido por los comandos de velocidad. En vista de que esta funcionalidad resulta crítica para el sistema, se desarrolló un caso de prueba especial para velocidades tanto positivas como negativas que se describe a continuación:
 
 \begin{itemize}
     \item mediante un script de Python conectado a ROS se envió un comando que establece la velocidad de ambas ruedas a 0,1 m/s por una duración de 10 s es decir, el equivalente a un desplazamiento lineal de 1 m.
@@ -72,7 +72,7 @@ Un análisis cualitativo de los resultados expuestos en la tabla \ref{tab:despla
     \label{tab:desplazamientoRobot}
 \end{table}
 
-Como medida paliativa se decidió no utilizar el robot en modo reversa para las tareas de mapeo de manera a reducir el error acumulativo.
+Como medida paliativa se decidió no utilizar el robot en modo reversa para las tareas de mapeo de manera a reducir el error acumulativo. Vale mencionar que dejando de depender del control de velocidad interno del Roomba e implementando un sistema de control externo al mismo en el microcontrolador, permitiría solucionar este error. Esta posibilidad se menciona en las conclusiones como uno de los siguientes pasos.
 
 \subsection{Validación de lectura de encoders}
 
@@ -203,7 +203,7 @@ Para la validación de esta característica, la prueba se realizó siguiendo los
 
 \subsection{Validación de estimador de odometría con encoders + IMU}
 
-Gracias a la aplicación de un Filtro de Kalman Extendido por parte del paquete robot\_localization, fue posible combinar la información provista por el cálculo de odometría de encoders junto con el estimador de pose de la IMU.
+Gracias a la aplicación de un Filtro de Kalman Extendido por parte del paquete robot\_localization, fue posible fusionar la información provista por el cálculo de odometría de encoders junto con el estimador de pose de la IMU.
 
 Este procedimiento consistió en comparar los resultados obtenidos con la prueba de odometría de encoders pura del punto anterior y la estimación de odometria resultante de combinar este valor con la pose de la IMU. El procedimiento ejecutado fue el mismo que se utilizó en el punto anterior y los resultados se exponen en la tabla \ref{tab:odometriaFusion}.
 
@@ -223,9 +223,7 @@ Este procedimiento consistió en comparar los resultados obtenidos con la prueba
     \label{tab:odometriaFusion}
 \end{table}
 
-\newpage
-
-Gracias a que ambos tests se encargan de reproducir el mismo escenario fue posible comparar ambos resultados y obtener el porcentaje de mejora ofrecido por la fusión de datos sobre el error absoluto. Los resultados de esta comparación se pueden apreciar en la tabla \ref{tab:comparacionOdom}.
+Gracias a que ambos tests se encargan de reproducir el mismo escenario fue posible comparar ambos resultados y obtener el porcentaje de mejora ofrecido por la fusión de datos sobre el error absoluto. Los resultados de esta comparación se pueden apreciar en la tabla \ref{tab:comparacionOdom}. Como puede observarse la mejora obtenida debido a la fusión fue muy significativa.
 
 \begin{table}[!htbp]
     \centering
@@ -250,7 +248,7 @@ En esta sección se describen las pruebas funcionales ejecutadas sobre cada uno 
 
 \subsection{Generación de mapa con gmapping}
 
-Esta prueba consistió en la generación de un mapa del tipo \textit{occupancy grid} o mapa de ocupación. Este mapa consiste en una representación similar a la de un plano en dos dimensiones como los utilizados en arquitectura. Los puntos en negro representan una sección ``ocupada'' mientras que los píxeles blancos representan un área libre.
+Esta prueba consistió en la generación de un mapa de grillas de ocupación. Este mapa consiste en una representación similar a la de un plano en dos dimensiones similar a los que se utilizan en obras civiles. Las grillas en negro representan una sección ocupada mientras que las blancas representan un área libre.
 
 
 Para que el resultado obtenido a partir de este procedimiento fuera lo suficientemente preciso como para utilizarse en la tarea de localizar al robot fue necesario que la fuente de odometría fuera muy precisa, motivo por el que resultó indispensable el uso de la fuente de odometría filtrada con información de la IMU.

@@ -16,24 +16,29 @@ En este capítulo se introduce al campo de estudio de la robótica móvil. Se ab
 
 La robótica móvil se encarga del estudio de los robots móviles y hace especial hincapié en el desarrollo de capacidades les permitan decidir de manera autónoma cómo, cuándo y a dónde moverse.
 
-En contraste con los robots manipuladores cuya base se encuentra fija con respecto a un sistema de referencia, los robots móviles son aquellos capaces de moverse de un lugar a otro. Esta particularidad los obliga a ser capaces de interactuar con entornos no determinísticos, es decir, propensos a situaciones impredecibles como por ejemplo una puerta entreabierta, un objeto o persona que obstaculiza el camino, etc.
+En contraste con los robots manipuladores cuya base se encuentra fija con respecto a un sistema de referencia, los robots móviles son aquellos capaces de moverse de manera autónoma. Esta particularidad los obliga a ser capaces de interactuar con entornos no determinísticos, es decir, propensos a situaciones impredecibles como por ejemplo una puerta entreabierta, un objeto o persona que obstaculiza el camino, etc.
 
 \subsection{Tipos de robots móviles}
 
 Dependiendo de cómo realizan su locomoción, es posible caracterizar a los robots móviles en los siguientes tipos:
 \begin{itemize}
-	\item{Robots con patas}
-	\item{Robots aéreos}
 	\item{Robots con ruedas}
+	\item{Robots con patas}
+	\item{Robots acuáticos}
+	\item{Robots aéreos}
 \end{itemize}
 
-Cada uno de estos tipos plantea su propio conjunto de ventajas y desventajas, así como dificultades para su implementación. En el presente trabajo se hizo énfasis solo en el último tipo de la lista, es decir en los robots con ruedas.
+Cada uno de estos tipos plantea su propio conjunto de ventajas y desventajas, así como dificultades para su implementación. En el presente trabajo se hizo énfasis solo en el primer tipo de la lista, es decir en los robots con ruedas.
+
+\subsection{Robots con ruedas}
+
+TODO
 
 \newpage
 
 \section{Estado del arte}
 
-Existe una amplia gama de robots móviles con ruedas ofrecidos específicamente para el sector académico. A continuación se presenta un breve sumario de opciones que se encuentran actualmente en el mercado.
+Existe una amplia gama de robots móviles con ruedas ofrecidos específicamente para el sector académico. A continuación se presentan algunas opciones que se encuentran actualmente disponibles en el mercado.
 
 \subsection{TurtleBot}\label{sec:turtlebot}
 
@@ -62,7 +67,7 @@ Posee una capacidad de carga de hasta 20 kg, lo que lo hace apto para cargar una
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=1.6]{./Figures/jackal.png}
+	\includegraphics[scale=1.4]{./Figures/jackal.png}
 	\caption{Vista frontal de la plataforma robótica Jackal con una batería de sensores instalados por el usuario\protect\footnotemark.}
 	\label{fig:robotJackal}
 \end{figure}
@@ -77,12 +82,14 @@ El Freight 100 incluye un sensor del tipo LIDaR 2D, que se puede apreciar en la 
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=1.0]{./Figures/freight.png}
+	\includegraphics[scale=0.9]{./Figures/freight.png}
 	\caption{Vista frontal de la plataforma robótica Fetch Freight donde se puede apreciar su sensor integrado del tipo LIDaR\protect\footnotemark.}
 	\label{fig:robotFreight}
 \end{figure}
 
 \footnotetext{Imagen tomada de \url{https://www.dymesich.com/wp-content/uploads/2019/06/freight-100-low.jpg}}
+
+\newpage
 
 \subsection{FESTO Robotino}
 
@@ -93,7 +100,7 @@ Asímismo, Robotino viene equipado de fábrica con una computadora tipo PC de gr
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=1.4]{./Figures/robotino.png}
+	\includegraphics[scale=1.1]{./Figures/robotino.png}
 	\caption{Vista frontal del Robot FESTO Robotino con un sensor externo acoplado\protect\footnotemark.}
 	\label{fig:robotRobotino}
 \end{figure}
@@ -109,7 +116,7 @@ Su amplia superficie de carga permite transportar hasta 8 Kg, por lo que es un b
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=1.]{./Figures/pioneer.png}
+	\includegraphics[scale=0.8]{./Figures/pioneer.png}
 	\caption{Vista frontal del Robot Pioneer donde se aprecian sus cinco sensores SONAR\protect\footnotemark.}
 	\label{fig:robotPioneer}
 \end{figure}
@@ -120,7 +127,7 @@ Su amplia superficie de carga permite transportar hasta 8 Kg, por lo que es un b
 
 Los robots móviles expuestos en la sección anterior representan propuestas comerciales listas para usar que permiten a profesores, investigadores y alumnos concentrarse en el estudio o desarrollo de aplicaciones de la robótica móvil sin la necesidad de diseñar un robot desde cero para cada caso de uso específico. Gracias a esto, las instituciones o individuos que adquieren dichos equipos pueden ahorrar tiempo al concentrarse de inmediato en las tareas de interés para el estudio de la materia.
 
-Es pertinente preguntar ¿por qué no todas las instituciones adquieren un robot comercial para el laboratorio de robótica?, la respuesta está en los costos asociados a la adquisición de estos equipos. Los robots destinados a investigación poseen precios prohibitivos para la mayoría de las instituciones educativas y por ende, son muy pocas las que se encuentran en condiciones de invertir en ellos.
+Es pertinente preguntar ¿por qué no todas las instituciones adquieren un robot comercial para el laboratorio de robótica?, la respuesta está en los costos asociados a la adquisición de estos equipos. Los robots destinados a investigación poseen precios prohibitivos para la mayoría de las instituciones educativas latinoamericanas y por ende, son muy pocas las que se encuentran en condiciones de invertir en ellos.
 
 
 \section{Objetivos}

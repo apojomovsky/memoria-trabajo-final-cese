@@ -39,7 +39,7 @@
 
 \label{Capitulo3}
 
-En este capítulo se exponen las decisiones de diseño tomadas para la elaboración del robot propuesto. Se detallan las dimensiones de las piezas que constituyen el chasis, su esquema de conexiones eléctricas y finalmente la implementación del software y el firmware embebido.
+En este capítulo se exponen las decisiones de diseño tomadas para la construcción del robot propuesto. Se detallan las dimensiones de las piezas que constituyen el chasis, su esquema de conexiones eléctricas y finalmente la implementación del software y el firmware embebido para la navegación autónoma.
 
 \section{Estructura mecánica}
 
@@ -222,6 +222,7 @@ Cabe preguntarse por qué no evitar este nodo y publicar mensajes con el tipo es
   \item el bus UART utilizado para la comunicación con el microcontrolador ofrece un ancho de banda ajustado que se satura rápidamente con mensajes del tipo estándar.
 \end{itemize}
 
+Las unidades de medición inercial precisan ser calibradas antes de utilizarse, esto permite compensar el sesgo o \textit{bias} inherente a cada sensor. Esta calibración se realiza en el microcontrolador como parte de la rutina de inicialización, por lo que para el nodo aquí descripto se asume que la IMU ya se encuentra calibrada.
 
 \subsection{Nodo publicador de odometría ``lubo\_odom\_node''}
 
